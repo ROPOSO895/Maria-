@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-# Secret key for session
+# Secret key for sessions
 app.secret_key = os.environ.get("SECRET_KEY", "supersecretkey")
 
 # OpenAI client
@@ -29,7 +29,7 @@ def ask():
         if not user_input:
             return jsonify({"reply": "No input provided."})
 
-        # Initialize session memory
+        # Initialize chat memory
         if "chat_memory" not in session:
             session["chat_memory"] = [SYSTEM_PROMPT]
 
@@ -59,5 +59,7 @@ def ask():
     except Exception as e:
         return jsonify({"reply": f"Error: {str(e)}"})
 
+# IMPORTANT: Render requires dynamic PORT
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
