@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Jarvis AI</title>
+<style>
+body {
+    background: black;
+    color: #00f7ff;
+    font-family: Arial;
+    text-align: center;
+    padding-top: 50px;
+}
+input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #00f7ff;
+    border: none;
+    cursor: pointer;
+}
+#response {
+    margin-top: 20px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+</head>
+<body>
+
+<h1>JARVIS AI</h1>
+
+<input type="text" id="userInput" placeholder="Ask Jarvis..." />
+<button onclick="askAI()">Send</button>
+
+<div id="response"></div>
+
+<script>
+async function askAI() {
+    const message = document.getElementById("userInput").value;
+
+    const response = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+    document.getElementById("response").innerText = data.reply;
+}
+</script>
+
+</body>
+</html>
