@@ -1,16 +1,19 @@
-
 from flask import Flask, request, jsonify, render_template, session
 from openai import OpenAI
 import os
 
 app = Flask(__name__)
+
+# Secret key for session
 app.secret_key = os.environ.get("SECRET_KEY", "supersecretkey")
 
+# OpenAI client
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+# System prompt
 SYSTEM_PROMPT = {
     "role": "system",
-    "content": "You are Jarvis, a futuristic, intelligent and disciplined AI assistant. Answer clearly and concisely."
+    "content": "You are Jarvis, a futuristic and intelligent AI assistant. Answer clearly and concisely."
 }
 
 @app.route("/")
@@ -20,16 +23,22 @@ def home():
 @app.route("/ask", methods=["POST"])
 def ask():
     try:
-        user_input = request.json.get("message")
+        data = request.get_json()
+        user_input = data.get("message")
 
         if not user_input:
             return jsonify({"reply": "No input provided."})
 
+        # Initialize session memory
         if "chat_memory" not in session:
             session["chat_memory"] = [SYSTEM_PROMPT]
 
         chat_memory = session["chat_memory"]
-        chat_memory.append({"role": "user", "content": user_input})
+
+        chat_memory.append({
+            "role": "user",
+            "content": user_input
+        })
 
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -37,7 +46,11 @@ def ask():
         )
 
         reply = completion.choices[0].message.content
-        chat_memory.append({"role": "assistant", "content": reply})
+
+        chat_memory.append({
+            "role": "assistant",
+            "content": reply
+        })
 
         session["chat_memory"] = chat_memory
 
