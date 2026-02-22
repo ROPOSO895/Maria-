@@ -1,121 +1,367 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JARVIS AI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Orbitron', sans-serif;
-            background: radial-gradient(circle at center, #1a0000 0%, #000000 70%);
-            color: #ff3c3c;
-            overflow: hidden;
-        }
+  body {
+    background: #000811;
+    color: #c8f0ff;
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        /* HUD Glow Animation */
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px #ff0000; }
-            50% { box-shadow: 0 0 20px #ff0000; }
-            100% { box-shadow: 0 0 5px #ff0000; }
-        }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .hud-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 600px;
-            padding: 30px;
-            border: 2px solid #ff0000;
-            border-radius: 15px;
-            backdrop-filter: blur(8px);
-            animation: glow 2s infinite;
-        }
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-        h1 {
-            text-align: center;
-            letter-spacing: 3px;
-        }
+  /* === HEADER === */
+  .header { text-align: center; padding: 24px 0 16px; }
 
-        input {
-            width: 70%;
-            padding: 12px;
-            background: black;
-            border: 1px solid #ff0000;
-            color: #ff3c3c;
-            outline: none;
-        }
+  .jarvis-core {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 16px;
+  }
 
-        button {
-            padding: 12px 20px;
-            background: transparent;
-            border: 1px solid #ff0000;
-            color: #ff3c3c;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: spin linear infinite;
+  }
+  .ring-1 { inset:0; border-top-color:#00d4ff; border-right-color:#00d4ff; animation-duration:3s; box-shadow:0 0 12px #00d4ff; }
+  .ring-2 { inset:18px; border-bottom-color:#00aaff; border-left-color:#00aaff; animation-duration:2s; animation-direction:reverse; }
+  .ring-3 { inset:36px; border-top-color:rgba(0,212,255,0.5); border-left-color:rgba(0,212,255,0.5); animation-duration:4s; }
 
-        button:hover {
-            background: #ff0000;
-            color: black;
-        }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-        #response {
-            margin-top: 20px;
-            min-height: 80px;
-            border-top: 1px solid #ff0000;
-            padding-top: 15px;
-            font-size: 14px;
-        }
+  .core-center {
+    position: absolute; top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,180,255,0.9), rgba(0,60,120,0.5) 60%, transparent);
+    box-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.3);
+    animation: pulse 2s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .core-eye {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 10px white;
+    animation: blink 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 30px rgba(0,212,255,0.8); }
+    50% { box-shadow: 0 0 50px rgba(0,212,255,1), 0 0 80px rgba(0,212,255,0.5); }
+  }
+  @keyframes blink {
+    0%,90%,100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+  }
 
-        /* Scanline effect */
-        .scanlines::after {
-            content: "";
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(255,0,0,0.05) 0px,
-                rgba(255,0,0,0.05) 2px,
-                transparent 2px,
-                transparent 4px
-            );
-            pointer-events: none;
-        }
-    </style>
+  .title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    font-weight: 900;
+    color: #00d4ff;
+    letter-spacing: 0.3em;
+    text-shadow: 0 0 30px rgba(0,212,255,0.7);
+    animation: glow 3s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%,100% { text-shadow: 0 0 20px rgba(0,212,255,0.6); }
+    50% { text-shadow: 0 0 40px rgba(0,212,255,1), 0 0 70px rgba(0,212,255,0.4); }
+  }
+
+  .subtitle {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    color: rgba(0,212,255,0.4);
+    margin: 4px 0 8px;
+  }
+
+  .status {
+    display: flex; justify-content: center; gap: 16px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    color: rgba(0,212,255,0.5);
+  }
+  .dot {
+    display: inline-block; width:6px; height:6px;
+    border-radius:50%; background:#00ff88;
+    box-shadow: 0 0 6px #00ff88;
+    animation: blink-dot 2s infinite;
+    vertical-align: middle; margin-right:4px;
+  }
+  @keyframes blink-dot { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* === WAVE === */
+  .wave { display:flex; align-items:center; justify-content:center; gap:3px; height:32px; margin:8px 0; }
+  .wb { width:3px; border-radius:3px; background:#00d4ff; height:4px; opacity:0.25; transition:opacity 0.3s; animation: wv 1.2s ease-in-out infinite; }
+  .wb.on { opacity:1; }
+  .wb:nth-child(1){animation-delay:0s} .wb:nth-child(2){animation-delay:.1s} .wb:nth-child(3){animation-delay:.2s}
+  .wb:nth-child(4){animation-delay:.3s} .wb:nth-child(5){animation-delay:.4s} .wb:nth-child(6){animation-delay:.3s}
+  .wb:nth-child(7){animation-delay:.2s} .wb:nth-child(8){animation-delay:.1s} .wb:nth-child(9){animation-delay:0s}
+  @keyframes wv { 0%,100%{height:4px} 50%{height:26px} }
+
+  /* === PANEL === */
+  .panel {
+    background: rgba(0,20,45,0.85);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 20px rgba(0,212,255,0.15);
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .panel::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  }
+  .corner { position:absolute; width:18px; height:18px; border-color:#00d4ff; border-style:solid; opacity:0.4; }
+  .tl{top:7px;left:7px;border-width:2px 0 0 2px}
+  .tr{top:7px;right:7px;border-width:2px 2px 0 0}
+  .bl{bottom:7px;left:7px;border-width:0 0 2px 2px}
+  .br{bottom:7px;right:7px;border-width:0 2px 2px 0}
+
+  /* === CHAT === */
+  .chat {
+    flex:1; overflow-y:auto; padding:16px;
+    min-height:300px; max-height:420px;
+    scroll-behavior:smooth;
+  }
+  .chat::-webkit-scrollbar{width:3px}
+  .chat::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.3);border-radius:3px}
+
+  .welcome {
+    text-align:center; padding:40px 20px;
+    font-family:'Orbitron',monospace; font-size:0.7rem;
+    letter-spacing:0.1em; color:rgba(0,212,255,0.35); line-height:2.2;
+  }
+
+  .msg { margin-bottom:18px; animation: fadein 0.4s ease-out; }
+  @keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  .msg-lbl {
+    font-family:'Orbitron',monospace; font-size:0.52rem;
+    letter-spacing:0.2em; opacity:0.55; margin-bottom:5px;
+  }
+  .msg.user .msg-lbl { color:#88ccff; text-align:right; }
+  .msg.bot .msg-lbl  { color:#00d4ff; }
+
+  .bubble {
+    padding:11px 15px; border-radius:12px;
+    line-height:1.65; font-size:0.88rem; max-width:88%;
+  }
+  .msg.user .bubble {
+    background:rgba(0,70,140,0.45);
+    border:1px solid rgba(0,140,255,0.3);
+    margin-left:auto; border-bottom-right-radius:3px;
+  }
+  .msg.bot .bubble {
+    background:rgba(0,25,55,0.8);
+    border:1px solid rgba(0,212,255,0.18);
+    border-bottom-left-radius:3px;
+  }
+
+  /* typing dots */
+  .typing { display:none; gap:5px; padding:11px 15px; width:fit-content;
+    background:rgba(0,25,55,0.8); border:1px solid rgba(0,212,255,0.18);
+    border-radius:12px; border-bottom-left-radius:3px; margin-bottom:10px; }
+  .td { width:6px;height:6px;border-radius:50%;background:#00d4ff; animation:td 1.2s infinite; }
+  .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+  @keyframes td{ 0%,100%{opacity:.3;transform:translateY(0)} 50%{opacity:1;transform:translateY(-4px)} }
+
+  /* === INPUT ROW === */
+  .input-row {
+    display:flex; gap:8px; padding:14px 16px;
+    border-top:1px solid rgba(0,212,255,0.15);
+  }
+  #msg {
+    flex:1; padding:11px 14px;
+    background:rgba(0,15,35,0.8);
+    border:1px solid rgba(0,212,255,0.25);
+    border-radius:10px;
+    color:#c8f0ff; font-family:'Exo 2',sans-serif; font-size:0.93rem;
+    outline:none; resize:none;
+    transition:border-color 0.3s, box-shadow 0.3s;
+  }
+  #msg:focus { border-color:#00d4ff; box-shadow:0 0 12px rgba(0,212,255,0.2); }
+  #msg::placeholder { color:rgba(0,212,255,0.25); }
+
+  #send {
+    padding:11px 18px;
+    background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,90,180,0.25));
+    border:1px solid #00d4ff;
+    border-radius:10px;
+    color:#00d4ff; font-family:'Orbitron',monospace;
+    font-size:0.68rem; letter-spacing:0.1em;
+    cursor:pointer; transition:all 0.3s;
+    box-shadow:0 0 10px rgba(0,212,255,0.15);
+  }
+  #send:hover:not(:disabled) { box-shadow:0 0 22px rgba(0,212,255,0.5); transform:translateY(-1px); }
+  #send:disabled { opacity:0.35; cursor:not-allowed; }
+
+  .clear-btn {
+    display:block; width:100%;
+    padding:8px; background:transparent;
+    border:none; border-top:1px solid rgba(0,212,255,0.1);
+    color:rgba(0,212,255,0.35); font-family:'Orbitron',monospace;
+    font-size:0.55rem; letter-spacing:0.15em;
+    cursor:pointer; transition:color 0.3s;
+  }
+  .clear-btn:hover { color:rgba(255,68,80,0.7); }
+
+  #clock { font-variant-numeric: tabular-nums; }
+</style>
 </head>
+<body>
+<div class="app">
 
-<body class="scanlines">
+  <div class="header">
+    <div class="jarvis-core">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="core-center"><div class="core-eye"></div></div>
+    </div>
+    <div class="title">J.A.R.V.I.S</div>
+    <div class="subtitle">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+    <div class="status">
+      <span><span class="dot"></span>ONLINE</span>
+      <span id="clock"></span>
+    </div>
+    <div class="wave" id="wave">
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+    </div>
+  </div>
 
-<div class="hud-container">
-    <h1>J.A.R.V.I.S</h1>
+  <div class="panel">
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
 
-    <div style="display:flex; gap:10px;">
-        <input type="text" id="userInput" placeholder="Enter command...">
-        <button onclick="sendMessage()">EXECUTE</button>
+    <div class="chat" id="chat">
+      <div class="welcome" id="welcome">
+        ▸ JARVIS ONLINE<br>
+        ▸ ALL SYSTEMS NOMINAL<br>
+        ▸ AWAITING YOUR COMMAND, SIR
+      </div>
+      <div class="typing" id="typing">
+        <div class="td"></div><div class="td"></div><div class="td"></div>
+      </div>
     </div>
 
-    <div id="response"></div>
+    <div class="input-row">
+      <textarea id="msg" rows="1" placeholder="Speak your command, Sir..."></textarea>
+      <button id="send" onclick="send()">EXECUTE</button>
+    </div>
+    <button class="clear-btn" onclick="clearChat()">▸ CLEAR MEMORY</button>
+  </div>
+
 </div>
-
 <script>
-function sendMessage() {
-    let message = document.getElementById("userInput").value;
+  // Clock
+  setInterval(() => {
+    document.getElementById('clock').textContent =
+      new Date().toLocaleTimeString('en-US',{hour12:false});
+  }, 1000);
 
-    fetch("/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("response").innerText = data.reply;
-    });
-}
+  // Auto resize textarea
+  const msgEl = document.getElementById('msg');
+  msgEl.addEventListener('input', () => {
+    msgEl.style.height = 'auto';
+    msgEl.style.height = Math.min(msgEl.scrollHeight, 110) + 'px';
+  });
+  msgEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+
+  function addMsg(role, text) {
+    document.getElementById('welcome')?.remove();
+    const chat = document.getElementById('chat');
+    const typing = document.getElementById('typing');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.innerHTML = `
+      <div class="msg-lbl">${role === 'user' ? '▸ YOU' : '▸ J.A.R.V.I.S'}</div>
+      <div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;
+    chat.insertBefore(div, typing);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  async function send() {
+    const text = msgEl.value.trim();
+    if (!text) return;
+    msgEl.value = ''; msgEl.style.height = 'auto';
+    addMsg('user', text);
+
+    document.getElementById('typing').style.display = 'flex';
+    document.getElementById('send').disabled = true;
+    document.querySelectorAll('.wb').forEach(b => b.classList.add('on'));
+
+    try {
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message: text})
+      });
+      const data = await res.json();
+      document.getElementById('typing').style.display = 'none';
+      addMsg('bot', data.reply || '⚠ ' + (data.error || 'Unknown error'));
+    } catch(e) {
+      document.getElementById('typing').style.display = 'none';
+      addMsg('bot', '⚠ Connection error, Sir.');
+    }
+
+    document.getElementById('send').disabled = false;
+    document.querySelectorAll('.wb').forEach(b => b.classList.remove('on'));
+    document.getElementById('chat').scrollTop = 9999;
+  }
+
+  async function clearChat() {
+    await fetch('/clear', {method:'POST'});
+    document.getElementById('chat').innerHTML = `
+      <div class="welcome" id="welcome">
+        ▸ MEMORY CLEARED<br>▸ READY FOR NEW ORDERS, SIR
+      </div>
+      <div class="typing" id="typing" style="display:none">
+        <div class="td"></div><div class="td"></div><div class="td"></div>
+      </div>`;
+  }
 </script>
-
 </body>
 </html>
