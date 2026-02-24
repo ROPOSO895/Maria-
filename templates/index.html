@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c8820a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JARVIS">
+<link rel="manifest" href="/static/manifest.json">
 <title>J.A.R.V.I.S</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +17,10 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 .topbar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid rgba(200,120,20,0.2); background: #0a0500; flex-shrink: 0; }
 .menu-btn { background: transparent; border: none; color: #c8820a; font-size: 1.4rem; cursor: pointer; padding: 4px 8px; }
 .logo { font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 900; color: #c8820a; letter-spacing: 0.2em; }
-.online { width: 8px; height: 8px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 6px #00ff88; margin-left: auto; }
+.topright { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.online { width: 8px; height: 8px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 6px #00ff88; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.install-btn { display: none; padding: 4px 10px; background: rgba(200,120,10,0.2); border: 1px solid #c8820a; border-radius: 8px; color: #c8820a; font-family: 'Orbitron', monospace; font-size: 0.5rem; cursor: pointer; letter-spacing: 0.1em; }
 
 .sidebar { position: fixed; top: 0; left: -270px; width: 270px; height: 100vh; background: #0a0500; border-right: 1px solid rgba(200,120,20,0.3); z-index: 100; transition: left 0.3s; display: flex; flex-direction: column; }
 .sidebar.open { left: 0; }
@@ -21,34 +29,38 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 .sb-close { background: transparent; border: none; color: #c8820a; font-size: 1.2rem; cursor: pointer; }
 .new-btn { margin: 10px; padding: 10px; background: rgba(200,120,10,0.15); border: 1px solid rgba(200,120,20,0.4); border-radius: 10px; color: #c8820a; font-family: 'Orbitron', monospace; font-size: 0.58rem; letter-spacing: 0.1em; cursor: pointer; }
 .chat-list { flex: 1; overflow-y: auto; padding: 6px; }
-.chat-item { padding: 10px 12px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; border: 1px solid transparent; }
+.chat-item { padding: 10px 12px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
 .chat-item:hover, .chat-item.active { background: rgba(200,120,10,0.2); border-color: rgba(200,120,20,0.3); }
+.ci-info { flex: 1; min-width: 0; }
 .ci-title { font-size: 0.78rem; color: #f0d9a0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ci-date { font-family: 'Orbitron', monospace; font-size: 0.42rem; color: rgba(200,120,20,0.5); margin-top: 3px; }
-.ci-del { float: right; background: transparent; border: none; color: rgba(255,80,80,0.5); cursor: pointer; font-size: 0.8rem; margin-left: 6px; }
+.ci-del { background: transparent; border: none; color: rgba(255,80,80,0.4); cursor: pointer; font-size: 0.9rem; padding: 2px 4px; flex-shrink: 0; }
 .no-chats { font-family: 'Orbitron', monospace; font-size: 0.52rem; color: rgba(200,120,20,0.3); text-align: center; padding: 30px 10px; line-height: 2.2; }
 
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; display: none; }
 .overlay.show { display: block; }
 
 .chat-area { flex: 1; overflow-y: auto; padding: 16px; }
+.chat-area::-webkit-scrollbar { width: 3px; }
+.chat-area::-webkit-scrollbar-thumb { background: rgba(200,120,20,0.3); border-radius: 3px; }
 
 .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; }
 .wg { position: relative; width: 130px; height: 130px; margin: 0 auto 16px; }
 .wg-sp { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 40% 35%, rgba(255,200,50,0.9), rgba(255,120,0,0.7) 30%, rgba(180,60,0,0.5) 60%, transparent 90%); box-shadow: 0 0 35px rgba(255,120,0,0.5); animation: spp 3s ease-in-out infinite; }
 @keyframes spp { 0%,100%{box-shadow:0 0 35px rgba(255,120,0,0.5)} 50%{box-shadow:0 0 55px rgba(255,150,0,0.8)} }
 .wg-or { position: absolute; border-radius: 50%; border: 1px solid transparent; animation: spin linear infinite; }
-.wo1 { inset: 8px; border-top-color: rgba(255,200,50,0.8); animation-duration: 4s; }
-.wo2 { inset: 20px; border-right-color: rgba(255,160,0,0.7); animation-duration: 3s; animation-direction: reverse; }
-.wo3 { inset: 32px; border-bottom-color: rgba(255,140,0,0.6); animation-duration: 5s; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.wo1{inset:8px;border-top-color:rgba(255,200,50,0.8);animation-duration:4s;}
+.wo2{inset:20px;border-right-color:rgba(255,160,0,0.7);animation-duration:3s;animation-direction:reverse;}
+.wo3{inset:32px;border-bottom-color:rgba(255,140,0,0.6);animation-duration:5s;}
+@keyframes spin { to{transform:rotate(360deg)} }
 .wg-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle,#fff,#ffee00 30%,#ff8800 60%,transparent 80%); box-shadow: 0 0 14px #ffcc00; animation: cf 1.5s ease-in-out infinite; }
 @keyframes cf { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
 .wt { font-family: 'Orbitron', monospace; font-size: 1.6rem; font-weight: 900; color: #c8820a; letter-spacing: 0.3em; }
 .ws { font-family: 'Orbitron', monospace; font-size: 0.42rem; letter-spacing: 0.3em; color: rgba(200,120,20,0.35); margin: 5px 0 12px; }
 .wh { font-size: 0.85rem; color: rgba(240,217,160,0.45); }
 
-.msg { margin-bottom: 16px; }
+.msg { margin-bottom: 16px; animation: fi 0.4s ease-out; }
+@keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 .mlbl { font-family: 'Orbitron', monospace; font-size: 0.48rem; letter-spacing: 0.2em; color: #c8820a; opacity: 0.6; margin-bottom: 4px; }
 .msg.u .mlbl { text-align: right; }
 .bub { padding: 10px 14px; border-radius: 14px; line-height: 1.65; font-size: 0.88rem; max-width: 85%; }
@@ -67,6 +79,7 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 .wb:nth-child(4){animation-delay:.3s}.wb:nth-child(5){animation-delay:.4s}.wb:nth-child(6){animation-delay:.3s}
 .wb:nth-child(7){animation-delay:.2s}.wb:nth-child(8){animation-delay:.1s}.wb:nth-child(9){animation-delay:0s}
 @keyframes wv { 0%,100%{height:3px} 50%{height:16px} }
+
 .irow { display: flex; gap: 8px; align-items: flex-end; }
 #msg { flex: 1; padding: 11px 16px; background: rgba(15,8,2,0.9); border: 1px solid rgba(200,120,20,0.3); border-radius: 24px; color: #f0d9a0; font-family: 'Exo 2', sans-serif; font-size: 0.92rem; outline: none; resize: none; }
 #msg:focus { border-color: #c8820a; }
@@ -78,10 +91,15 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 .vrow { text-align: center; margin-top: 6px; }
 #vbtn { background: transparent; border: none; color: rgba(200,120,20,0.4); font-family: 'Orbitron', monospace; font-size: 0.48rem; letter-spacing: 0.15em; cursor: pointer; }
 #vbtn.on { color: #c8820a; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(10px); background: #0a0500; border: 1px solid #c8820a; border-radius: 10px; padding: 8px 18px; font-family: 'Orbitron', monospace; font-size: 0.58rem; color: #c8820a; opacity: 0; transition: all 0.3s; z-index: 999; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
+<div class="toast" id="toast"></div>
 <div class="overlay" id="overlay"></div>
 
 <div class="sidebar" id="sidebar">
@@ -96,16 +114,17 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 <div class="topbar">
   <button class="menu-btn" id="menubtn">☰</button>
   <div class="logo">J.A.R.V.I.S</div>
-  <div class="online"></div>
+  <div class="topright">
+    <button class="install-btn" id="installbtn">📲 INSTALL</button>
+    <div class="online"></div>
+  </div>
 </div>
 
 <div class="chat-area" id="chatarea">
   <div class="welcome" id="welcomescreen">
     <div class="wg">
       <div class="wg-sp"></div>
-      <div class="wg-or wo1"></div>
-      <div class="wg-or wo2"></div>
-      <div class="wg-or wo3"></div>
+      <div class="wg-or wo1"></div><div class="wg-or wo2"></div><div class="wg-or wo3"></div>
       <div class="wg-core"></div>
     </div>
     <div class="wt">J.A.R.V.I.S</div>
@@ -134,12 +153,34 @@ body { background: #050300; color: #f0d9a0; font-family: 'Exo 2', sans-serif; he
 </div>
 
 <script>
+// === PWA ===
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installbtn').style.display = 'block';
+});
+document.getElementById('installbtn').addEventListener('click', function() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function() { deferredPrompt = null; document.getElementById('installbtn').style.display = 'none'; });
+});
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/sw.js').catch(function(){});
+}
+
+// === TOAST ===
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+// === CHAT STORAGE ===
 var cid = null;
 var chats = {};
-
 function saveAll() { try { localStorage.setItem('jv_chats', JSON.stringify(chats)); } catch(e){} }
 function loadAll() { try { var d = localStorage.getItem('jv_chats'); if(d) chats = JSON.parse(d); } catch(e){} }
-
 function dateStr() {
   var n = new Date();
   var D = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -153,63 +194,57 @@ function renderList() {
   if (!keys.length) { el.innerHTML = '<div class="no-chats">▸ NO MISSIONS YET<br>START A NEW CHAT</div>'; return; }
   var h = '';
   for (var i = 0; i < keys.length; i++) {
-    var id = keys[i];
-    var c = chats[id];
+    var id = keys[i]; var c = chats[id];
     var act = id === cid ? ' active' : '';
-    h += '<div class="chat-item' + act + '" id="ci_' + id + '">' +
-      '<button class="ci-del" data-id="' + id + '">🗑</button>' +
-      '<div class="ci-title" data-load="' + id + '">' + (c.title||'Mission') + '</div>' +
-      '<div class="ci-date">' + (c.date||'') + '</div>' +
-      '</div>';
+    h += '<div class="chat-item' + act + '">' +
+      '<div class="ci-info" data-load="' + id + '">' +
+      '<div class="ci-title">' + (c.title||'Mission') + '</div>' +
+      '<div class="ci-date">' + (c.date||'') + '</div></div>' +
+      '<button class="ci-del" data-id="' + id + '">🗑</button></div>';
   }
   el.innerHTML = h;
-
   var dels = el.querySelectorAll('.ci-del');
   for (var j = 0; j < dels.length; j++) {
     dels[j].addEventListener('click', function(e) {
       e.stopPropagation();
       var did = this.getAttribute('data-id');
-      delete chats[did];
-      saveAll();
-      if (cid === did) { cid = null; resetArea(); }
-      renderList();
+      delete chats[did]; saveAll();
+      if (cid === did) { cid = null; resetArea(); showWelcome(); }
+      renderList(); showToast('MISSION DELETED');
     });
   }
-  var titles = el.querySelectorAll('.ci-title');
-  for (var k = 0; k < titles.length; k++) {
-    titles[k].addEventListener('click', function() {
-      loadChat(this.getAttribute('data-load'));
-    });
+  var infos = el.querySelectorAll('.ci-info');
+  for (var k = 0; k < infos.length; k++) {
+    infos[k].addEventListener('click', function() { loadChat(this.getAttribute('data-load')); });
   }
+}
+
+function showWelcome() {
+  var area = document.getElementById('chatarea');
+  var w = document.createElement('div');
+  w.className = 'welcome'; w.id = 'welcomescreen';
+  w.innerHTML = '<div class="wg"><div class="wg-sp"></div><div class="wg-or wo1"></div><div class="wg-or wo2"></div><div class="wg-or wo3"></div><div class="wg-core"></div></div><div class="wt">J.A.R.V.I.S</div><div class="ws">JUST A RATHER VERY INTELLIGENT SYSTEM</div><div class="wh">How may I assist you today, Sir?</div>';
+  area.insertBefore(w, area.firstChild);
 }
 
 function resetArea() {
-  var area = document.getElementById('chatarea');
-  area.innerHTML = '<div class="welcome" id="welcomescreen"><div class="wg"><div class="wg-sp"></div><div class="wg-or wo1"></div><div class="wg-or wo2"></div><div class="wg-or wo3"></div><div class="wg-core"></div></div><div class="wt">J.A.R.V.I.S</div><div class="ws">JUST A RATHER VERY INTELLIGENT SYSTEM</div><div class="wh">How may I assist you today, Sir?</div></div><div class="typi" id="typi" style="display:none"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  document.getElementById('chatarea').innerHTML = '<div class="typi" id="typi" style="display:none"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
 }
 
 function loadChat(id) {
-  cid = id;
-  var c = chats[id];
+  cid = id; var c = chats[id];
   resetArea();
-  var ws = document.getElementById('welcomescreen');
-  if (ws) ws.remove();
-  if (c && c.msgs) {
-    for (var i = 0; i < c.msgs.length; i++) {
-      addBubble(c.msgs[i].r, c.msgs[i].t, false);
-    }
-  }
-  renderList();
-  closeSB();
+  if (c && c.msgs && c.msgs.length > 0) {
+    for (var i = 0; i < c.msgs.length; i++) { addBubble(c.msgs[i].r, c.msgs[i].t, false); }
+  } else { showWelcome(); }
+  renderList(); closeSB();
 }
 
 function newChat() {
   cid = 'c' + Date.now();
   chats[cid] = { title: 'New Mission', date: dateStr(), msgs: [] };
-  saveAll();
-  resetArea();
-  renderList();
-  closeSB();
+  saveAll(); resetArea(); showWelcome(); renderList(); closeSB();
+  showToast('NEW MISSION STARTED');
 }
 
 function openSB() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
@@ -227,7 +262,7 @@ function addBubble(role, text, save) {
   var ty = document.getElementById('typi');
   var d = document.createElement('div');
   d.className = 'msg ' + role;
-  d.innerHTML = '<div class="mlbl">' + (role==='u' ? '▸ YOU' : '▸ J.A.R.V.I.S') + '</div><div class="bub">' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+  d.innerHTML = '<div class="mlbl">' + (role==='u'?'▸ YOU':'▸ J.A.R.V.I.S') + '</div><div class="bub">' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
   area.insertBefore(d, ty);
   area.scrollTop = area.scrollHeight;
   if (save && cid) {
@@ -236,8 +271,7 @@ function addBubble(role, text, save) {
     if (chats[cid].msgs.length === 1 && role === 'u') {
       chats[cid].title = text.length > 28 ? text.substring(0,28)+'...' : text;
     }
-    saveAll();
-    renderList();
+    saveAll(); renderList();
   }
 }
 
@@ -256,15 +290,14 @@ function doSend() {
   if (!cid) {
     cid = 'c' + Date.now();
     chats[cid] = { title: 'New Mission', date: dateStr(), msgs: [] };
-    saveAll();
-    renderList();
+    saveAll(); renderList();
   }
   document.getElementById('msg').value = '';
   document.getElementById('msg').style.height = 'auto';
   addBubble('u', txt, true);
   document.getElementById('typi').style.display = 'flex';
   document.getElementById('sendbtn').disabled = true;
-  document.querySelectorAll('.wb').forEach(function(b){ b.classList.add('on'); });
+  document.querySelectorAll('.wb').forEach(function(b) { b.classList.add('on'); });
 
   fetch('/chat', {
     method: 'POST',
@@ -278,36 +311,39 @@ function doSend() {
     addBubble('b', rep, true);
     speakIt(rep);
   })
-  .catch(function(e) {
+  .catch(function() {
     document.getElementById('typi').style.display = 'none';
     addBubble('b', '⚠ Connection error. Please try again, Sir.', false);
   })
   .finally(function() {
     document.getElementById('sendbtn').disabled = false;
-    document.querySelectorAll('.wb').forEach(function(b){ b.classList.remove('on'); });
+    document.querySelectorAll('.wb').forEach(function(b) { b.classList.remove('on'); });
     document.getElementById('chatarea').scrollTop = 9999;
   });
 }
 
+// === MIC ===
 var recog = null, lstn = false;
 document.getElementById('micbtn').addEventListener('click', function() {
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert('Not supported'); return; }
+  if (!SR) { showToast('NOT SUPPORTED'); return; }
   if (lstn) { recog.stop(); return; }
   recog = new SR();
   recog.lang = 'en-US';
-  recog.onstart = function() { lstn = true; document.getElementById('micbtn').classList.add('on'); document.getElementById('micbtn').textContent = '🔴'; };
+  recog.onstart = function() { lstn = true; document.getElementById('micbtn').classList.add('on'); document.getElementById('micbtn').textContent = '🔴'; showToast('🎤 LISTENING...'); };
   recog.onresult = function(e) { document.getElementById('msg').value = e.results[0][0].transcript; };
   recog.onend = function() { lstn = false; document.getElementById('micbtn').classList.remove('on'); document.getElementById('micbtn').textContent = '🎤'; };
   recog.onerror = function() { lstn = false; document.getElementById('micbtn').classList.remove('on'); document.getElementById('micbtn').textContent = '🎤'; };
   recog.start();
 });
 
+// === VOICE OUTPUT ===
 var von = false;
 document.getElementById('vbtn').addEventListener('click', function() {
   von = !von;
   this.textContent = '▸ JARVIS VOICE: ' + (von ? 'ON' : 'OFF');
   this.classList.toggle('on', von);
+  showToast('VOICE ' + (von ? 'ACTIVATED' : 'DEACTIVATED'));
 });
 function speakIt(txt) {
   if (!von || !window.speechSynthesis) return;
@@ -319,8 +355,7 @@ function speakIt(txt) {
   window.speechSynthesis.speak(u);
 }
 
-loadAll();
-renderList();
+loadAll(); renderList();
 </script>
 </body>
 </html>
