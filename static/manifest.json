@@ -1,1 +1,23 @@
+{
+  "name": "J.A.R.V.I.S",
+  "short_name": "JARVIS",
+  "description": "Just A Rather Very Intelligent System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050300",
+  "theme_color": "#c8820a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/nolan/192/artificial-intelligence.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/nolan/512/artificial-intelligence.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
 
