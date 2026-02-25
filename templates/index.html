@@ -12,15 +12,11 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
 body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;display:flex;flex-direction:column}
-
-/* TOPBAR */
-.top{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#08121f;border-bottom:1px solid rgba(0,245,255,0.2);z-index:10}
+.top{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#08121f;border-bottom:1px solid rgba(0,245,255,0.2)}
 .mbtn{background:transparent;border:1px solid rgba(0,245,255,0.3);color:#00f5ff;font-size:1rem;cursor:pointer;padding:5px 9px;border-radius:6px}
 .logo{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#00f5ff;letter-spacing:0.2em}
 .dot{width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 7px #00ff88}
 .clk{margin-left:auto;font-size:0.6rem;color:#00f5ff;opacity:0.6}
-
-/* OVERLAY + SIDEBAR */
 .ovl{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99;display:none}
 .ovl.show{display:block}
 .sb{position:fixed;top:0;left:-270px;width:270px;height:100%;background:#06101e;border-right:1px solid rgba(0,245,255,0.2);z-index:100;transition:left 0.3s;display:flex;flex-direction:column}
@@ -28,57 +24,46 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 .sbh{padding:14px;border-bottom:1px solid rgba(0,245,255,0.1);display:flex;justify-content:space-between;align-items:center}
 .sbt{font-family:'Orbitron',monospace;font-size:0.55rem;color:#00f5ff;letter-spacing:0.15em}
 .sbx{background:transparent;border:1px solid rgba(0,245,255,0.25);color:#00f5ff;font-size:0.9rem;cursor:pointer;padding:3px 8px;border-radius:4px}
-.nwb{margin:10px;padding:10px;background:rgba(0,245,255,0.07);border:1px solid rgba(0,245,255,0.22);border-radius:10px;color:#00f5ff;font-family:'Orbitron',monospace;font-size:0.5rem;letter-spacing:0.1em;cursor:pointer}
+.nwb{margin:10px;padding:10px;background:rgba(0,245,255,0.07);border:1px solid rgba(0,245,255,0.22);border-radius:10px;color:#00f5ff;font-family:'Orbitron',monospace;font-size:0.5rem;cursor:pointer;width:calc(100% - 20px)}
 .clist{flex:1;overflow-y:auto;padding:6px}
 .citem{padding:10px 12px;border-radius:8px;margin-bottom:3px;cursor:pointer;border:1px solid transparent;display:flex;justify-content:space-between;align-items:center}
 .citem:hover,.citem.active{background:rgba(0,245,255,0.07);border-color:rgba(0,245,255,0.2)}
 .cit{font-size:0.75rem;color:#c8e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cid2{font-size:0.4rem;color:rgba(200,232,240,0.35);margin-top:2px}
-.cdl{background:transparent;border:none;color:rgba(255,80,80,0.4);cursor:pointer;font-size:0.85rem;padding:2px 5px;flex-shrink:0}
+.cdl{background:transparent;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:0.85rem;padding:2px 5px}
 .noc{font-size:0.48rem;color:rgba(200,232,240,0.25);text-align:center;padding:30px 10px;line-height:2.5}
-
-/* TABS */
 .tabs{flex-shrink:0;display:flex;background:#08121f;border-bottom:1px solid rgba(0,245,255,0.1);overflow-x:auto}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:1;min-width:52px;padding:8px 3px;background:transparent;border:none;color:rgba(200,232,240,0.35);font-family:'Orbitron',monospace;font-size:0.37rem;letter-spacing:0.05em;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab{flex:1;min-width:52px;padding:8px 3px;background:transparent;border:none;color:rgba(200,232,240,0.35);font-family:'Orbitron',monospace;font-size:0.37rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
 .tab.on{color:#00f5ff;border-bottom-color:#00f5ff}
-
-/* PAGES */
 .pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .pg.on{display:flex}
-
-/* CHAT */
 #pg-chat{padding:0}
 .welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
 .wt{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:#00f5ff;letter-spacing:0.28em;margin-bottom:4px}
 .ws{font-size:0.38rem;letter-spacing:0.25em;color:rgba(200,232,240,0.28);margin-bottom:18px}
-
-/* GLOBE */
 .gw{position:relative;width:150px;height:150px;margin:0 auto 14px;cursor:pointer}
 .gs2{position:absolute;inset:-13px;border-radius:50%;border:1px solid rgba(0,245,255,0.07);animation:sp 3s ease-in-out infinite 1.5s}
 .gs1{position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,245,255,0.12);animation:sp 3s ease-in-out infinite}
 @keyframes sp{0%,100%{opacity:0.3}50%{opacity:1}}
 .go{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,245,255,0.25);animation:rot 9s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
-.gi{position:absolute;inset:11px;border-radius:50%;background:radial-gradient(circle at 38% 33%,#ffcc00 0%,rgba(255,130,0,0.95)18%,rgba(220,60,0,0.75)42%,rgba(100,25,0,0.4)65%,transparent 88%);box-shadow:0 0 45px rgba(255,110,0,0.65),0 0 90px rgba(255,70,0,0.28);animation:gp 2.5s ease-in-out infinite;transition:all 0.4s}
+.gi{position:absolute;inset:11px;border-radius:50%;background:radial-gradient(circle at 38% 33%,#ffcc00 0%,rgba(255,130,0,0.95) 18%,rgba(220,60,0,0.75) 42%,rgba(100,25,0,0.4) 65%,transparent 88%);box-shadow:0 0 45px rgba(255,110,0,0.65),0 0 90px rgba(255,70,0,0.28);animation:gp 2.5s ease-in-out infinite}
 @keyframes gp{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.gi.lst{animation:gl 0.5s ease-in-out infinite alternate !important;background:radial-gradient(circle at 38% 33%,rgba(0,255,255,0.9)0%,rgba(0,180,220,0.8)25%,rgba(0,100,180,0.5)55%,transparent 85%) !important}
+.gi.lst{animation:gl 0.5s ease-in-out infinite alternate !important;background:radial-gradient(circle at 38% 33%,rgba(0,255,255,0.9) 0%,rgba(0,180,220,0.8) 25%,rgba(0,100,180,0.5) 55%,transparent 85%) !important}
 @keyframes gl{0%{box-shadow:0 0 45px rgba(0,245,255,0.7),0 0 90px rgba(0,200,255,0.4);transform:scale(1)}100%{box-shadow:0 0 80px rgba(0,245,255,1),0 0 150px rgba(0,200,255,0.7);transform:scale(1.07)}}
-.gi.thk{animation:gtk 0.9s ease-in-out infinite alternate !important;background:radial-gradient(circle at 38% 33%,rgba(160,0,255,0.9)0%,rgba(100,0,200,0.7)30%,rgba(60,0,150,0.4)60%,transparent 85%) !important}
+.gi.thk{animation:gtk 0.9s ease-in-out infinite alternate !important;background:radial-gradient(circle at 38% 33%,rgba(160,0,255,0.9) 0%,rgba(100,0,200,0.7) 30%,rgba(60,0,150,0.4) 60%,transparent 85%) !important}
 @keyframes gtk{0%{box-shadow:0 0 40px rgba(150,0,255,0.6)}100%{box-shadow:0 0 75px rgba(180,0,255,0.9)}}
 .gi.tlk{animation:gtkl 0.25s ease-in-out infinite alternate !important}
-@keyframes gtkl{0%{transform:scale(1.02);box-shadow:0 0 55px rgba(255,150,0,0.8),0 0 110px rgba(255,80,0,0.4)}100%{transform:scale(1.11);box-shadow:0 0 95px rgba(255,200,0,1),0 0 170px rgba(255,100,0,0.7)}}
+@keyframes gtkl{0%{transform:scale(1.02);box-shadow:0 0 55px rgba(255,150,0,0.8)}100%{transform:scale(1.11);box-shadow:0 0 95px rgba(255,200,0,1)}}
 .gr{position:absolute;border-radius:50%;border:1px solid transparent;animation:rot linear infinite}
 .gr1{inset:5px;border-top-color:rgba(0,245,255,0.5);animation-duration:3s}
 .gr2{inset:17px;border-bottom-color:rgba(0,210,255,0.4);animation-duration:2s;animation-direction:reverse}
 .gr3{inset:29px;border-left-color:rgba(0,245,255,0.35);animation-duration:4.5s}
 .gc{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#ffe000 28%,#ff8800 58%,transparent 82%);box-shadow:0 0 16px #ffcc00,0 0 32px #ff8800;animation:gcf 1.6s ease-in-out infinite}
 @keyframes gcf{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.2)}}
-
 .gstat{font-family:'Orbitron',monospace;font-size:0.58rem;color:#00f5ff;letter-spacing:0.15em;margin-top:8px;min-height:16px}
 .ghint{font-size:0.44rem;color:rgba(200,232,240,0.38);margin-top:3px}
-
-/* WAVE BARS */
 .wv{display:flex;align-items:center;justify-content:center;gap:3px;height:22px;margin:8px 0}
 .wb{width:3px;border-radius:3px;background:#00f5ff;height:3px;opacity:0.15;animation:wva 0.8s ease-in-out infinite}
 .wb.on{opacity:0.85}
@@ -86,21 +71,17 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 .wb:nth-child(4){animation-delay:.24s}.wb:nth-child(5){animation-delay:.32s}.wb:nth-child(6){animation-delay:.24s}
 .wb:nth-child(7){animation-delay:.16s}.wb:nth-child(8){animation-delay:.08s}.wb:nth-child(9){animation-delay:0s}
 @keyframes wva{0%,100%{height:3px}50%{height:18px}}
-
-/* MESSAGES */
-.msgs{padding:12px;flex:1}
+.msgs{padding:12px}
 .msg{margin-bottom:14px}
 .mlbl{font-size:0.42rem;letter-spacing:0.15em;color:#00f5ff;opacity:0.5;margin-bottom:4px}
 .msg.u .mlbl{text-align:right}
-.bub{padding:10px 14px;border-radius:12px;line-height:1.65;font-size:0.88rem;max-width:88%;font-family:'Share Tech Mono',monospace}
+.bub{padding:10px 14px;border-radius:12px;line-height:1.65;font-size:0.88rem;max-width:88%}
 .msg.u .bub{background:rgba(0,245,255,0.07);border:1px solid rgba(0,245,255,0.18);margin-left:auto;border-bottom-right-radius:3px}
-.msg.b .bub{background:rgba(6,16,30,0.92);border:1px solid rgba(0,245,255,0.1);border-bottom-left-radius:3px;color:#8dd0e8;font-family:'Share Tech Mono',monospace}
+.msg.b .bub{background:rgba(6,16,30,0.92);border:1px solid rgba(0,245,255,0.1);border-bottom-left-radius:3px;color:#8dd0e8}
 .typi{display:none;gap:4px;padding:10px 14px;width:fit-content;background:rgba(6,16,30,0.92);border:1px solid rgba(0,245,255,0.1);border-radius:12px;border-bottom-left-radius:3px;margin:0 12px 8px}
 .td{width:6px;height:6px;border-radius:50%;background:#00f5ff;animation:tda 1.2s infinite}
 .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
 @keyframes tda{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
-
-/* FEATURE PAGES */
 #pg-brief,#pg-weather,#pg-news,#pg-currency{padding:12px}
 .card{background:rgba(6,16,30,0.9);border:1px solid rgba(0,245,255,0.12);border-radius:12px;padding:14px;margin-bottom:12px}
 .ctit{font-family:'Orbitron',monospace;font-size:0.5rem;letter-spacing:0.15em;color:#00f5ff;opacity:0.6;margin-bottom:12px}
@@ -109,7 +90,7 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 .inp{flex:1;padding:9px 13px;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.22);border-radius:20px;color:#c8e8f0;font-family:'Share Tech Mono',monospace;font-size:0.8rem;outline:none}
 .inp:focus{border-color:#00f5ff}
 .inp::placeholder{color:rgba(200,232,240,0.28)}
-.cbtn{padding:9px 13px;background:rgba(0,245,255,0.09);border:1px solid rgba(0,245,255,0.25);border-radius:20px;color:#00f5ff;font-family:'Orbitron',monospace;font-size:0.46rem;cursor:pointer;letter-spacing:0.08em;white-space:nowrap}
+.cbtn{padding:9px 13px;background:rgba(0,245,255,0.09);border:1px solid rgba(0,245,255,0.25);border-radius:20px;color:#00f5ff;font-family:'Orbitron',monospace;font-size:0.46rem;cursor:pointer;white-space:nowrap}
 .ncats{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
 .ncat{padding:4px 10px;background:transparent;border:1px solid rgba(0,245,255,0.14);border-radius:12px;color:rgba(200,232,240,0.4);font-family:'Orbitron',monospace;font-size:0.4rem;cursor:pointer}
 .ncat.on{color:#00f5ff;border-color:rgba(0,245,255,0.28);background:rgba(0,245,255,0.07)}
@@ -132,20 +113,15 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 .bgreet{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:900;color:#00f5ff;margin-bottom:3px}
 .bdt{font-size:0.48rem;color:rgba(200,232,240,0.42);margin-bottom:10px}
 .bq{font-size:0.78rem;color:rgba(200,232,240,0.58);font-style:italic;border-left:2px solid #00f5ff;padding-left:10px;margin-bottom:12px;line-height:1.6}
-
-/* BOTTOM */
-.bot{flex-shrink:0;background:#06101e;border-top:1px solid rgba(0,245,255,0.18);padding:8px 12px 12px;z-index:5}
+.bot{flex-shrink:0;background:#06101e;border-top:1px solid rgba(0,245,255,0.18);padding:8px 12px 12px}
 .irow{display:flex;gap:8px;align-items:flex-end}
-#msg{flex:1;padding:11px 15px;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.22);border-radius:24px;color:#c8e8f0;font-family:'Share Tech Mono',monospace;font-size:0.85rem;outline:none;resize:none;transition:border-color 0.3s}
+#msg{flex:1;padding:11px 15px;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.22);border-radius:24px;color:#c8e8f0;font-family:'Share Tech Mono',monospace;font-size:0.85rem;outline:none;resize:none}
 #msg:focus{border-color:#00f5ff}
 #msg::placeholder{color:rgba(200,232,240,0.25)}
-#sbtn{width:44px;height:44px;border-radius:50%;background:#00f5ff;border:none;color:#060d18;font-size:1.1rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 14px rgba(0,245,255,0.45);font-weight:900}
-#sbtn:disabled{opacity:0.35;cursor:not-allowed;box-shadow:none}
+#sbtn{width:44px;height:44px;border-radius:50%;background:#00f5ff;border:none;color:#060d18;font-size:1.2rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 14px rgba(0,245,255,0.45)}
 .brow{display:flex;justify-content:center;gap:18px;margin-top:7px}
-.bbtn{background:transparent;border:none;color:rgba(200,232,240,0.35);font-family:'Orbitron',monospace;font-size:0.42rem;letter-spacing:0.1em;cursor:pointer}
+.bbtn{background:transparent;border:none;color:rgba(200,232,240,0.35);font-family:'Orbitron',monospace;font-size:0.42rem;cursor:pointer}
 .bbtn.on{color:#00f5ff}
-
-/* TOAST */
 .toast{position:fixed;bottom:75px;left:50%;transform:translateX(-50%) translateY(8px);background:#06101e;border:1px solid rgba(0,245,255,0.28);border-radius:10px;padding:7px 16px;font-family:'Orbitron',monospace;font-size:0.5rem;color:#00f5ff;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
@@ -158,39 +134,35 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 <div class="sb" id="sb">
   <div class="sbh">
     <div class="sbt">MISSION LOGS</div>
-    <button class="sbx" id="sbx">X</button>
+    <button class="sbx" onclick="closeSB()">X</button>
   </div>
-  <button class="nwb" id="nwb">+ NEW MISSION</button>
+  <button class="nwb" onclick="newChat()">+ NEW MISSION</button>
   <div class="clist" id="clist"></div>
 </div>
 
 <div class="top">
-  <button class="mbtn" id="mnb">|||</button>
+  <button class="mbtn" onclick="openSB()">|||</button>
   <div class="dot"></div>
   <div class="logo">J.A.R.V.I.S</div>
   <div class="clk" id="clk">--:--</div>
 </div>
 
 <div class="tabs">
-  <button class="tab on" data-pg="chat">CHAT</button>
-  <button class="tab" data-pg="brief">BRIEF</button>
-  <button class="tab" data-pg="weather">WEATHER</button>
-  <button class="tab" data-pg="news">NEWS</button>
-  <button class="tab" data-pg="currency">CURRENCY</button>
+  <button class="tab on" onclick="showPg('chat',this)">CHAT</button>
+  <button class="tab" onclick="showPg('brief',this)">BRIEF</button>
+  <button class="tab" onclick="showPg('weather',this)">WEATHER</button>
+  <button class="tab" onclick="showPg('news',this)">NEWS</button>
+  <button class="tab" onclick="showPg('currency',this)">CURRENCY</button>
 </div>
 
 <div class="pg on" id="pg-chat">
   <div class="welcome" id="wscreen">
     <div class="wt">J.A.R.V.I.S</div>
     <div class="ws">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
-    <div class="gw" id="gwrap">
-      <div class="gs2"></div>
-      <div class="gs1"></div>
-      <div class="go"></div>
+    <div class="gw" onclick="toggleVoice()">
+      <div class="gs2"></div><div class="gs1"></div><div class="go"></div>
       <div class="gi" id="globe"></div>
-      <div class="gr gr1"></div>
-      <div class="gr gr2"></div>
-      <div class="gr gr3"></div>
+      <div class="gr gr1"></div><div class="gr gr2"></div><div class="gr gr3"></div>
       <div class="gc"></div>
     </div>
     <div class="gstat" id="gstat">TAP GLOBE TO TALK</div>
@@ -208,7 +180,7 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 <div class="pg" id="pg-brief">
   <div class="cr">
     <input type="text" class="inp" id="bcity" placeholder="Enter your city...">
-    <button class="cbtn" id="bbtn">BRIEF ME</button>
+    <button class="cbtn" onclick="doBrief()">BRIEF ME</button>
   </div>
   <div id="bcon"><div class="ldt">ENTER YOUR CITY SIR</div></div>
 </div>
@@ -218,7 +190,7 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
     <div class="ctit">ATMOSPHERIC SCAN</div>
     <div class="cr">
       <input type="text" class="inp" id="wcity" placeholder="Enter city...">
-      <button class="cbtn" id="wbtn">SCAN</button>
+      <button class="cbtn" onclick="doWeather()">SCAN</button>
     </div>
     <div id="wres"><div class="ldt">AWAITING COORDINATES</div></div>
   </div>
@@ -228,11 +200,11 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
   <div class="card">
     <div class="ctit">GLOBAL INTEL FEED</div>
     <div class="ncats">
-      <button class="ncat on" data-cat="technology">TECH</button>
-      <button class="ncat" data-cat="business">BUSINESS</button>
-      <button class="ncat" data-cat="science">SCIENCE</button>
-      <button class="ncat" data-cat="health">HEALTH</button>
-      <button class="ncat" data-cat="sports">SPORTS</button>
+      <button class="ncat on" onclick="doNews('technology',this)">TECH</button>
+      <button class="ncat" onclick="doNews('business',this)">BUSINESS</button>
+      <button class="ncat" onclick="doNews('science',this)">SCIENCE</button>
+      <button class="ncat" onclick="doNews('health',this)">HEALTH</button>
+      <button class="ncat" onclick="doNews('sports',this)">SPORTS</button>
     </div>
     <div id="nres"><div class="ldt">SELECT CATEGORY</div></div>
   </div>
@@ -248,13 +220,13 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
         <option value="EUR">EUR</option><option value="GBP">GBP</option>
         <option value="AED">AED</option><option value="JPY">JPY</option>
       </select>
-      <span style="color:#00f5ff;font-size:1rem">to</span>
+      <span style="color:#00f5ff">to</span>
       <select id="cto">
         <option value="USD" selected>USD</option><option value="INR">INR</option>
         <option value="EUR">EUR</option><option value="GBP">GBP</option>
         <option value="AED">AED</option><option value="JPY">JPY</option>
       </select>
-      <button class="cbtn" id="cvt">CONVERT</button>
+      <button class="cbtn" onclick="doCurrency()">GO</button>
     </div>
     <div id="cres"></div>
   </div>
@@ -262,86 +234,71 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 
 <div class="bot">
   <div class="irow">
-    <textarea id="msg" rows="1" placeholder="Type here or tap globe to speak..."></textarea>
-    <button id="sbtn" onclick="manualSend()"><button id="sbtn" onclick="manualSend()"><button id="sbtn" onclick="manualSend()">&#9658;</button>#10148;</button>#9658;</button>
+    <textarea id="msg" rows="1" placeholder="Type here..."></textarea>
+    <button id="sbtn" onclick="sendMsg()">&#9658;</button>
   </div>
   <div class="brow">
-    <button class="bbtn" id="vbtn">JARVIS VOICE: OFF</button>
-    <button class="bbtn" id="clrbtn">CLEAR MEMORY</button>
+    <button class="bbtn" id="vbtn" onclick="toggleVOut()">VOICE: OFF</button>
+    <button class="bbtn" onclick="clearMem()">CLEAR</button>
   </div>
 </div>
 
 <script>
-// Service Worker
-try { if('serviceWorker' in navigator) navigator.serviceWorker.register('/static/sw.js'); } catch(e) {}
+try{if('serviceWorker'in navigator)navigator.serviceWorker.register('/static/sw.js');}catch(e){}
 
-// Clock
-function tick() {
-  var n = new Date();
-  var h = n.getHours(); var m = n.getMinutes();
-  document.getElementById('clk').textContent = (h<10?'0'+h:h) + ':' + (m<10?'0'+m:m);
+// CLOCK
+setInterval(function(){
+  var n=new Date(),h=n.getHours(),m=n.getMinutes();
+  document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
+},1000);
+
+// TOAST
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000);}
+
+// SIDEBAR
+function openSB(){document.getElementById('sb').classList.add('open');document.getElementById('ovl').classList.add('show');}
+function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('ovl').classList.remove('show');}
+document.getElementById('ovl').onclick=closeSB;
+
+// TABS
+function showPg(id,btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
 }
-setInterval(tick, 1000);
-tick();
 
-// Toast
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2000);
-}
+// CHAT
+var cid=null,chats={};
+try{var s=localStorage.getItem('jv6');if(s)chats=JSON.parse(s);}catch(e){}
+function saveC(){try{localStorage.setItem('jv6',JSON.stringify(chats));}catch(e){}}
+function gdate(){var n=new Date();return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][n.getDay()]+' '+n.getDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][n.getMonth()];}
 
-// Tabs
-var allTabs = document.querySelectorAll('.tab');
-var allPages = document.querySelectorAll('.pg');
-for (var ti = 0; ti < allTabs.length; ti++) {
-  allTabs[ti].addEventListener('click', function() {
-    var pg = this.getAttribute('data-pg');
-    for (var i = 0; i < allTabs.length; i++) allTabs[i].classList.remove('on');
-    for (var i = 0; i < allPages.length; i++) allPages[i].classList.remove('on');
-    this.classList.add('on');
-    document.getElementById('pg-' + pg).classList.add('on');
+function renderSB(){
+  var el=document.getElementById('clist');
+  var keys=Object.keys(chats).reverse();
+  if(!keys.length){el.innerHTML='<div class="noc">NO MISSIONS YET</div>';return;}
+  var h='';
+  keys.forEach(function(id){
+    var c=chats[id],a=id===cid?' active':'';
+    h+='<div class="citem'+a+'" onclick="loadChat(\''+id+'\')">'
+      +'<div style="flex:1;min-width:0"><div class="cit">'+(c.title||'Mission')+'</div><div class="cid2">'+(c.date||'')+'</div></div>'
+      +'<button class="cdl" onclick="event.stopPropagation();delChat(\''+id+'\')">X</button></div>';
   });
+  el.innerHTML=h;
 }
 
-// Sidebar
-document.getElementById('mnb').addEventListener('click', function() {
-  document.getElementById('sb').classList.add('open');
-  document.getElementById('ovl').classList.add('show');
-});
-document.getElementById('sbx').addEventListener('click', function() {
-  document.getElementById('sb').classList.remove('open');
-  document.getElementById('ovl').classList.remove('show');
-});
-document.getElementById('ovl').addEventListener('click', function() {
-  document.getElementById('sb').classList.remove('open');
-  document.getElementById('ovl').classList.remove('show');
-});
+function delChat(id){delete chats[id];saveC();if(cid===id){cid=null;resetChat();}renderSB();toast('DELETED');}
 
-// Chat storage
-var cid = null;
-var chats = {};
-try { var saved = localStorage.getItem('jv5'); if (saved) chats = JSON.parse(saved); } catch(e) {}
-
-function saveChats() { try { localStorage.setItem('jv5', JSON.stringify(chats)); } catch(e) {} }
-
-function getDate() {
-  var n = new Date();
-  var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return days[n.getDay()] + ' ' + n.getDate() + ' ' + months[n.getMonth()];
-}
-
-function renderSidebar() {
-  var el = document.getElementById('clist');
-  var keys = Object.keys(chats).reverse();
-  if (!keys.length) { el.innerHTML = '<div class="noc">NO MISSIONS YET</div>'; return; }
-  var html = '';
-  for (var i = 0; i < keys.length; i++) {
-    var id = keys[i];
-    var c = chats[id];
-    var active = id === cid ? ' active' : '';
-    html += '<div class="citem' + active + '">' +
-      '<div style="flex:1;min-width:0" data-load="' + id + '">' +
-      '<div class="cit">' + (c.tit
+function resetChat(){
+  document.getElementById('msgs').innerHTML='';
+  document.getElementById('typi').style.display='none';
+  if(!document.getElementById('wscreen')){
+    var w=document.createElement('div');w.className='welcome';w.id='wscreen';
+    w.innerHTML='<div class="wt">J.A.R.V.I.S</div><div class="ws">JUST A RATHER VERY INTELLIGENT SYSTEM</div>'
+      +'<div class="gw" onclick="toggleVoice()"><div class="gs2"></div><div class="gs1"></div><div class="go"></div>'
+      +'<div class="gi" id="globe"></div><div class="gr gr1"></div><div class="gr gr2"></div><div class="gr gr3"></div><div class="gc"></div></div>'
+      +'<div class="gstat" id="gstat">TAP GLOBE TO TALK</div><div class="ghint" id="ghint">READY SIR</div>'
+      +'<div class="wv"><div class="wb" id="wb1"></div><div class="wb" id="wb2"></div><div class="wb" id="wb3"></div>'
+      +'<div class="wb" id="wb4"></div><div class="wb" id="wb5"></div><div class="wb" id="wb6"></div>'
+      +'<div
