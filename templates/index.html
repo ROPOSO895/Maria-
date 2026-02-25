@@ -263,7 +263,7 @@ body{background:#060d18;color:#c8e8f0;font-family:'Share Tech Mono',monospace;di
 <div class="bot">
   <div class="irow">
     <textarea id="msg" rows="1" placeholder="Type here or tap globe to speak..."></textarea>
-    <button id="sbtn">&#10148;</button>
+    <button id="sbtn" onclick="manualSend()"><button id="sbtn">&#10148;</button>#10148;</button>
   </div>
   <div class="brow">
     <button class="bbtn" id="vbtn">JARVIS VOICE: OFF</button>
@@ -345,6 +345,4 @@ function renderSidebar() {
     html += '<div class="citem' + active + '">' +
       '<div style="flex:1;min-width:0" data-load="' + id + '">' +
       '<div class="cit">' + (c.title || 'Mission') + '</div>' +
-      '<div class="cid2">' + (c.date || '') + '</div>' +
-      '</div>' +
-      '<button class="cdl" data
+      '<div class="cid2">' + (c.date || '') + '<
