@@ -25,12 +25,14 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
+body{min-height:0;}
 body{
   background:var(--bg);
   color:var(--soft);
   font-family:'Jost',sans-serif;
   display:flex;flex-direction:column;
   position:relative;
+  height:100%;max-height:100vh;
 }
 
 /* AMBIENT BG */
@@ -169,19 +171,19 @@ body::after{
 .pg::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
 /* ===== CHAT PAGE ===== */
-#pg-chat{padding:0;}
+#pg-chat{padding:0;min-height:0;}
 
 /* MARIA AVATAR SECTION */
 .maria-hero{
   flex-shrink:0;
   display:flex;flex-direction:column;align-items:center;
-  padding:24px 20px 16px;
+  padding:16px 20px 10px;
   position:relative;
 }
 
 /* 2D MARIA MODEL */
 .maria-model{
-  position:relative;width:120px;height:120px;margin:0 auto 12px;
+  position:relative;width:110px;height:120px;margin:0 auto 8px;
 }
 .maria-aura{
   position:absolute;inset:-20px;border-radius:50%;
@@ -204,7 +206,7 @@ body::after{
 /* SVG FACE */
 .maria-face{
   position:relative;z-index:2;
-  width:120px;height:120px;
+  width:100px;height:100px;
 }
 .maria-face svg{width:100%;height:100%;}
 
@@ -407,7 +409,8 @@ textarea.inp{border-radius:12px;resize:none;min-height:80px;width:100%;margin-bo
   flex-shrink:0;
   background:rgba(10,0,18,0.97);
   border-top:1px solid var(--border);
-  padding:10px 14px 14px;z-index:5;
+  padding:10px 14px 20px;z-index:5;
+  position:sticky;bottom:0;
 }
 .bot::before{
   content:'';display:block;height:1px;margin-bottom:10px;
@@ -493,50 +496,51 @@ textarea.inp{border-radius:12px;resize:none;min-height:80px;width:100%;margin-bo
       <div class="maria-ring1"></div>
       <div class="maria-ring2"></div>
       <div class="maria-face idle" id="mariaFace">
-        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
-              <stop offset="0%" stop-color="#ffd4e8"/>
-              <stop offset="100%" stop-color="#f0a0c8"/>
+            <radialGradient id="skinGrad" cx="50%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#ffe0ee"/>
+              <stop offset="60%" stop-color="#ffb8d4"/>
+              <stop offset="100%" stop-color="#f090b8"/>
             </radialGradient>
-            <radialGradient id="hairGrad" cx="50%" cy="30%" r="60%">
-              <stop offset="0%" stop-color="#4a0080"/>
-              <stop offset="100%" stop-color="#1a0030"/>
+            <radialGradient id="hairGrad" cx="50%" cy="20%" r="70%">
+              <stop offset="0%" stop-color="#5500aa"/>
+              <stop offset="100%" stop-color="#1a0035"/>
             </radialGradient>
-            <radialGradient id="eyeGrad" cx="50%" cy="40%" r="60%">
-              <stop offset="0%" stop-color="#cc44ff"/>
-              <stop offset="100%" stop-color="#6600cc"/>
+            <radialGradient id="eyeGrad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#dd66ff"/>
+              <stop offset="50%" stop-color="#8800cc"/>
+              <stop offset="100%" stop-color="#440088"/>
             </radialGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            <radialGradient id="irisGrad" cx="35%" cy="30%" r="65%">
+              <stop offset="0%" stop-color="#ff88ee"/>
+              <stop offset="100%" stop-color="#220044"/>
+            </radialGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="softglow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <!-- HAIR BACK -->
-          <ellipse cx="60" cy="45" rx="38" ry="42" fill="url(#hairGrad)"/>
+
+          <!-- HAIR BACK (long) -->
+          <ellipse cx="60" cy="52" rx="36" ry="44" fill="url(#hairGrad)"/>
+          <!-- HAIR LONG SIDES -->
+          <path d="M 24 55 Q 18 80 22 105 Q 28 100 30 80 Q 32 65 34 55Z" fill="url(#hairGrad)"/>
+          <path d="M 96 55 Q 102 80 98 105 Q 92 100 90 80 Q 88 65 86 55Z" fill="url(#hairGrad)"/>
+
           <!-- NECK -->
-          <rect x="52" y="85" width="16" height="18" rx="4" fill="url(#skinGrad)"/>
+          <rect x="53" y="88" width="14" height="16" rx="5" fill="url(#skinGrad)"/>
+
           <!-- FACE -->
-          <ellipse cx="60" cy="55" rx="30" ry="33" fill="url(#skinGrad)"/>
-          <!-- HAIR FRONT TOP -->
-          <ellipse cx="60" cy="28" rx="30" ry="16" fill="url(#hairGrad)"/>
-          <!-- HAIR SIDES -->
-          <ellipse cx="32" cy="55" rx="8" ry="22" fill="url(#hairGrad)"/>
-          <ellipse cx="88" cy="55" rx="8" ry="22" fill="url(#hairGrad)"/>
-          <!-- HAIR BANG -->
-          <path d="M 32 35 Q 45 22 60 28 Q 75 22 88 35 Q 80 30 70 32 Q 60 28 50 32 Q 40 30 32 35Z" fill="url(#hairGrad)"/>
-          <!-- EYE LEFT -->
-          <g class="eye-l" style="transform-origin:44px 52px">
-            <ellipse cx="44" cy="52" rx="9" ry="10" fill="white"/>
-            <ellipse cx="44" cy="53" rx="6" ry="7" fill="url(#eyeGrad)" filter="url(#glow)"/>
-            <ellipse cx="44" cy="53" rx="3.5" ry="4" fill="#220044"/>
-            <ellipse cx="46" cy="51" rx="1.5" ry="1.5" fill="white"/>
-            <path d="M 35 47 Q 44 43 53 47" stroke="#4a0080" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- EYE RIGHT -->
-          <g class="eye-r" style="transform-origin:76px 52px">
-            <ellipse cx="76" cy="52" rx="9" ry="10" fill="white"/>
-            <ellipse cx="76" cy="53" rx="6" ry="7" fill="url(#eyeGrad)" filter="url(#glow)"/>
-            <ellipse cx="76" cy="53" rx="3.5" ry="4" fill="#220044"/>
-            <ellipse cx="78" cy="51" rx="1.5" ry="1.5" fill="white"/>
-            <path d="M 67 47 Q 76 43 85 47" stroke=
+          <ellipse cx="60" cy="58" rx="28" ry="32" fill="url(#skinGrad)"/>
+
+          <!-- HAIR TOP/BANG -->
+          <ellipse cx="60" cy="30" rx="30" ry="14" fill="url(#hairGrad)"/>
+          <path d="M 30 42 Q 38 22 55 26 Q 60 24 65 26 Q 82 22 90 42 Q 78 34 68 36 Q 60 34 52 36 Q 42 34 30 42Z" fill="url(#hairGrad)"/>
+          <!-- HAIR HIGHLIGHTS -->
+          <path d="M 42 25 Q 48 20 54 24" stroke="rgba(140,80,220,0.4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M 52 22 Q 60 18 68 22" stroke="rgba(1
