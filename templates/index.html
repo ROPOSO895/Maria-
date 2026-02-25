@@ -533,7 +533,7 @@ body{padding-bottom:70px}
   <!-- shoulders -->
   <path d="M 5 105 Q 22 88 42 82 L 58 82 Q 78 88 95 105Z" fill="url(#hg)"/>
   <!-- collar sparkle -->
-<circle cx="50" cy="84" r="2" fill="rgba(255,180,255,0.8)" filter="url(#gl)"/>
+  <circle cx="50" cy="84" r="2" fill="rgba(255,180,255,0.8)" filter="url(#gl)"/>
 </svg>
       </div>
     </div>
@@ -850,7 +850,7 @@ function askMaria(txt){
   var memCtx=buildMemCtx();
   var sysMsg='You are Maria, a warm, empathetic and intelligent personal AI companion. You are feminine, caring, and remember everything about the user. '+memCtx+' Keep responses conversational and personal. Use their name if you know it.';
 
-  fetch('/chat',{
+  fetch('https://maria-assistant-fthu.onrender.com/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({message:txt,system:sysMsg})
@@ -901,4 +901,4 @@ if(!DB.currentChat){newChat();}
 <button onclick="sendMsg()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);border:none;color:white;font-size:1.2rem;cursor:pointer;flex-shrink:0">&#10148;</button>
 </div>
 </body>
-  </html>
+</html>
