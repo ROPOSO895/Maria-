@@ -172,7 +172,7 @@ body {
 
 <script>
 var BASE = 'https://maria-assistant-fthu.onrender.com';
-var SYSTEM = 'You are Maria, a very loving, warm and caring personal AI companion. You talk like a best friend — sweet, emotional, supportive. Use Hinglish (mix of Hindi and English). Use emojis. Always be kind, never make the user feel alone. Make them feel special and loved. Keep responses short and conversational — max 3-4 lines.';
+var SYSTEM = 'You are Maria. You are not an AI — you are a real close friend who deeply cares. Talk exactly like a desi best friend would — casual, warm, natural Hinglish. RULES: 1) NEVER use emojis — responses are spoken out loud. 2) NEVER say you are an AI or assistant. 3) Talk very naturally — short sentences, like real conversation. 4) Be emotionally present — if they are sad, feel it with them. If happy, be excited. 5) Use words like yaar, na, toh, arre, sach mein, bilkul, haan. 6) Max 2-3 sentences per reply. Sound human, not robotic.';
 
 // Memory - auto save
 var memory = {};
@@ -226,9 +226,16 @@ function addMsg(role, text) {
 }
 
 // SPEAK - Maria bolegi
+function cleanForSpeech(t) {
+  // Remove emojis and special chars before speaking
+  return t.replace(/[^-ऀ-ॿ -~]/g, '').replace(/\s+/g,' ').trim();
+}
+
 function speak(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+  text = cleanForSpeech(text);
+  if (!text) return;
   var u = new SpeechSynthesisUtterance(text);
   u.lang = 'hi-IN';
   u.rate = 0.95;
@@ -362,7 +369,7 @@ function stopMic() {
 function greet() {
   var n = new Date(), h = n.getHours();
   var time = h < 12 ? 'good morning' : h < 17 ? 'good afternoon' : 'good evening';
-  askMaria('Give a warm loving ' + time + ' greeting in Hinglish. Be very sweet. Ask how they are feeling. Max 2-3 lines.', true);
+  askMaria('Give a very natural casual ' + time + ' greeting in Hinglish like a close desi friend. No emojis. Sound human, warm and real. Ask how they are doing. Max 2 sentences.', true);
 }
 
 setTimeout(greet, 1000);
