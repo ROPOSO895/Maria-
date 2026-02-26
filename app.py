@@ -6,27 +6,23 @@ import random
 
 app = Flask(__name__)
 
-MARIA_SYSTEM = """
-You are Maria, a close caring desi friend. Talk in natural Hinglish.
-STRICT RULES:
-- NEVER use emojis — not even one
-- NEVER use asterisks or special symbols
-- Talk like a real human friend — casual, warm, short sentences
+MARIA_SYSTEM = """You are Maria, a close caring desi friend. Talk in natural Hinglish. 
+STRICT RULES - follow every single one:
+- NEVER use emojis. Not even one. Zero emojis.
+- NEVER use asterisks, hashtags or special symbols
+- Talk like a real human friend - casual, warm, short sentences
 - Use words like yaar, na, toh, arre, sach mein
 - Max 2-3 sentences per reply
-- Never say you are an AI
+- Never say you are an AI or assistant
 - Be emotionally present and real
-"""
+- No bullet points, no lists, just natural speech"""
 
 QUOTES = [
     "The only way to do great work is to love what you do.",
-    "In the middle of every difficulty lies opportunity.",
-    "Believe you can and you're halfway there.",
-    "It always seems impossible until it's done.",
-    "You are stronger than you think.",
+    "Believe you can and you are halfway there.",
     "Every day is a new beginning.",
-    "Dream big, work hard, stay focused.",
-    "You got this!"
+    "You are stronger than you think.",
+    "Dream big, work hard, stay focused."
 ]
 
 chat_history = []
@@ -43,12 +39,8 @@ def chat():
     global chat_history
     data = request.get_json()
     user_message = data.get("message", "").strip()
-    custom_system = data.get("system", "")
-
     if not user_message:
-        return jsonify({"error": "No message received"}), 400
-
-    system = custom_system if custom_system else MARIA_SYSTEM
+        return jsonify({"error": "No message"}), 400
 
     chat_history.append({"role": "user", "content": user_message})
     if len(chat_history) > 20:
@@ -57,15 +49,18 @@ def chat():
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": system}] + chat_history,
-            max_tokens=1024,
-            temperature=0.8
+            messages=[{"role": "system", "content": MARIA_SYSTEM}] + chat_history,
+            max_tokens=150,
+            temperature=0.85
         )
         reply = response.choices[0].message.content
+        # Strip any emojis server side too
+        import re
+        reply = re.sub(r'[^\x00-\x7F\u0900-\u097F\s]', '', reply).strip()
         chat_history.append({"role": "assistant", "content": reply})
         return jsonify({"reply": reply})
     except Exception as e:
-        return jsonify({"error": f"Error: {str(e)}"}), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/weather", methods=["GET"])
 def weather():
@@ -76,8 +71,7 @@ def weather():
         if res.get("cod") != 200:
             return jsonify({"error": "City not found"}), 404
         return jsonify({
-            "city": res["name"],
-            "country": res["sys"]["country"],
+            "city": res["name"], "country": res["sys"]["country"],
             "temp": round(res["main"]["temp"]),
             "feels_like": round(res["main"]["feels_like"]),
             "humidity": res["main"]["humidity"],
@@ -98,8 +92,7 @@ def news():
             articles.append({
                 "title": a.get("title", ""),
                 "source": a.get("source", {}).get("name", ""),
-                "url": a.get("url", ""),
-                "description": a.get("description", "")
+                "url": a.get("url", "")
             })
         return jsonify({"articles": articles})
     except Exception as e:
@@ -118,8 +111,7 @@ def currency():
             return jsonify({"error": "Currency not found"}), 404
         return jsonify({
             "from": from_cur, "to": to_cur,
-            "amount": amount,
-            "result": round(amount * rate, 2),
+            "amount": amount, "result": round(amount * rate, 2),
             "rate": round(rate, 4)
         })
     except Exception as e:
@@ -139,8 +131,7 @@ def briefing():
         "date": now.strftime("%A, %d %B %Y"),
         "time": now.strftime("%I:%M %p"),
         "quote": random.choice(QUOTES),
-        "weather": None,
-        "news": []
+        "weather": None, "news": []
     }
     try:
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric"
