@@ -177,3 +177,33 @@ def health():
 
 if __name__ == "__main__":
     app.run(debug=False)
+
+
+@app.route("/search", methods=["GET"])
+def search():
+    import urllib.parse
+    query = request.args.get("q", "")
+    if not query:
+        return jsonify({"error": "No query"}), 400
+    try:
+        url = "https://api.duckduckgo.com/?q=" + urllib.parse.quote(query) + "&format=json&no_html=1&skip_disambig=1"
+        res = requests.get(url, timeout=5).json()
+        results = []
+        if res.get("AbstractText"):
+            results.append({
+                "title": res.get("Heading",""),
+                "snippet": res.get("AbstractText",""),
+                "url": res.get("AbstractURL",""),
+                "image": res.get("Image","")
+            })
+        for t in res.get("RelatedTopics", [])[:3]:
+            if isinstance(t, dict) and t.get("Text") and t.get("FirstURL"):
+                results.append({
+                    "title": t.get("Text","")[:60],
+                    "snippet": t.get("Text",""),
+                    "url": t.get("FirstURL",""),
+                    "image": t.get("Icon",{}).get("URL","")
+                })
+        return jsonify({"results": results, "query": query})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
