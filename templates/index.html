@@ -7,345 +7,244 @@
 <title>MARIA</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0015;color:#eee;font-family:'Poppins',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d0015;
+  color: #eee;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
 /* TOP */
-.top{background:#1a0030;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,110,180,0.3);flex-shrink:0}
-.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:white;flex-shrink:0;box-shadow:0 0 12px rgba(255,110,180,0.4)}
-.name{font-weight:600;font-size:1rem;color:#ff6eb4}
-.status{font-size:0.7rem;color:rgba(255,255,255,0.45)}
-.clk{margin-left:auto;font-size:0.75rem;color:rgba(255,255,255,0.35)}
+.top {
+  background: #1a0030;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,110,180,0.3);
+  flex-shrink: 0;
+}
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6eb4, #b44fff);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.name { font-weight: 600; font-size: 1rem; color: #ff6eb4; }
+.status { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+.clk { margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
 
-/* TABS */
-.tabs{display:flex;background:#120022;border-bottom:1px solid rgba(255,110,180,0.15);flex-shrink:0;overflow-x:auto}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:1;min-width:60px;padding:9px 4px;background:transparent;border:none;color:rgba(255,255,255,0.35);font-family:'Poppins',sans-serif;font-size:0.58rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s}
-.tab.on{color:#ff6eb4;border-bottom-color:#ff6eb4}
+/* MESSAGES */
+.msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: rgba(255,110,180,0.3); border-radius: 3px; }
 
-/* PAGES */
-.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
-.pg.on{display:flex}
-.pg::-webkit-scrollbar{width:3px}
-.pg::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
+.msg { display: flex; flex-direction: column; max-width: 80%; }
+.msg.u { align-self: flex-end; align-items: flex-end; }
+.msg.b { align-self: flex-start; align-items: flex-start; }
 
-/* CHAT */
-.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msgs::-webkit-scrollbar{width:3px}
-.msgs::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
-.msg{display:flex;flex-direction:column;max-width:82%}
-.msg.u{align-self:flex-end;align-items:flex-end}
-.msg.b{align-self:flex-start;align-items:flex-start}
-.lbl{font-size:0.6rem;color:rgba(255,255,255,0.28);margin-bottom:4px}
-.bub{padding:11px 15px;border-radius:18px;font-size:0.9rem;line-height:1.65;font-weight:300}
-.msg.u .bub{background:linear-gradient(135deg,rgba(255,110,180,0.22),rgba(180,79,255,0.18));border:1px solid rgba(255,110,180,0.28);border-bottom-right-radius:4px}
-.msg.b .bub{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-bottom-left-radius:4px;color:rgba(255,255,255,0.88)}
-.typing{display:none;align-self:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:18px;border-bottom-left-radius:4px;padding:12px 16px;gap:5px}
-.typing.show{display:flex}
-.dot{width:7px;height:7px;border-radius:50%;background:#b44fff;animation:bounce 1.2s infinite}
-.dot:nth-child(2){animation-delay:0.2s}
-.dot:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
+.lbl { font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+.bub {
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.msg.u .bub {
+  background: linear-gradient(135deg, rgba(255,110,180,0.25), rgba(180,79,255,0.2));
+  border: 1px solid rgba(255,110,180,0.3);
+  border-bottom-right-radius: 4px;
+}
+.msg.b .bub {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-bottom-left-radius: 4px;
+  color: rgba(255,255,255,0.85);
+}
 
-/* BOT INPUT */
-.bot{background:#1a0030;border-top:1px solid rgba(255,110,180,0.2);padding:10px 12px 14px;display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
-#msg{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,110,180,0.3);border-radius:22px;padding:10px 16px;color:white;font-family:'Poppins',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:100px}
-#msg:focus{border-color:#ff6eb4}
-#msg::placeholder{color:rgba(255,255,255,0.25)}
-#sbtn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);border:none;color:white;font-size:1.1rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 15px rgba(255,110,180,0.4)}
-#sbtn:disabled{opacity:0.4;cursor:not-allowed}
+/* TYPING */
+.typing {
+  display: none;
+  align-self: flex-start;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  padding: 12px 16px;
+  gap: 5px;
+}
+.typing.show { display: flex; }
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #b44fff;
+  animation: bounce 1.2s infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
 
-/* CARDS */
-.pg-body{padding:14px;display:flex;flex-direction:column;gap:12px}
-.card{background:rgba(26,0,48,0.8);border:1px solid rgba(255,110,180,0.15);border-radius:16px;padding:14px}
-.card-title{font-size:0.72rem;font-weight:600;color:#ff6eb4;letter-spacing:0.08em;margin-bottom:12px}
-.inp{width:100%;padding:9px 13px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,110,180,0.25);border-radius:12px;color:white;font-family:'Poppins',sans-serif;font-size:0.82rem;outline:none;margin-bottom:8px}
-.inp::placeholder{color:rgba(255,255,255,0.25)}
-.inp:focus{border-color:#ff6eb4}
-.row{display:flex;gap:8px}
-.btn{padding:9px 16px;background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(180,79,255,0.2));border:1px solid rgba(255,110,180,0.3);border-radius:12px;color:#ff6eb4;font-family:'Poppins',sans-serif;font-size:0.72rem;cursor:pointer;transition:all 0.2s}
-.btn:active{background:linear-gradient(135deg,rgba(255,110,180,0.35),rgba(180,79,255,0.35))}
-.btn-full{width:100%}
-.ldt{font-size:0.75rem;color:rgba(255,255,255,0.25);text-align:center;padding:16px}
+/* INPUT */
+.bot {
+  background: #1a0030;
+  border-top: 1px solid rgba(255,110,180,0.2);
+  padding: 10px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+#msg {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,110,180,0.3);
+  border-radius: 22px;
+  padding: 10px 16px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  resize: none;
+  max-height: 100px;
+}
+#msg:focus { border-color: #ff6eb4; }
+#msg::placeholder { color: rgba(255,255,255,0.25); }
+#sbtn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6eb4, #b44fff);
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(255,110,180,0.4);
+}
+#sbtn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* MEMORY */
-.mem-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px}
-.mem-k{font-size:0.72rem;color:#b44fff;font-weight:500;margin-right:8px}
-.mem-v{font-size:0.78rem;color:rgba(255,255,255,0.7);flex:1}
-.mem-del{background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:0.85rem}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.chip{padding:4px 10px;border-radius:10px;background:rgba(180,79,255,0.1);border:1px solid rgba(180,79,255,0.25);color:rgba(255,255,255,0.5);font-size:0.62rem;cursor:pointer}
-.chip:active{background:rgba(180,79,255,0.25);color:#ff6eb4}
-
-/* MOOD */
-.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.mood-opt{padding:12px 8px;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,110,180,0.1);border-radius:14px;cursor:pointer;transition:all 0.2s}
-.mood-opt.sel{background:linear-gradient(135deg,rgba(255,110,180,0.18),rgba(180,79,255,0.18));border-color:#ff6eb4}
-.mood-emoji{font-size:1.5rem;display:block;margin-bottom:3px}
-.mood-lbl{font-size:0.55rem;color:rgba(255,255,255,0.5)}
-.mood-history-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,110,180,0.07);font-size:0.78rem}
-.mood-history-item:last-child{border-bottom:none}
-.mdate{font-size:0.55rem;color:rgba(255,255,255,0.25);margin-left:auto}
-
-/* JOURNAL */
-.journal-item{padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,110,180,0.08);border-radius:12px;margin-bottom:8px}
-.j-date{font-size:0.55rem;color:rgba(255,255,255,0.25);margin-bottom:4px}
-.j-mood{font-size:0.8rem;margin-bottom:4px}
-.j-text{font-size:0.8rem;color:rgba(255,255,255,0.75);line-height:1.6;font-weight:300}
-textarea.inp{resize:none;min-height:80px}
-
-/* BRIEF */
-.brief-hero{text-align:center;padding:16px 0 8px}
-.brief-greeting{font-size:1.2rem;font-weight:600;color:#ff6eb4;margin-bottom:4px}
-.brief-date{font-size:0.65rem;color:rgba(255,255,255,0.35)}
-.brief-quote{font-size:0.78rem;color:rgba(255,255,255,0.5);font-style:italic;border-left:2px solid #b44fff;padding-left:10px;margin:12px 0;line-height:1.6}
-.weather-box{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.04);border-radius:12px;margin-bottom:8px}
-.w-temp{font-size:1.4rem;font-weight:600;color:#ffaa44}
-.w-desc{font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:2px}
-.news-item{padding:8px 0;border-bottom:1px solid rgba(255,110,180,0.07)}
-.news-item:last-child{border-bottom:none}
-.news-title{font-size:0.78rem;color:rgba(255,255,255,0.8);line-height:1.4}
-.news-src{font-size:0.55rem;color:rgba(255,255,255,0.3);margin-top:2px}
+/* WELCOME */
+.welcome {
+  text-align: center;
+  padding: 30px 20px;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.85rem;
+  line-height: 2;
+}
+.welcome .big { font-size: 3rem; margin-bottom: 8px; }
+.welcome .nm { font-size: 1.5rem; font-weight: 600; color: #ff6eb4; margin-bottom: 4px; }
 </style>
 </head>
 <body>
 
 <div class="top">
-  <div class="avatar">M</div>
+  <div class="avatar">🌸</div>
   <div>
     <div class="name">Maria</div>
-    <div class="status" id="statusTxt">Online</div>
+    <div class="status" id="statusTxt">● Online</div>
   </div>
   <div class="clk" id="clk">--:--</div>
 </div>
 
-<div class="tabs">
-  <button class="tab on" onclick="showPg('chat',this)">Chat</button>
-  <button class="tab" onclick="showPg('brief',this)">Briefing</button>
-  <button class="tab" onclick="showPg('memory',this)">Memory</button>
-  <button class="tab" onclick="showPg('mood',this)">Mood</button>
-  <button class="tab" onclick="showPg('journal',this)">Journal</button>
-</div>
-
-<!-- CHAT -->
-<div class="pg on" id="pg-chat" style="flex-direction:column">
-  <div class="msgs" id="msgs"></div>
-  <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bot">
-    <textarea id="msg" rows="1" placeholder="Maria se baat karo..."></textarea>
-    <button id="sbtn" onclick="send()">&#9658;</button>
+<div class="msgs" id="msgs">
+  <div class="welcome" id="welcome">
+    <div class="big">🌸</div>
+    <div class="nm">Hi, I'm Maria!</div>
+    <div>Your personal AI companion.<br>Ask me anything — I'm here for you 💜</div>
   </div>
 </div>
 
-<!-- BRIEFING -->
-<div class="pg" id="pg-brief">
-  <div class="pg-body">
-    <div class="card">
-      <div class="brief-hero">
-        <div class="brief-greeting" id="bGreet">Good Morning</div>
-        <div class="brief-date" id="bDate"></div>
-      </div>
-      <div class="brief-quote" id="bQuote">Loading...</div>
-      <div class="row" style="margin-bottom:10px">
-        <input type="text" class="inp" id="bCity" placeholder="Your city..." style="margin:0;flex:1">
-        <button class="btn" onclick="loadBrief()">Get Briefing</button>
-      </div>
-      <div id="bWeather"><div class="ldt">Enter city for weather</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">TOP NEWS</div>
-      <div id="bNews"><div class="ldt">Click Get Briefing</div></div>
-    </div>
-  </div>
+<div class="typing" id="typing">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
 </div>
 
-<!-- MEMORY -->
-<div class="pg" id="pg-memory">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">WHAT MARIA REMEMBERS</div>
-      <div id="memList"><div class="ldt">Nothing saved yet</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">ADD MEMORY</div>
-      <div class="chips">
-        <span class="chip" onclick="fillMem('My name')">My name</span>
-        <span class="chip" onclick="fillMem('My age')">My age</span>
-        <span class="chip" onclick="fillMem('My city')">My city</span>
-        <span class="chip" onclick="fillMem('My hobby')">My hobby</span>
-        <span class="chip" onclick="fillMem('My job')">My job</span>
-        <span class="chip" onclick="fillMem('Best friend')">Best friend</span>
-      </div>
-      <input type="text" class="inp" id="memK" placeholder="Topic (e.g. My name)">
-      <input type="text" class="inp" id="memV" placeholder="Value (e.g. Rohan)">
-      <button class="btn btn-full" onclick="addMem()">Save to Memory</button>
-    </div>
-  </div>
-</div>
-
-<!-- MOOD -->
-<div class="pg" id="pg-mood">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">HOW ARE YOU FEELING?</div>
-      <div class="mood-grid">
-        <div class="mood-opt" onclick="logMood('Happy',this)"><span class="mood-emoji">😊</span><span class="mood-lbl">Happy</span></div>
-        <div class="mood-opt" onclick="logMood('Sad',this)"><span class="mood-emoji">😔</span><span class="mood-lbl">Sad</span></div>
-        <div class="mood-opt" onclick="logMood('Stressed',this)"><span class="mood-emoji">😤</span><span class="mood-lbl">Stressed</span></div>
-        <div class="mood-opt" onclick="logMood('Tired',this)"><span class="mood-emoji">😴</span><span class="mood-lbl">Tired</span></div>
-        <div class="mood-opt" onclick="logMood('Motivated',this)"><span class="mood-emoji">🔥</span><span class="mood-lbl">Motivated</span></div>
-        <div class="mood-opt" onclick="logMood('Anxious',this)"><span class="mood-emoji">😰</span><span class="mood-lbl">Anxious</span></div>
-        <div class="mood-opt" onclick="logMood('Loved',this)"><span class="mood-emoji">🥰</span><span class="mood-lbl">Loved</span></div>
-        <div class="mood-opt" onclick="logMood('Excited',this)"><span class="mood-emoji">😁</span><span class="mood-lbl">Excited</span></div>
-        <div class="mood-opt" onclick="logMood('Meh',this)"><span class="mood-emoji">😐</span><span class="mood-lbl">Meh</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">MOOD HISTORY</div>
-      <div id="moodHistory"><div class="ldt">No mood logged yet</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- JOURNAL -->
-<div class="pg" id="pg-journal">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">TODAY'S ENTRY</div>
-      <select class="inp" id="jMood">
-        <option value="">Mood?</option>
-        <option>😊 Happy</option><option>😔 Sad</option>
-        <option>😤 Stressed</option><option>😴 Tired</option>
-        <option>🔥 Motivated</option><option>🥰 Loved</option>
-      </select>
-      <textarea class="inp" id="jText" placeholder="Apni baat likho... Maria sun rahi hai" rows="4"></textarea>
-      <button class="btn btn-full" onclick="saveJournal()">Save Entry</button>
-    </div>
-    <div class="card">
-      <div class="card-title">PAST ENTRIES</div>
-      <div id="journalList"><div class="ldt">Koi entry nahi abhi tak</div></div>
-    </div>
-  </div>
+<div class="bot">
+  <textarea id="msg" rows="1" placeholder="Talk to Maria..."></textarea>
+  <button id="sbtn" onclick="send()">➤</button>
 </div>
 
 <script>
-var BASE = 'https://maria-assistant-fthu.onrender.com';
+// Clock
+setInterval(function() {
+  var n = new Date(), h = n.getHours(), m = n.getMinutes();
+  document.getElementById('clk').textContent = (h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
+}, 1000);
 
-// CLOCK
-setInterval(function(){
-  var n=new Date(),h=n.getHours(),m=n.getMinutes();
-  document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
-},1000);
+// Auto resize textarea
+document.getElementById('msg').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
 
-// TABS
-function showPg(id,btn){
-  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('pg-'+id).classList.add('on');
-  btn.classList.add('on');
-  if(id==='brief') initBrief();
-  if(id==='memory') renderMem();
-  if(id==='mood') renderMoodHistory();
-  if(id==='journal') renderJournal();
-}
+// Enter to send
+document.getElementById('msg').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
 
-// DB
-var DB={memory:{},moods:[],journal:[]};
-try{var s=localStorage.getItem('maria_db');if(s)DB=JSON.parse(s);}catch(e){}
-function saveDB(){try{localStorage.setItem('maria_db',JSON.stringify(DB));}catch(e){}}
-function gdt(){var n=new Date();return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][n.getDay()]+' '+n.getDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][n.getMonth()]+' '+(n.getHours()<10?'0'+n.getHours():n.getHours())+':'+(n.getMinutes()<10?'0'+n.getMinutes():n.getMinutes());}
+function addMsg(role, text) {
+  var w = document.getElementById('welcome');
+  if (w) w.remove();
 
-// MEMORY
-function renderMem(){
-  var el=document.getElementById('memList');
-  var keys=Object.keys(DB.memory);
-  if(!keys.length){el.innerHTML='<div class="ldt">Kuch save nahi hai abhi</div>';return;}
-  el.innerHTML=keys.map(function(k){return '<div class="mem-item"><span class="mem-k">'+k+'</span><span class="mem-v">'+DB.memory[k]+'</span><button class="mem-del" onclick="delMem(\''+k+'\')">x</button></div>';}).join('');
-}
-function addMem(){
-  var k=document.getElementById('memK').value.trim();
-  var v=document.getElementById('memV').value.trim();
-  if(!k||!v)return;
-  DB.memory[k]=v;saveDB();renderMem();
-  document.getElementById('memK').value='';
-  document.getElementById('memV').value='';
-}
-function delMem(k){delete DB.memory[k];saveDB();renderMem();}
-function fillMem(k){document.getElementById('memK').value=k;document.getElementById('memV').focus();}
-function autoDetect(txt){
-  var n=txt.match(/my name is ([a-zA-Z]+)/i)||txt.match(/mera naam ([a-zA-Z]+)/i)||txt.match(/call me ([a-zA-Z]+)/i);
-  if(n&&n[1]&&n[1].length>1){DB.memory['My name']=n[1].charAt(0).toUpperCase()+n[1].slice(1);saveDB();}
-  var c=txt.match(/i (?:live|am from|stay) in ([a-zA-Z ]+)/i)||txt.match(/main ([a-zA-Z]+) mein rehta/i);
-  if(c&&c[1]){DB.memory['My city']=c[1].trim();saveDB();}
-  var a=txt.match(/i am (\d+) years old/i)||txt.match(/meri umar (\d+)/i);
-  if(a&&a[1]){DB.memory['My age']=a[1];saveDB();}
-}
-function memCtx(){
-  var keys=Object.keys(DB.memory);
-  if(!keys.length)return '';
-  return ' [Know about user: '+keys.map(function(k){return k+'='+DB.memory[k];}).join(', ')+']';
+  var msgs = document.getElementById('msgs');
+  var d = document.createElement('div');
+  d.className = 'msg ' + role;
+  var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  d.innerHTML = '<div class="lbl">' + (role==='u'?'You':'Maria') + '</div><div class="bub">' + safe + '</div>';
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
 }
 
-// MOOD
-function logMood(mood,btn){
-  document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');});
-  btn.classList.add('sel');
-  DB.moods.unshift({mood:mood,date:gdt()});
-  if(DB.moods.length>30)DB.moods=DB.moods.slice(0,30);
-  saveDB();renderMoodHistory();
-  // Tell Maria
-  addMsg('u','My mood: '+mood);
-  askMaria('User mood is '+mood+'. Respond warmly in Hinglish, 1-2 sentences.',false);
-}
-function renderMoodHistory(){
-  var el=document.getElementById('moodHistory');
-  if(!DB.moods.length){el.innerHTML='<div class="ldt">Koi mood nahi save hua</div>';return;}
-  el.innerHTML=DB.moods.slice(0,10).map(function(m){return '<div class="mood-history-item"><span style="font-size:1.1rem">'+moodEmoji(m.mood)+'</span><span>'+m.mood+'</span><span class="mdate">'+m.date+'</span></div>';}).join('');
-}
-function moodEmoji(m){var e={'Happy':'😊','Sad':'😔','Stressed':'😤','Tired':'😴','Motivated':'🔥','Anxious':'😰','Loved':'🥰','Excited':'😁','Meh':'😐'};return e[m]||'😊';}
+function send() {
+  var inp = document.getElementById('msg');
+  var txt = inp.value.trim();
+  if (!txt) return;
 
-// JOURNAL
-function saveJournal(){
-  var mood=document.getElementById('jMood').value;
-  var text=document.getElementById('jText').value.trim();
-  if(!text)return;
-  DB.journal.unshift({mood:mood,text:text,date:gdt()});
-  if(DB.journal.length>50)DB.journal=DB.journal.slice(0,50);
-  saveDB();renderJournal();
-  document.getElementById('jText').value='';
-  document.getElementById('jMood').value='';
-}
-function renderJournal(){
-  var el=document.getElementById('journalList');
-  if(!DB.journal.length){el.innerHTML='<div class="ldt">Koi entry nahi</div>';return;}
-  el.innerHTML=DB.journal.map(function(j){return '<div class="journal-item"><div class="j-date">'+j.date+'</div>'+(j.mood?'<div class="j-mood">'+j.mood+'</div>':'')+'<div class="j-text">'+j.text+'</div></div>';}).join('');
-}
+  inp.value = '';
+  inp.style.height = 'auto';
+  addMsg('u', txt);
 
-// BRIEFING
-var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Himmat karo, sab theek hoga.','Kal se behtar aaj bano.'];
-function initBrief(){
-  var n=new Date(),h=n.getHours();
-  var g=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
-  document.getElementById('bGreet').textContent=g;
-  document.getElementById('bDate').textContent=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][n.getDay()]+', '+n.getDate()+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][n.getMonth()]+' '+n.getFullYear();
-  document.getElementById('bQuote').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
-  if(DB.memory['My city'])document.getElementById('bCity').value=DB.memory['My city'];
+  var btn = document.getElementById('sbtn');
+  btn.disabled = true;
+  document.getElementById('statusTxt').textContent = '● Thinking...';
+  document.getElementById('typing').classList.add('show');
+  document.getElementById('msgs').scrollTop = 99999;
+
+  fetch('https://maria-assistant-fthu.onrender.com/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: txt })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    document.getElementById('typing').classList.remove('show');
+    btn.disabled = false;
+    document.getElementById('statusTxt').textContent = '● Online';
+    addMsg('b', d.reply || 'Sorry, something went wrong.');
+  })
+  .catch(function() {
+    document.getElementById('typing').classList.remove('show');
+    btn.disabled = false;
+    document.getElementById('statusTxt').textContent = '● Online';
+    addMsg('b', 'Connection error. Please try again 💜');
+  });
 }
-function loadBrief(){
-  var city=document.getElementById('bCity').value.trim()||'Mumbai';
-  document.getElementById('bWeather').innerHTML='<div class="ldt">Loading...</div>';
-  document.getElementById('bNews').innerHTML='<div class="ldt">Loading...</div>';
-  fetch(BASE+'/weather?city='+encodeURIComponent(city))
-  .then(function(r){return r.json();})
-  .then(function(d){
-    if(d.error){document.getElementById('bWeather').innerHTML='<div class="ldt">'+d.error+'</div>';return;}
-    document.getElementById('bWeather').innerHTML='<div class="weather-box"><div style="font-size:2rem">'+wIcon(d.icon)+'</div><div><div class="w-temp">'+d.temp+'C</div><div class="w-desc">'+d.description+' | Feels '+d.feels_like+'C | Humidity '+d.humidity+'%</div><div class="w-desc">'+d.city+', '+d.country+'</div></div></div>';
-  }).catch(function(){document.getElementById('bWeather').innerHTML='<div class="ldt">Weather unavailable</div>';});
-  fetch(BASE+'/news?category=general')
-  .then(function(r){return r.json();})
-  .then(function(d){
-    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';return;}
-    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">'+a.source+'</div></div>';}).join('');
-  }).catch(function(){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';});
-}
-function wIcon(i){var m={'01d':'☀️','01n':'🌙','02d':'⛅','03d':'☁️','04d':'☁️
+</script>
+</body>
+</html>
