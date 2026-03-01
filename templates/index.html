@@ -3,58 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0f">
-<title>P.E.P.P.E.R</title>
+<meta name="theme-color" content="#0d0015">
+<title>PEPPER</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0a0a0f; color: #eee; font-family: 'Poppins', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-.top { background: #12121a; padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,200,100,0.2); flex-shrink: 0; }
-.avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #ff9d00, #ff4500); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: white; flex-shrink: 0; box-shadow: 0 0 14px rgba(255,150,0,0.5); letter-spacing:0.05em; }
-.name { font-weight: 600; font-size: 0.95rem; color: #ffaa00; letter-spacing: 0.05em; }
-.sub { font-size: 0.6rem; color: rgba(255,255,255,0.35); }
-.clk { margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.3); }
-.msgs { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 80px; display: flex; flex-direction: column; gap: 12px; }
+body { background: #0d0015; color: #eee; font-family: 'Poppins', sans-serif; height: 100vh; display: flex; flex-direction: column; }
+.top { background: #1a0030; padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,110,180,0.3); flex-shrink: 0; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #ff6eb4, #b44fff); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: white; flex-shrink: 0; box-shadow: 0 0 12px rgba(255,110,180,0.4); }
+.name { font-weight: 600; font-size: 1rem; color: #ff6eb4; }
+.status { font-size: 0.7rem; color: rgba(255,255,255,0.45); }
+.clk { margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+.msgs { overflow-y: auto; padding: 16px; padding-bottom: 90px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .msgs::-webkit-scrollbar { width: 3px; }
-.msgs::-webkit-scrollbar-thumb { background: rgba(255,150,0,0.3); border-radius: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: rgba(255,110,180,0.3); border-radius: 3px; }
 .msg { display: flex; flex-direction: column; max-width: 82%; }
 .msg.u { align-self: flex-end; align-items: flex-end; }
 .msg.b { align-self: flex-start; align-items: flex-start; }
-.lbl { font-size: 0.58rem; color: rgba(255,255,255,0.28); margin-bottom: 4px; letter-spacing: 0.05em; }
+.lbl { font-size: 0.6rem; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
 .bub { padding: 11px 15px; border-radius: 18px; font-size: 0.9rem; line-height: 1.65; font-weight: 300; }
-.msg.u .bub { background: linear-gradient(135deg, rgba(255,150,0,0.18), rgba(255,70,0,0.12)); border: 1px solid rgba(255,150,0,0.25); border-bottom-right-radius: 4px; }
-.msg.b .bub { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-bottom-left-radius: 4px; color: rgba(255,255,255,0.88); }
-.typing { display: none; align-self: flex-start; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; border-bottom-left-radius: 4px; padding: 12px 16px; gap: 5px; }
+.msg.u .bub { background: linear-gradient(135deg, rgba(255,110,180,0.22), rgba(180,79,255,0.18)); border: 1px solid rgba(255,110,180,0.28); border-bottom-right-radius: 4px; }
+.msg.b .bub { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-bottom-left-radius: 4px; color: rgba(255,255,255,0.88); }
+.typing { display: none; align-self: flex-start; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; border-bottom-left-radius: 4px; padding: 12px 16px; gap: 5px; margin: 0 16px 90px; }
 .typing.show { display: flex; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: #ffaa00; animation: bounce 1.2s infinite; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #b44fff; animation: bounce 1.2s infinite; }
 .dot:nth-child(2) { animation-delay: 0.2s; }
 .dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce { 0%,100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-5px); opacity: 1; } }
-.bot { background: #12121a; border-top: 1px solid rgba(255,200,100,0.15); padding: 10px 12px 14px; display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0; }
-#msg { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,150,0,0.25); border-radius: 22px; padding: 10px 16px; color: white; font-family: 'Poppins', sans-serif; font-size: 0.9rem; outline: none; resize: none; max-height: 100px; }
-#msg:focus { border-color: #ffaa00; }
-#msg::placeholder { color: rgba(255,255,255,0.2); }
-#sbtn { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #ff9d00, #ff4500); border: none; color: white; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 15px rgba(255,150,0,0.4); }
+.bot { position: fixed; bottom: 0; left: 0; right: 0; background: #1a0030; border-top: 1px solid rgba(255,110,180,0.2); padding: 10px 12px 16px; display: flex; gap: 8px; align-items: flex-end; z-index: 999; }
+#msg { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,110,180,0.3); border-radius: 22px; padding: 10px 16px; color: white; font-family: 'Poppins', sans-serif; font-size: 0.9rem; outline: none; resize: none; max-height: 100px; }
+#msg:focus { border-color: #ff6eb4; }
+#msg::placeholder { color: rgba(255,255,255,0.25); }
+#sbtn { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #ff6eb4, #b44fff); border: none; color: white; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 15px rgba(255,110,180,0.4); }
 #sbtn:disabled { opacity: 0.4; cursor: not-allowed; }
 </style>
 </head>
 <body>
+
 <div class="top">
   <div class="avatar">P.E.P</div>
   <div>
     <div class="name">P.E.P.P.E.R</div>
-    <div class="sub" id="statusTxt">Personal Electronic Planner & Perpetual Emergency Responder</div>
+    <div class="status" id="statusTxt">Online</div>
   </div>
   <div class="clk" id="clk">--:--</div>
 </div>
+
 <div class="msgs" id="msgs"></div>
-<div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="typing" id="typing">
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+
 <div class="bot">
   <textarea id="msg" rows="1" placeholder="Talk to PEPPER..."></textarea>
   <button id="sbtn" onclick="send()">&#9658;</button>
 </div>
+
 <script>
-var BASE = 'https://YOUR_RAILWAY_URL';
+var BASE = 'https://maria-assistant-fthu.onrender.com';
 
 setInterval(function() {
   var n = new Date(), h = n.getHours(), m = n.getMinutes();
@@ -74,7 +80,7 @@ function addMsg(role, text) {
   var d = document.createElement('div');
   d.className = 'msg ' + role;
   var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  d.innerHTML = '<div class="lbl">'+(role==='u'?'YOU':'P.E.P.P.E.R')+'</div><div class="bub">'+safe+'</div>';
+  d.innerHTML = '<div class="lbl">'+(role==='u'?'YOU':'PEPPER')+'</div><div class="bub">'+safe+'</div>';
   msgs.appendChild(d);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -87,8 +93,10 @@ function send() {
   addMsg('u', txt);
   var btn = document.getElementById('sbtn');
   btn.disabled = true;
-  document.getElementById('statusTxt').textContent = 'Processing...';
+  document.getElementById('statusTxt').textContent = 'Thinking...';
   document.getElementById('typing').classList.add('show');
+  document.getElementById('msgs').scrollTop = 99999;
+
   fetch(BASE + '/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -98,14 +106,14 @@ function send() {
   .then(function(d) {
     document.getElementById('typing').classList.remove('show');
     btn.disabled = false;
-    document.getElementById('statusTxt').textContent = 'Personal Electronic Planner & Perpetual Emergency Responder';
-    addMsg('b', d.reply || 'Something went wrong, try again');
+    document.getElementById('statusTxt').textContent = 'Online';
+    addMsg('b', d.reply || 'Kuch toh hua, dobara try karo');
   })
   .catch(function() {
     document.getElementById('typing').classList.remove('show');
     btn.disabled = false;
-    document.getElementById('statusTxt').textContent = 'Personal Electronic Planner & Perpetual Emergency Responder';
-    addMsg('b', 'Connection error, try again');
+    document.getElementById('statusTxt').textContent = 'Online';
+    addMsg('b', 'Connection error, dobara try karo');
   });
 }
 
@@ -115,7 +123,7 @@ setTimeout(function() {
   fetch(BASE + '/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Give a short warm ' + t + ' greeting. No emojis. Max 2 sentences. Introduce yourself as PEPPER.' })
+    body: JSON.stringify({ message: 'Give a short warm ' + t + ' greeting in Hinglish. No emojis. Max 2 sentences. You are PEPPER.' })
   })
   .then(function(r){return r.json();})
   .then(function(d){ if(d.reply) addMsg('b', d.reply); })
