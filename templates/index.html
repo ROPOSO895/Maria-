@@ -223,13 +223,17 @@ function send(){
 
 // ── IMAGE GENERATION (Pollinations AI - free) ──
 function generateImage(prompt){
-  addMsg('u', 'Generate image: '+prompt);
-  var d=addMsg('b','Generating image...', false);
-  var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=512&height=512&nologo=true';
-  setTimeout(function(){
-    d.querySelector('.bub').innerHTML='Here is what I generated for "'+prompt+'":<br><img class="msg-img" src="'+url+'" alt="'+prompt+'">';
+  var d=addMsg('b','Generating image, please wait...', false);
+  var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?model=flux&width=1024&height=1024&nologo=true&seed='+Math.floor(Math.random()*1000);
+  var img=new Image();
+  img.onload=function(){
+    d.querySelector('.bub').innerHTML='<img class="msg-img" src="'+url+'" alt="'+prompt+'"><br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">'+prompt+'</span>';
     document.getElementById('msgs').scrollTop=99999;
-  }, 500);
+  };
+  img.onerror=function(){
+    d.querySelector('.bub').innerHTML='Image generate nahi ho paya, dobara try karo';
+  };
+  img.src=url;
 }
 
 // ── WEATHER ──
