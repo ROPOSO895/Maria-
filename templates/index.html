@@ -7,62 +7,109 @@
 <title>P.E.P.P.E.R</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0d0015; color: #eee; font-family: 'Poppins', sans-serif; height: 100vh; display: flex; flex-direction: column; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0015;color:#eee;font-family:'Poppins',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
 /* TOP */
-.top { background: #1a0030; padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,110,180,0.3); flex-shrink: 0; }
-.avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ff6eb4, #b44fff); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 700; color: white; flex-shrink: 0; box-shadow: 0 0 12px rgba(255,110,180,0.4); letter-spacing: 0.05em; }
-.name { font-weight: 600; font-size: 0.95rem; color: #ff6eb4; letter-spacing: 0.05em; }
-.status { font-size: 0.65rem; color: rgba(255,255,255,0.4); }
-.top-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.clk { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
-.icon-btn { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1rem; cursor: pointer; padding: 4px; }
+.top{background:#1a0030;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,110,180,0.3);flex-shrink:0}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:white;flex-shrink:0;box-shadow:0 0 12px rgba(255,110,180,0.4);letter-spacing:0.05em}
+.name{font-weight:600;font-size:0.95rem;color:#ff6eb4;letter-spacing:0.05em}
+.status{font-size:0.65rem;color:rgba(255,255,255,0.4)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.clk{font-size:0.75rem;color:rgba(255,255,255,0.35)}
+.icon-btn{background:rgba(255,110,180,0.08);border:1px solid rgba(255,110,180,0.2);color:rgba(255,255,255,0.5);font-size:0.7rem;cursor:pointer;padding:4px 8px;border-radius:10px;font-family:'Poppins',sans-serif}
+.icon-btn:active{background:rgba(255,110,180,0.2)}
 
-/* WEATHER BAR */
-.weather-bar { background: rgba(255,110,180,0.06); border-bottom: 1px solid rgba(255,110,180,0.1); padding: 6px 14px; display: none; align-items: center; gap: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.6); flex-shrink: 0; }
-.weather-bar.show { display: flex; }
-.w-temp { color: #ffaa44; font-weight: 600; }
+/* TABS */
+.tabs{display:flex;background:#120022;border-bottom:1px solid rgba(255,110,180,0.1);flex-shrink:0}
+.tab{flex:1;padding:8px 4px;background:transparent;border:none;color:rgba(255,255,255,0.3);font-family:'Poppins',sans-serif;font-size:0.6rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.tab.on{color:#ff6eb4;border-bottom-color:#ff6eb4}
 
-/* MSGS */
-.msgs { flex: 1; overflow-y: scroll; -webkit-overflow-scrolling: touch; padding: 14px; padding-bottom: 110px; display: flex; flex-direction: column; gap: 10px; }
-.msgs::-webkit-scrollbar { width: 3px; }
-.msgs::-webkit-scrollbar-thumb { background: rgba(255,110,180,0.3); border-radius: 3px; }
-.msg { display: flex; flex-direction: column; max-width: 82%; }
-.msg.u { align-self: flex-end; align-items: flex-end; }
-.msg.b { align-self: flex-start; align-items: flex-start; }
-.lbl { font-size: 0.58rem; color: rgba(255,255,255,0.28); margin-bottom: 3px; letter-spacing: 0.05em; }
-.bub { padding: 10px 14px; border-radius: 18px; font-size: 0.88rem; line-height: 1.65; font-weight: 300; }
-.msg.u .bub { background: linear-gradient(135deg, rgba(255,110,180,0.22), rgba(180,79,255,0.18)); border: 1px solid rgba(255,110,180,0.28); border-bottom-right-radius: 4px; }
-.msg.b .bub { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-bottom-left-radius: 4px; color: rgba(255,255,255,0.88); }
+/* PAGES */
+.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.pg.on{display:flex}
+.pg::-webkit-scrollbar{width:3px}
+.pg::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
 
-/* IMAGE MSG */
-.msg-img { max-width: 100%; border-radius: 12px; margin-top: 6px; }
-
-/* NEWS */
-.news-item { padding: 8px 0; border-bottom: 1px solid rgba(255,110,180,0.07); }
-.news-item:last-child { border-bottom: none; }
-.news-title { font-size: 0.78rem; color: rgba(255,255,255,0.85); line-height: 1.4; }
-.news-src { font-size: 0.58rem; color: rgba(255,255,255,0.3); margin-top: 2px; }
-
-/* TYPING */
-.typing { display: none; align-self: flex-start; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; border-bottom-left-radius: 4px; padding: 10px 14px; gap: 5px; margin: 0 14px; }
-.typing.show { display: flex; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: #b44fff; animation: bounce 1.2s infinite; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce { 0%,100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-5px); opacity: 1; } }
+/* CHAT */
+.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:90px;display:flex;flex-direction:column;gap:10px}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
+.msg{display:flex;flex-direction:column;max-width:82%}
+.msg.u{align-self:flex-end;align-items:flex-end}
+.msg.b{align-self:flex-start;align-items:flex-start}
+.lbl{font-size:0.58rem;color:rgba(255,255,255,0.28);margin-bottom:3px;letter-spacing:0.05em}
+.bub{padding:10px 14px;border-radius:18px;font-size:0.88rem;line-height:1.65;font-weight:300}
+.msg.u .bub{background:linear-gradient(135deg,rgba(255,110,180,0.22),rgba(180,79,255,0.18));border:1px solid rgba(255,110,180,0.28);border-bottom-right-radius:4px}
+.msg.b .bub{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-bottom-left-radius:4px;color:rgba(255,255,255,0.88)}
+.typing{display:none;align-self:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px;border-bottom-left-radius:4px;padding:10px 14px;gap:5px;margin:0 14px}
+.typing.show{display:flex}
+.dot{width:7px;height:7px;border-radius:50%;background:#b44fff;animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:0.2s}
+.dot:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
 
 /* BOT */
-.bot { position: fixed; bottom: 0; left: 0; right: 0; background: #1a0030; border-top: 1px solid rgba(255,110,180,0.2); padding: 8px 12px 12px; display: flex; gap: 8px; align-items: flex-end; z-index: 999; }
-#msg { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,110,180,0.3); border-radius: 22px; padding: 10px 16px; color: white; font-family: 'Poppins', sans-serif; font-size: 0.9rem; outline: none; resize: none; max-height: 100px; }
-#msg:focus { border-color: #ff6eb4; }
-#msg::placeholder { color: rgba(255,255,255,0.22); }
-.send-btn { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #ff6eb4, #b44fff); border: none; color: white; font-size: 1rem; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 14px rgba(255,110,180,0.4); }
-.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.mic-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,110,180,0.1); border: 1px solid rgba(255,110,180,0.3); color: #ff6eb4; font-size: 1rem; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
-.mic-btn.on { background: #ff6eb4; color: white; animation: pulse 1s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,110,180,0.7); } 70% { box-shadow: 0 0 0 10px rgba(255,110,180,0); } 100% { box-shadow: 0 0 0 0 rgba(255,110,180,0); } }
+.bot{position:fixed;bottom:0;left:0;right:0;background:#1a0030;border-top:1px solid rgba(255,110,180,0.2);padding:8px 12px 12px;display:flex;gap:8px;align-items:flex-end;z-index:999}
+#msg{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,110,180,0.3);border-radius:22px;padding:10px 16px;color:white;font-family:'Poppins',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:100px}
+#msg:focus{border-color:#ff6eb4}
+#msg::placeholder{color:rgba(255,255,255,0.22)}
+.send-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);border:none;color:white;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 14px rgba(255,110,180,0.4)}
+.send-btn:disabled{opacity:0.4}
+.mic-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,110,180,0.1);border:1px solid rgba(255,110,180,0.3);color:#ff6eb4;font-size:1rem;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+.mic-btn.on{background:#ff6eb4;color:white;animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,110,180,0.7)}70%{box-shadow:0 0 0 10px rgba(255,110,180,0)}100%{box-shadow:0 0 0 0 rgba(255,110,180,0)}}
+
+/* PAGES CONTENT */
+.pg-body{padding:14px;display:flex;flex-direction:column;gap:12px;padding-bottom:20px}
+.card{background:rgba(26,0,48,0.8);border:1px solid rgba(255,110,180,0.12);border-radius:16px;padding:14px}
+.card-title{font-size:0.65rem;font-weight:600;color:#ff6eb4;letter-spacing:0.1em;margin-bottom:12px}
+
+/* BRIEFING */
+.brief-greeting{font-size:1.3rem;font-weight:600;color:#ff6eb4;margin-bottom:4px}
+.brief-date{font-size:0.65rem;color:rgba(255,255,255,0.35);margin-bottom:12px}
+.brief-quote{font-size:0.78rem;color:rgba(255,255,255,0.55);font-style:italic;border-left:2px solid #b44fff;padding-left:10px;line-height:1.6;margin-bottom:12px}
+.weather-box{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.04);border-radius:12px;margin-bottom:8px}
+.w-temp{font-size:1.4rem;font-weight:600;color:#ffaa44}
+.w-info{font-size:0.68rem;color:rgba(255,255,255,0.5);line-height:1.6}
+.brief-inp{width:100%;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,110,180,0.2);border-radius:10px;color:white;font-family:'Poppins',sans-serif;font-size:0.8rem;outline:none;margin-bottom:8px}
+.brief-inp::placeholder{color:rgba(255,255,255,0.25)}
+.brief-btn{width:100%;padding:9px;background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(180,79,255,0.2));border:1px solid rgba(255,110,180,0.3);border-radius:12px;color:#ff6eb4;font-family:'Poppins',sans-serif;font-size:0.75rem;cursor:pointer}
+.news-item{padding:8px 0;border-bottom:1px solid rgba(255,110,180,0.07)}
+.news-item:last-child{border-bottom:none}
+.news-title{font-size:0.78rem;color:rgba(255,255,255,0.82);line-height:1.4}
+.news-src{font-size:0.58rem;color:rgba(255,255,255,0.3);margin-top:2px}
+.ldt{text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.25);padding:12px}
+
+/* HISTORY */
+.hist-item{padding:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,110,180,0.07);border-radius:12px;margin-bottom:8px}
+.hist-u{font-size:0.72rem;color:#ff6eb4;margin-bottom:4px}
+.hist-b{font-size:0.75rem;color:rgba(255,255,255,0.65);line-height:1.5}
+.hist-t{font-size:0.55rem;color:rgba(255,255,255,0.2);margin-top:4px}
+.hist-clear{width:100%;padding:9px;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.2);border-radius:12px;color:rgba(255,100,100,0.7);font-family:'Poppins',sans-serif;font-size:0.72rem;cursor:pointer;margin-bottom:10px}
+
+/* MEMORY */
+.mem-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px}
+.mem-k{font-size:0.7rem;color:#b44fff;font-weight:500;margin-right:8px}
+.mem-v{font-size:0.75rem;color:rgba(255,255,255,0.7);flex:1}
+.mem-del{background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:0.8rem;padding:0 4px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.chip{padding:3px 9px;border-radius:10px;background:rgba(180,79,255,0.1);border:1px solid rgba(180,79,255,0.2);color:rgba(255,255,255,0.45);font-size:0.6rem;cursor:pointer}
+.mem-inp{width:100%;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,110,180,0.2);border-radius:10px;color:white;font-family:'Poppins',sans-serif;font-size:0.8rem;outline:none;margin-bottom:6px}
+.mem-inp::placeholder{color:rgba(255,255,255,0.25)}
+
+/* MOOD */
+.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.mood-opt{padding:12px 8px;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,110,180,0.1);border-radius:14px;cursor:pointer;transition:all 0.2s}
+.mood-opt.sel{background:linear-gradient(135deg,rgba(255,110,180,0.18),rgba(180,79,255,0.18));border-color:#ff6eb4}
+.mood-emoji{font-size:1.4rem;display:block;margin-bottom:3px}
+.mood-lbl{font-size:0.55rem;color:rgba(255,255,255,0.5)}
+.energy-bar{margin-bottom:12px}
+.energy-lbl{font-size:0.65rem;color:rgba(255,255,255,0.4);margin-bottom:6px}
+input[type=range]{width:100%;accent-color:#ff6eb4}
+.mood-hist-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,110,180,0.06);font-size:0.75rem}
+.mood-hist-item:last-child{border-bottom:none}
+.mdate{font-size:0.55rem;color:rgba(255,255,255,0.25);margin-left:auto}
 </style>
 </head>
 <body>
@@ -74,250 +121,342 @@ body { background: #0d0015; color: #eee; font-family: 'Poppins', sans-serif; hei
     <div class="status" id="statusTxt">Online</div>
   </div>
   <div class="top-right">
-    <button class="icon-btn" onclick="getWeather()" title="Weather">&#9925;</button>
-    <button class="icon-btn" onclick="getNews()" title="News">&#128240;</button>
     <div class="clk" id="clk">--:--</div>
   </div>
 </div>
 
-<div class="weather-bar" id="weatherBar">
-  <span id="wIcon">&#9728;</span>
-  <span class="w-temp" id="wTemp">--</span>
-  <span id="wDesc">--</span>
-  <span id="wCity" style="margin-left:auto;font-size:0.6rem;opacity:0.5"></span>
+<div class="tabs">
+  <button class="tab on" onclick="showPg('chat',this)">Chat</button>
+  <button class="tab" onclick="showPg('brief',this)">Briefing</button>
+  <button class="tab" onclick="showPg('hist',this)">History</button>
+  <button class="tab" onclick="showPg('mem',this)">Memory</button>
+  <button class="tab" onclick="showPg('mood',this)">Mood</button>
 </div>
 
-<div class="msgs" id="msgs"></div>
-<div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<!-- CHAT -->
+<div class="pg on" id="pg-chat" style="flex-direction:column">
+  <div class="msgs" id="msgs"></div>
+  <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="bot">
+    <textarea id="msg" rows="1" placeholder="Talk to PEPPER..."></textarea>
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()">&#127908;</button>
+    <button class="send-btn" id="sbtn" onclick="send()">&#9658;</button>
+  </div>
+</div>
 
-<div class="bot">
-  <textarea id="msg" rows="1" placeholder="Talk to PEPPER..."></textarea>
-  <button class="mic-btn" id="micBtn" onclick="toggleMic()">&#127908;</button>
-  <button class="send-btn" id="sbtn" onclick="send()">&#9658;</button>
+<!-- BRIEFING -->
+<div class="pg" id="pg-brief">
+  <div class="pg-body">
+    <div class="card">
+      <div class="brief-greeting" id="bGreet">Good Morning</div>
+      <div class="brief-date" id="bDate"></div>
+      <div class="brief-quote" id="bQuote">Loading quote...</div>
+      <input class="brief-inp" id="bCity" placeholder="Your city for weather...">
+      <button class="brief-btn" onclick="loadBrief()">Get My Briefing</button>
+    </div>
+    <div class="card" id="bWeatherCard" style="display:none">
+      <div class="card-title">WEATHER</div>
+      <div id="bWeather"></div>
+    </div>
+    <div class="card" id="bNewsCard" style="display:none">
+      <div class="card-title">TOP NEWS</div>
+      <div id="bNews"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="pg" id="pg-hist">
+  <div class="pg-body">
+    <div class="card">
+      <div class="card-title">CHAT HISTORY</div>
+      <button class="hist-clear" onclick="clearHistory()">Clear All History</button>
+      <div id="histList"><div class="ldt">Loading...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MEMORY -->
+<div class="pg" id="pg-mem">
+  <div class="pg-body">
+    <div class="card">
+      <div class="card-title">AI MEMORY PROFILE</div>
+      <div id="memList"><div class="ldt">Nothing saved yet</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">ADD MEMORY</div>
+      <div class="chips">
+        <span class="chip" onclick="fillMem('My name')">Name</span>
+        <span class="chip" onclick="fillMem('My age')">Age</span>
+        <span class="chip" onclick="fillMem('My city')">City</span>
+        <span class="chip" onclick="fillMem('My hobby')">Hobby</span>
+        <span class="chip" onclick="fillMem('My job')">Job</span>
+        <span class="chip" onclick="fillMem('My goal')">Goal</span>
+        <span class="chip" onclick="fillMem('My college')">College</span>
+        <span class="chip" onclick="fillMem('My friend')">Friend</span>
+      </div>
+      <input class="mem-inp" id="memK" placeholder="Topic (e.g. My name)">
+      <input class="mem-inp" id="memV" placeholder="Value (e.g. Nazib)">
+      <button class="brief-btn" onclick="addMem()">Save to Memory</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOOD -->
+<div class="pg" id="pg-mood">
+  <div class="pg-body">
+    <div class="card">
+      <div class="card-title">HOW ARE YOU FEELING?</div>
+      <div class="mood-grid">
+        <div class="mood-opt" onclick="logMood('Happy',this)"><span class="mood-emoji">😊</span><span class="mood-lbl">Happy</span></div>
+        <div class="mood-opt" onclick="logMood('Sad',this)"><span class="mood-emoji">😔</span><span class="mood-lbl">Sad</span></div>
+        <div class="mood-opt" onclick="logMood('Stressed',this)"><span class="mood-emoji">😤</span><span class="mood-lbl">Stressed</span></div>
+        <div class="mood-opt" onclick="logMood('Tired',this)"><span class="mood-emoji">😴</span><span class="mood-lbl">Tired</span></div>
+        <div class="mood-opt" onclick="logMood('Motivated',this)"><span class="mood-emoji">🔥</span><span class="mood-lbl">Motivated</span></div>
+        <div class="mood-opt" onclick="logMood('Anxious',this)"><span class="mood-emoji">😰</span><span class="mood-lbl">Anxious</span></div>
+        <div class="mood-opt" onclick="logMood('Loved',this)"><span class="mood-emoji">🥰</span><span class="mood-lbl">Loved</span></div>
+        <div class="mood-opt" onclick="logMood('Excited',this)"><span class="mood-emoji">😁</span><span class="mood-lbl">Excited</span></div>
+        <div class="mood-opt" onclick="logMood('Meh',this)"><span class="mood-emoji">😐</span><span class="mood-lbl">Meh</span></div>
+      </div>
+      <div class="energy-bar">
+        <div class="energy-lbl">Energy Level: <span id="energyVal">5</span>/10</div>
+        <input type="range" min="1" max="10" value="5" id="energySlider" oninput="document.getElementById('energyVal').textContent=this.value">
+      </div>
+      <button class="brief-btn" onclick="saveMoodEntry()">Save Today's Mood</button>
+    </div>
+    <div class="card">
+      <div class="card-title">MOOD HISTORY</div>
+      <div id="moodHist"><div class="ldt">No mood logged yet</div></div>
+    </div>
+  </div>
 </div>
 
 <script>
-var BASE = 'https://maria-assistant-fthu.onrender.com';
+var BASE='https://maria-assistant-fthu.onrender.com';
 
-// ── MEMORY (auto, no separate page) ──
-var MEM = {};
-try { var ms = localStorage.getItem('pepper_mem'); if(ms) MEM = JSON.parse(ms); } catch(e) {}
-function saveMem(k,v){ MEM[k]=v; try{localStorage.setItem('pepper_mem',JSON.stringify(MEM));}catch(e){} }
-function autoDetect(txt){
-  var n = txt.match(/my name is ([a-zA-Z]+)/i)||txt.match(/mera naam ([a-zA-Z]+)/i)||txt.match(/call me ([a-zA-Z]+)/i);
-  if(n&&n[1]&&n[1].length>1) saveMem('name', n[1].charAt(0).toUpperCase()+n[1].slice(1));
-  var c = txt.match(/i (?:live|am from|stay) in ([a-zA-Z ]+)/i)||txt.match(/main ([a-zA-Z]+) mein (?:rehta|rehti)/i);
-  if(c&&c[1]) saveMem('city', c[1].trim());
-  var a = txt.match(/i(?:'m| am) (\d+) years old/i)||txt.match(/meri umar (\d+)/i)||txt.match(/(\d+) saal ka/i);
-  if(a&&a[1]) saveMem('age', a[1]);
-  var j = txt.match(/i(?:'m| am) a ([a-zA-Z ]+)/i)||txt.match(/mera kaam ([a-zA-Z ]+) hai/i);
-  if(j&&j[1]&&j[1].length>2&&j[1].length<30) saveMem('job', j[1].trim());
-}
-function memCtx(){
-  var keys=Object.keys(MEM); if(!keys.length) return '';
-  return keys.map(function(k){return k+': '+MEM[k];}).join(', ');
-}
+// DB
+var DB={memory:{},moods:[]};
+try{var s=localStorage.getItem('pepper_db');if(s)DB=JSON.parse(s);}catch(e){}
+function saveDB(){try{localStorage.setItem('pepper_db',JSON.stringify(DB));}catch(e){}}
 
-// ── CLOCK ──
+// CLOCK
 setInterval(function(){
   var n=new Date(),h=n.getHours(),m=n.getMinutes();
   document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
 },1000);
 
-// ── TEXTAREA ──
-document.getElementById('msg').addEventListener('input',function(){
-  this.style.height='auto';
-  this.style.height=Math.min(this.scrollHeight,100)+'px';
-});
-document.getElementById('msg').addEventListener('keydown',function(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}
-});
+// TABS
+function showPg(id,btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='brief') initBrief();
+  if(id==='hist') loadHist();
+  if(id==='mem') renderMem();
+  if(id==='mood') renderMoodHist();
+}
 
-// ── MESSAGES ──
-function addMsg(role, text, isHtml){
+// MEMORY
+function renderMem(){
+  var el=document.getElementById('memList');
+  var keys=Object.keys(DB.memory);
+  if(!keys.length){el.innerHTML='<div class="ldt">Nothing saved yet</div>';return;}
+  el.innerHTML=keys.map(function(k){
+    return '<div class="mem-item"><span class="mem-k">'+k+'</span><span class="mem-v">'+DB.memory[k]+'</span><button class="mem-del" onclick="delMem(\''+k+'\')">x</button></div>';
+  }).join('');
+}
+function addMem(){
+  var k=document.getElementById('memK').value.trim();
+  var v=document.getElementById('memV').value.trim();
+  if(!k||!v)return;
+  DB.memory[k]=v;saveDB();renderMem();
+  document.getElementById('memK').value='';
+  document.getElementById('memV').value='';
+}
+function delMem(k){delete DB.memory[k];saveDB();renderMem();}
+function fillMem(k){document.getElementById('memK').value=k;document.getElementById('memV').focus();}
+function autoDetect(txt){
+  var n=txt.match(/my name is ([a-zA-Z]+)/i)||txt.match(/mera naam ([a-zA-Z]+)/i)||txt.match(/call me ([a-zA-Z]+)/i);
+  if(n&&n[1]&&n[1].length>1){DB.memory['My name']=n[1].charAt(0).toUpperCase()+n[1].slice(1);saveDB();}
+  var c=txt.match(/i (?:live|am from|stay) in ([a-zA-Z ]+)/i);
+  if(c&&c[1]){DB.memory['My city']=c[1].trim();saveDB();}
+  var a=txt.match(/i(?:'m| am) (\d+) years old/i)||txt.match(/meri umar (\d+)/i);
+  if(a&&a[1]){DB.memory['My age']=a[1];saveDB();}
+}
+function memCtx(){
+  var keys=Object.keys(DB.memory);
+  if(!keys.length)return '';
+  return keys.map(function(k){return k+': '+DB.memory[k];}).join(', ');
+}
+
+// MOOD
+function logMood(mood,btn){
+  document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+}
+function saveMoodEntry(){
+  var mood=document.querySelector('.mood-opt.sel');
+  if(!mood){alert('Please select a mood!');return;}
+  var moodName=mood.querySelector('.mood-lbl').textContent;
+  var energy=document.getElementById('energySlider').value;
+  var now=new Date();
+  DB.moods.unshift({mood:moodName,energy:energy,date:now.toLocaleDateString()+' '+now.toLocaleTimeString()});
+  if(DB.moods.length>30)DB.moods=DB.moods.slice(0,30);
+  saveDB();renderMoodHist();
+  // Tell PEPPER
+  addMsg('u','My mood today: '+moodName+', Energy: '+energy+'/10');
+  askPepper('Nazib ka mood aaj '+moodName+' hai aur energy '+energy+'/10 hai. Thoda caring response do Hinglish mein, 2 sentences.',false);
+  showPg('chat',document.querySelector('.tab'));
+}
+function renderMoodHist(){
+  var el=document.getElementById('moodHist');
+  if(!DB.moods.length){el.innerHTML='<div class="ldt">No mood logged yet</div>';return;}
+  var emojis={'Happy':'😊','Sad':'😔','Stressed':'😤','Tired':'😴','Motivated':'🔥','Anxious':'😰','Loved':'🥰','Excited':'😁','Meh':'😐'};
+  el.innerHTML=DB.moods.slice(0,10).map(function(m){
+    return '<div class="mood-hist-item"><span style="font-size:1.1rem">'+(emojis[m.mood]||'😊')+'</span><span>'+m.mood+'</span><span style="font-size:0.65rem;color:rgba(255,255,255,0.3)">Energy: '+m.energy+'/10</span><span class="mdate">'+m.date+'</span></div>';
+  }).join('');
+}
+
+// BRIEFING
+var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Himmat karo, sab theek hoga.','Kal se behtar aaj bano.','Mehnat kabhi bekar nahi jaati.'];
+function initBrief(){
+  var n=new Date(),h=n.getHours();
+  document.getElementById('bGreet').textContent=h<12?'Good Morning, Nazib':h<17?'Good Afternoon, Nazib':'Good Evening, Nazib';
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('bDate').textContent=days[n.getDay()]+', '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
+  document.getElementById('bQuote').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  if(DB.memory['My city'])document.getElementById('bCity').value=DB.memory['My city'];
+}
+function loadBrief(){
+  var city=document.getElementById('bCity').value.trim()||'Mumbai';
+  DB.memory['My city']=city;saveDB();
+  document.getElementById('bWeatherCard').style.display='block';
+  document.getElementById('bNewsCard').style.display='block';
+  document.getElementById('bWeather').innerHTML='<div class="ldt">Loading...</div>';
+  document.getElementById('bNews').innerHTML='<div class="ldt">Loading...</div>';
+  fetch(BASE+'/weather?city='+encodeURIComponent(city))
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d.error){document.getElementById('bWeather').innerHTML='<div class="ldt">'+d.error+'</div>';return;}
+    document.getElementById('bWeather').innerHTML='<div class="weather-box"><div style="font-size:2rem">☁️</div><div><div class="w-temp">'+d.temp+'°C</div><div class="w-info">'+d.description+'<br>Feels like '+d.feels_like+'°C | Humidity '+d.humidity+'%<br>'+d.city+', '+d.country+'</div></div></div>';
+  }).catch(function(){document.getElementById('bWeather').innerHTML='<div class="ldt">Weather unavailable</div>';});
+  fetch(BASE+'/news')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';return;}
+    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">'+a.source+'</div></div>';}).join('');
+  }).catch(function(){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';});
+}
+
+// HISTORY
+function loadHist(){
+  fetch(BASE+'/history')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var el=document.getElementById('histList');
+    if(!d.history||!d.history.length){el.innerHTML='<div class="ldt">No history yet</div>';return;}
+    el.innerHTML=d.history.map(function(h){
+      return '<div class="hist-item"><div class="hist-u">You: '+h.user+'</div><div class="hist-b">PEPPER: '+(h.assistant||'...')+'</div><div class="hist-t">'+h.time+'</div></div>';
+    }).join('');
+  }).catch(function(){document.getElementById('histList').innerHTML='<div class="ldt">Could not load history</div>';});
+}
+function clearHistory(){
+  if(!confirm('Clear all chat history?'))return;
+  fetch(BASE+'/clear',{method:'POST'}).then(function(){loadHist();});
+}
+
+// CHAT
+document.getElementById('msg').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
+document.getElementById('msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+
+function addMsg(role,text){
   var msgs=document.getElementById('msgs');
-  var d=document.createElement('div');
-  d.className='msg '+role;
-  var content = isHtml ? text : text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  d.innerHTML='<div class="lbl">'+(role==='u'?'YOU':'PEPPER')+'</div><div class="bub">'+content+'</div>';
-  msgs.appendChild(d);
-  msgs.scrollTop=msgs.scrollHeight+1000;
+  var d=document.createElement('div');d.className='msg '+role;
+  var safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  d.innerHTML='<div class="lbl">'+(role==='u'?'YOU':'PEPPER')+'</div><div class="bub">'+safe+'</div>';
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
   return d;
 }
 
-// ── CLEAN TEXT FOR SPEECH ──
+// CLEAN FOR SPEECH
 function cleanForSpeech(t){
   var out='';
-  for(var i=0;i<t.length;i++){
-    var c=t.charCodeAt(i);
-    if((c>=32&&c<=126)||(c>=2304&&c<=2431)) out+=t[i];
-    else out+=' ';
-  }
+  for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if((c>=32&&c<=126)||(c>=2304&&c<=2431))out+=t[i];else out+=' ';}
   return out.replace(/ +/g,' ').trim();
 }
 
-// ── SPEAK ──
+// SPEAK
 function speak(text){
-  if(!window.speechSynthesis) return;
+  if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  var clean=cleanForSpeech(text);
-  if(!clean) return;
-  var u=new SpeechSynthesisUtterance(clean);
-  u.rate=0.93; u.pitch=1.05; u.volume=1;
+  var u=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  u.rate=0.93;u.pitch=1.05;u.volume=1;
   var voices=window.speechSynthesis.getVoices();
-  for(var i=0;i<voices.length;i++){
-    if(voices[i].lang==='hi-IN'||voices[i].lang==='en-IN'){u.voice=voices[i];break;}
-  }
+  for(var i=0;i<voices.length;i++){if(voices[i].lang==='hi-IN'||voices[i].lang==='en-IN'){u.voice=voices[i];break;}}
   window.speechSynthesis.speak(u);
 }
-if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
-// ── CHAT ──
-function askPepper(txt, silent){
+function askPepper(txt,doSpeak){
   var btn=document.getElementById('sbtn');
   btn.disabled=true;
   document.getElementById('statusTxt').textContent='Thinking...';
   document.getElementById('typing').classList.add('show');
   document.getElementById('msgs').scrollTop=99999;
-
-  fetch(BASE+'/chat',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({message:txt, memory:memCtx()})
-  })
+  fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,memory:memCtx()})})
   .then(function(r){return r.json();})
   .then(function(d){
     document.getElementById('typing').classList.remove('show');
     btn.disabled=false;
     document.getElementById('statusTxt').textContent='Online';
     var reply=d.reply||'Kuch toh hua, dobara try karo';
-    addMsg('b', reply);
-    if(!silent) speak(reply);
+    addMsg('b',reply);
+    if(doSpeak)speak(reply);
   })
   .catch(function(){
     document.getElementById('typing').classList.remove('show');
     btn.disabled=false;
     document.getElementById('statusTxt').textContent='Online';
-    if(!silent) addMsg('b','Connection error, dobara try karo');
+    addMsg('b','Connection error, dobara try karo');
   });
 }
 
 function send(){
   var inp=document.getElementById('msg');
-  var txt=inp.value.trim();
-  if(!txt) return;
-  inp.value=''; inp.style.height='auto';
-
-  addMsg('u', txt);
-
-  // Image generation command - detect before sending to AI
-  if(txt.match(/(generate|create|make|draw|show|bana).{0,15}(image|photo|picture|img|tasveer)/i)){
-    var prompt=txt.replace(/(generate|create|make|draw|show|bana).{0,15}(image|photo|picture|img|tasveer).{0,10}(of|for|ka|ki)?/i,'').trim();
-    if(!prompt) prompt=txt;
-    generateImage(prompt);
-    return;
-  }
-  autoDetect(txt);
-  askPepper(txt, false);
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  addMsg('u',txt);autoDetect(txt);
+  askPepper(txt,true);
 }
 
-// ── IMAGE GENERATION (via backend) ──
-function generateImage(prompt){
-  var d=addMsg('b','Generating image, please wait up to 30 seconds...', false);
-  fetch(BASE+'/imagine',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt:prompt})
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(data.image){
-      d.querySelector('.bub').innerHTML='<img class="msg-img" src="'+data.image+'" alt="'+prompt+'"><br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">'+prompt+'</span>';
-    } else {
-      d.querySelector('.bub').innerHTML='Model load ho raha hai, 30 second baad try karo';
-    }
-    document.getElementById('msgs').scrollTop=99999;
-  })
-  .catch(function(){
-    d.querySelector('.bub').innerHTML='Image generate nahi ho paya, dobara try karo';
-  });
-}
-
-// ── WEATHER ──
-function getWeather(){
-  var city = MEM.city || prompt('Enter your city:');
-  if(!city) return;
-  saveMem('city', city);
-  fetch(BASE+'/weather?city='+encodeURIComponent(city))
-  .then(function(r){return r.json();})
-  .then(function(d){
-    if(d.error){ addMsg('b', 'Weather nahi mila: '+d.error); return; }
-    var bar=document.getElementById('weatherBar');
-    document.getElementById('wTemp').textContent=d.temp+'C';
-    document.getElementById('wDesc').textContent=d.description;
-    document.getElementById('wCity').textContent=d.city+', '+d.country;
-    bar.classList.add('show');
-    addMsg('b', d.city+' mein abhi '+d.temp+' degree C hai. '+d.description+'. Feels like '+d.feels_like+'C. Humidity '+d.humidity+'%.');
-  })
-  .catch(function(){ addMsg('b','Weather service unavailable'); });
-}
-
-// ── NEWS ──
-function getNews(){
-  addMsg('u','Show me latest news');
-  var d=addMsg('b','Fetching news...');
-  fetch(BASE+'/news?category=general')
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(!data.articles||!data.articles.length){ d.querySelector('.bub').textContent='News nahi mila'; return; }
-    var h='<b style="font-size:0.72rem;color:#ff6eb4">TOP NEWS</b><br><br>';
-    data.articles.forEach(function(a){
-      h+='<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">'+a.source+'</div></div>';
-    });
-    d.querySelector('.bub').innerHTML=h;
-    document.getElementById('msgs').scrollTop=99999;
-  })
-  .catch(function(){ d.querySelector('.bub').textContent='News service unavailable'; });
-}
-
-// ── VOICE INPUT ──
-var recog=null, listening=false;
+// MIC
+var recog=null,listening=false;
 function toggleMic(){
-  if(listening){ stopMic(); return; }
+  if(listening){stopMic();return;}
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ addMsg('b','Chrome mein voice use karo'); return; }
-  if(window.speechSynthesis) window.speechSynthesis.cancel();
-  recog=new SR();
-  recog.lang='hi-IN';
-  recog.continuous=false;
-  recog.interimResults=false;
-  recog.onstart=function(){
-    listening=true;
-    document.getElementById('micBtn').classList.add('on');
-    document.getElementById('statusTxt').textContent='Listening...';
-  };
-  recog.onresult=function(e){
-    var txt=e.results[0][0].transcript.trim();
-    stopMic();
-    if(txt){ addMsg('u',txt); autoDetect(txt); askPepper(txt,false); }
-  };
-  recog.onerror=function(){ stopMic(); };
-  recog.onend=function(){ stopMic(); };
-  try{ recog.start(); }catch(e){ stopMic(); }
+  if(!SR){addMsg('b','Chrome mein voice use karo');return;}
+  if(window.speechSynthesis)window.speechSynthesis.cancel();
+  recog=new SR();recog.lang='hi-IN';recog.continuous=false;recog.interimResults=false;
+  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
+  recog.onresult=function(e){var txt=e.results[0][0].transcript.trim();stopMic();if(txt){addMsg('u',txt);autoDetect(txt);askPepper(txt,true);}};
+  recog.onerror=function(){stopMic();};
+  recog.onend=function(){stopMic();};
+  try{recog.start();}catch(e){stopMic();}
 }
 function stopMic(){
   listening=false;
   document.getElementById('micBtn').classList.remove('on');
   document.getElementById('statusTxt').textContent='Online';
-  if(recog){ try{recog.stop();}catch(e){} recog=null; }
+  if(recog){try{recog.stop();}catch(e){}recog=null;}
 }
 
-// ── AUTO GREET ──
+// GREET
 setTimeout(function(){
   var h=new Date().getHours();
   var t=h<12?'morning':h<17?'afternoon':'evening';
-  var name=MEM.name?', '+MEM.name:'';
-  askPepper('Give a short warm '+t+' greeting in Hinglish'+name+'. No emojis. Max 2 sentences. You are PEPPER, Tony Starks AI.', true);
+  askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences.',false);
 },1000);
 </script>
 </body>
