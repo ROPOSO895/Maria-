@@ -3,281 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#010a13">
+<meta name="theme-color" content="#0a0a0a">
 <title>P.E.P.P.E.R</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --cyan:#00f5ff;
-  --pink:#ff2d78;
-  --bg:#010a13;
-  --bg2:#050d18;
-  --glass:rgba(0,245,255,0.04);
-  --border:rgba(0,245,255,0.15);
-  --text:rgba(255,255,255,0.85);
-  --dim:rgba(255,255,255,0.35);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+:root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--cyan:#00e5ff;--pink:#ff2d78;--border:rgba(255,255,255,0.08);--text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.35)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-/* STARS BG */
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,245,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(255,45,120,0.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+/* SIDEBAR OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px)}
+.overlay.on{display:block}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;background:#111;z-index:201;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.sidebar.on{transform:translateX(0)}
+.sb-top{padding:16px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.sb-search{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none}
+.sb-search::placeholder{color:var(--dim)}
+.sb-newbtn{width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-body{flex:1;overflow-y:auto;padding:10px 8px}
+.sb-body::-webkit-scrollbar{width:0}
+.sb-section{font-size:0.6rem;color:var(--dim);letter-spacing:0.1em;padding:8px 8px 4px;font-family:'Orbitron',sans-serif}
+.sb-item{padding:10px 10px;border-radius:10px;font-size:0.82rem;color:var(--dim);cursor:pointer;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px}
+.sb-item:hover,.sb-item.on{background:var(--bg3);color:var(--text)}
+.sb-item-ic{font-size:0.9rem;flex-shrink:0}
+.sb-bottom{padding:12px 10px;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer}
+.sb-user:hover{background:var(--bg3)}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#000;flex-shrink:0}
+.sb-name{font-size:0.82rem;font-weight:500}
 
-/* TOP */
-.top{position:relative;z-index:10;background:rgba(1,10,19,0.95);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px)}
-.top::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent)}
-.avatar{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:700;font-family:'Orbitron',sans-serif;color:var(--cyan);flex-shrink:0;box-shadow:0 0 15px rgba(0,245,255,0.3),inset 0 0 15px rgba(0,245,255,0.05)}
-.name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;color:var(--cyan);letter-spacing:0.15em;text-shadow:0 0 20px rgba(0,245,255,0.5)}
-.sub{font-size:0.6rem;color:var(--dim);letter-spacing:0.05em}
+/* TOP BAR */
+.top{background:rgba(10,10,10,0.95);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px);position:relative;z-index:10}
+.menu-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* SPINNING LOGO */
+.logo-wrap{display:flex;align-items:center;gap:8px}
+.logo-ring{width:30px;height:30px;position:relative;flex-shrink:0}
+.logo-ring svg{width:100%;height:100%;animation:none}
+.logo-ring svg.spin{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.logo-inner{position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:0.4rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#000}
+.logo-name{font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:var(--text);letter-spacing:0.1em}
+.logo-sub{font-size:0.55rem;color:var(--dim);letter-spacing:0.05em}
 .top-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.clk{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--cyan);letter-spacing:0.1em}
-.status-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(1,10,19,0.97);border-top:1px solid var(--border);display:flex;backdrop-filter:blur(20px)}
-.bnav::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent)}
-.bni{flex:1;padding:8px 4px 10px;background:transparent;border:none;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:0.55rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;letter-spacing:0.05em;transition:all 0.2s}
-.bni-ic{font-size:1.1rem;line-height:1}
-.bni.on{color:var(--cyan)}
-.bni.on .bni-ic{filter:drop-shadow(0 0 6px var(--cyan))}
+.clk{font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--dim)}
+.new-chat-btn{padding:6px 12px;border-radius:14px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-family:'Inter',sans-serif;font-size:0.7rem;cursor:pointer}
+.new-chat-btn:active{background:rgba(255,255,255,0.05)}
 
 /* PAGES */
-.pg{display:none;flex:1;overflow-y:auto;flex-direction:column;padding-bottom:70px;position:relative;z-index:1}
+.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .pg.on{display:flex}
 .pg::-webkit-scrollbar{width:2px}
-.pg::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.3);border-radius:2px}
+.pg::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 
-/* CHAT */
-.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:140px;display:flex;flex-direction:column;gap:10px}
+/* WELCOME */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.welcome-logo{width:60px;height:60px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:700;color:#000;box-shadow:0 0 30px rgba(0,229,255,0.3)}
+.welcome h2{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.welcome p{font-size:0.8rem;color:var(--dim);margin-bottom:24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:300px}
+.chip{padding:8px 14px;border-radius:20px;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s}
+.chip:active{background:var(--bg3);border-color:rgba(0,229,255,0.3)}
+.chip-ic{font-size:0.9rem}
+
+/* MSGS */
+.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:160px;display:flex;flex-direction:column;gap:14px}
 .msgs::-webkit-scrollbar{width:2px}
-.msgs::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 .msg{display:flex;flex-direction:column;max-width:85%}
 .msg.u{align-self:flex-end;align-items:flex-end}
 .msg.b{align-self:flex-start;align-items:flex-start}
-.lbl{font-size:0.55rem;color:var(--dim);margin-bottom:3px;letter-spacing:0.1em;font-family:'Orbitron',sans-serif}
-.bub{padding:10px 14px;border-radius:16px;font-size:0.9rem;line-height:1.65;font-weight:400;font-family:'Rajdhani',sans-serif}
-.msg.u .bub{background:linear-gradient(135deg,rgba(0,245,255,0.1),rgba(255,45,120,0.08));border:1px solid rgba(0,245,255,0.25);border-bottom-right-radius:3px}
-.msg.b .bub{background:var(--glass);border:1px solid var(--border);border-bottom-left-radius:3px;color:rgba(255,255,255,0.88)}
-.typing{display:none;align-self:flex-start;background:var(--glass);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 16px;gap:5px;margin:0 14px}
+.msg-row{display:flex;align-items:flex-start;gap:10px;max-width:88%}
+.msg-row.u{flex-direction:row-reverse;align-self:flex-end}
+.msg-row.b{align-self:flex-start}
+.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;font-family:'Orbitron',sans-serif;margin-top:2px}
+.msg-av.b{background:linear-gradient(135deg,var(--cyan),var(--pink));color:#000}
+.msg-av.u{background:var(--bg3);border:1px solid var(--border);color:var(--dim)}
+.bub{padding:10px 14px;border-radius:18px;font-size:0.88rem;line-height:1.7;font-weight:400}
+.msg-row.u .bub{background:var(--bg2);border:1px solid var(--border);border-bottom-right-radius:4px}
+.msg-row.b .bub{background:transparent;border:none;color:var(--text);padding-left:0}
+
+/* TYPING */
+.typing-row{display:flex;align-items:center;gap:10px;padding:0 14px;margin-top:-4px}
+.typing{display:none;background:transparent;padding:8px 0;gap:5px}
 .typing.show{display:flex}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:bounce 1.2s infinite;box-shadow:0 0 6px var(--cyan)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:bounce 1.2s infinite}
 .dot:nth-child(2){animation-delay:0.2s}
 .dot:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}
 
-/* INPUT */
-.inp-bar{position:fixed;bottom:58px;left:0;right:0;background:rgba(1,10,19,0.97);border-top:1px solid var(--border);padding:8px 12px;display:flex;gap:8px;align-items:flex-end;z-index:99;backdrop-filter:blur(20px)}
-#msg{flex:1;background:rgba(0,245,255,0.05);border:1px solid var(--border);border-radius:20px;padding:9px 15px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:90px}
-#msg:focus{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,245,255,0.15)}
-#msg::placeholder{color:rgba(255,255,255,0.2)}
-.mic-btn{width:40px;height:40px;border-radius:50%;background:rgba(0,245,255,0.08);border:1px solid var(--border);color:var(--cyan);font-size:0.9rem;cursor:pointer;flex-shrink:0}
-.mic-btn.on{background:var(--cyan);color:#010a13;animation:pulse 1s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,245,255,0.7)}70%{box-shadow:0 0 0 10px rgba(0,245,255,0)}100%{box-shadow:0 0 0 0 rgba(0,245,255,0)}}
-.send-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));border:none;color:#010a13;font-size:0.95rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 15px rgba(0,245,255,0.3);font-weight:700}
+/* INPUT AREA */
+.inp-wrap{position:fixed;bottom:0;left:0;right:0;background:var(--bg);padding:10px 14px 16px;z-index:99}
+.inp-box{background:var(--bg2);border:1px solid var(--border);border-radius:26px;display:flex;align-items:flex-end;gap:6px;padding:6px 6px 6px 16px;transition:border-color 0.2s}
+.inp-box:focus-within{border-color:rgba(255,255,255,0.2)}
+#msg{flex:1;background:transparent;border:none;color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:120px;padding:4px 0;line-height:1.5}
+#msg::placeholder{color:var(--dim)}
+.inp-btns{display:flex;gap:4px;align-items:center;flex-shrink:0;padding-bottom:2px}
+.mic-btn{width:36px;height:36px;border-radius:50%;background:transparent;border:none;color:var(--dim);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.mic-btn.on{color:var(--cyan);animation:pulse 1s infinite}
+@keyframes pulse{0%{filter:drop-shadow(0 0 0 rgba(0,229,255,0.7))}70%{filter:drop-shadow(0 0 6px rgba(0,229,255,0))}100%{filter:drop-shadow(0 0 0 rgba(0,229,255,0))}}
+.send-btn{width:36px;height:36px;border-radius:50%;background:var(--dim);border:none;color:#000;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-weight:700}
+.send-btn.active{background:white;color:#000}
 .send-btn:disabled{opacity:0.3}
-
-/* CARDS */
-.pg-body{padding:12px;display:flex;flex-direction:column;gap:10px}
-.card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:14px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-.card-title{font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:600;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px;text-transform:uppercase}
-
-/* BRIEFING */
-.brief-greeting{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--cyan);margin-bottom:2px;text-shadow:0 0 20px rgba(0,245,255,0.4)}
-.brief-date{font-size:0.65rem;color:var(--dim);margin-bottom:12px;letter-spacing:0.05em}
-.brief-quote{font-size:0.78rem;color:rgba(255,255,255,0.5);font-style:italic;border-left:2px solid var(--pink);padding-left:10px;line-height:1.6;margin-bottom:12px}
-.weather-box{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.1);border-radius:12px;margin-bottom:8px}
-.w-temp{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:var(--cyan);text-shadow:0 0 15px rgba(0,245,255,0.4)}
-.w-info{font-size:0.65rem;color:var(--dim);line-height:1.7}
-.brief-inp{width:100%;padding:8px 12px;background:rgba(0,245,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px;letter-spacing:0.05em}
-.brief-inp::placeholder{color:rgba(255,255,255,0.2)}
-.brief-inp:focus{border-color:var(--cyan)}
-.brief-btn{width:100%;padding:9px;background:linear-gradient(135deg,rgba(0,245,255,0.1),rgba(255,45,120,0.1));border:1px solid var(--border);border-radius:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em}
-.brief-btn:active{background:rgba(0,245,255,0.15)}
-.news-item{padding:8px 0;border-bottom:1px solid rgba(0,245,255,0.06)}
-.news-item:last-child{border-bottom:none}
-.news-title{font-size:0.78rem;color:rgba(255,255,255,0.8);line-height:1.4}
-.news-src{font-size:0.58rem;color:var(--cyan);margin-top:2px;opacity:0.6}
-
-/* HISTORY */
-.hist-item{padding:10px;background:rgba(0,245,255,0.02);border:1px solid rgba(0,245,255,0.07);border-radius:12px;margin-bottom:8px}
-.hist-u{font-size:0.7rem;color:var(--cyan);margin-bottom:4px;font-weight:500}
-.hist-b{font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.5}
-.hist-t{font-size:0.52rem;color:var(--dim);margin-top:4px;font-family:'Orbitron',sans-serif}
-.hist-clear{width:100%;padding:9px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:12px;color:rgba(255,45,120,0.7);font-family:'Orbitron',sans-serif;font-size:0.55rem;cursor:pointer;letter-spacing:0.1em;margin-bottom:10px}
-
-/* MEMORY */
-.mem-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.08);border-radius:10px;margin-bottom:6px}
-.mem-k{font-size:0.65rem;color:var(--cyan);font-family:'Orbitron',sans-serif;letter-spacing:0.05em;margin-right:8px}
-.mem-v{font-size:0.8rem;color:var(--text);flex:1}
-.mem-del{background:none;border:none;color:rgba(255,45,120,0.5);cursor:pointer;font-size:0.8rem;padding:0 4px}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
-.chip{padding:3px 10px;border-radius:10px;background:rgba(0,245,255,0.06);border:1px solid rgba(0,245,255,0.15);color:rgba(255,255,255,0.45);font-size:0.6rem;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
-.chip:active{background:rgba(0,245,255,0.15)}
-.mem-inp{width:100%;padding:8px 12px;background:rgba(0,245,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.85rem;outline:none;margin-bottom:6px}
-.mem-inp::placeholder{color:rgba(255,255,255,0.2)}
-.mem-inp:focus{border-color:var(--cyan)}
-.ldt{text-align:center;font-size:0.7rem;color:var(--dim);padding:14px;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
-
-/* MOOD */
-.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.mood-opt{padding:12px 8px;text-align:center;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.1);border-radius:14px;cursor:pointer;transition:all 0.2s}
-.mood-opt.sel{background:linear-gradient(135deg,rgba(0,245,255,0.12),rgba(255,45,120,0.1));border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,0.15)}
-.mood-emoji{font-size:1.4rem;display:block;margin-bottom:3px}
-.mood-lbl{font-size:0.52rem;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
-.energy-bar{margin-bottom:12px}
-.energy-lbl{font-size:0.62rem;color:var(--dim);margin-bottom:6px;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
-input[type=range]{width:100%;accent-color:var(--cyan)}
-.mood-hist-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(0,245,255,0.05);font-size:0.78rem}
-.mood-hist-item:last-child{border-bottom:none}
-.mdate{font-size:0.52rem;color:var(--dim);margin-left:auto;font-family:'Orbitron',sans-serif}
 </style>
 </head>
 <body>
 
+<!-- SIDEBAR -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sb-top">
+    <input class="sb-search" placeholder="Search chats...">
+    <button class="sb-newbtn" onclick="newChat()">✏️</button>
+  </div>
+  <div class="sb-body">
+    <div class="sb-section">QUICK ACCESS</div>
+    <div class="sb-item on" onclick="closeSidebar()"><span class="sb-item-ic">💬</span> New Chat</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('brief')"><span class="sb-item-ic">📡</span> Daily Briefing</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('mem')"><span class="sb-item-ic">🧠</span> Memory</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('mood')"><span class="sb-item-ic">💠</span> Mood Tracker</div>
+    <div class="sb-section" style="margin-top:8px">RECENT CHATS</div>
+    <div id="sbHist"><div style="padding:8px;font-size:0.72rem;color:var(--dim)">Loading...</div></div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar">N</div>
+      <div class="sb-name">Nazib</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP -->
 <div class="top">
-  <div class="avatar">P.E.P</div>
-  <div>
-    <div class="name">P.E.P.P.E.R</div>
-    <div class="sub" id="statusTxt">SYSTEM ONLINE</div>
+  <button class="menu-btn" onclick="openSidebar()">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-ring">
+      <svg id="logoSvg" viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="13" stroke="url(#g1)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="30" y2="30"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#ff2d78"/></linearGradient></defs>
+      </svg>
+      <div class="logo-inner">P.E.P</div>
+    </div>
+    <div>
+      <div class="logo-name">P.E.P.P.E.R</div>
+      <div class="logo-sub" id="statusTxt">Online</div>
+    </div>
   </div>
   <div class="top-right">
-    <div class="status-dot"></div>
     <div class="clk" id="clk">--:--</div>
   </div>
 </div>
 
-<!-- PAGES -->
+<!-- CHAT PAGE -->
 <div class="pg on" id="pg-chat" style="flex-direction:column">
-  <div class="msgs" id="msgs"></div>
-  <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="inp-bar">
-    <textarea id="msg" rows="1" placeholder="Talk to PEPPER..."></textarea>
-    <button class="mic-btn" id="micBtn" onclick="toggleMic()">&#127908;</button>
-    <button class="send-btn" id="sbtn" onclick="send()">&#9658;</button>
-  </div>
-</div>
-
-<div class="pg" id="pg-brief">
-  <div class="pg-body">
-    <div class="card">
-      <div class="brief-greeting" id="bGreet">GOOD MORNING</div>
-      <div class="brief-date" id="bDate"></div>
-      <div class="brief-quote" id="bQuote">Loading...</div>
-      <input class="brief-inp" id="bCity" placeholder="Enter your city...">
-      <button class="brief-btn" onclick="loadBrief()">INITIALIZE BRIEFING</button>
-    </div>
-    <div class="card" id="bWeatherCard" style="display:none">
-      <div class="card-title">ENVIRONMENT STATUS</div>
-      <div id="bWeather"></div>
-    </div>
-    <div class="card" id="bNewsCard" style="display:none">
-      <div class="card-title">INTEL FEED</div>
-      <div id="bNews"></div>
+  <div id="welcomeScreen" class="welcome">
+    <div class="welcome-logo">P.E.P</div>
+    <h2>What can I help with?</h2>
+    <p>Your personal AI assistant, powered by Tony Stark</p>
+    <div class="chips">
+      <div class="chip" onclick="quickSend('Create an image')"><span class="chip-ic">🎨</span> Create image</div>
+      <div class="chip" onclick="quickSend('Make a plan for today')"><span class="chip-ic">💡</span> Make a plan</div>
+      <div class="chip" onclick="quickSend('Give me advice')"><span class="chip-ic">🎓</span> Get advice</div>
+      <div class="chip" onclick="quickSend('Write code for me')"><span class="chip-ic">💻</span> Code</div>
     </div>
   </div>
-</div>
-
-<div class="pg" id="pg-hist">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">CONVERSATION LOG</div>
-      <button class="hist-clear" onclick="clearHistory()">PURGE ALL RECORDS</button>
-      <div id="histList"><div class="ldt">LOADING...</div></div>
-    </div>
+  <div class="msgs" id="msgs" style="display:none"></div>
+  <div class="typing-row">
+    <div class="msg-av b" id="typingAv" style="display:none">P</div>
+    <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
-</div>
-
-<div class="pg" id="pg-mem">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">MEMORY CORE</div>
-      <div id="memList"><div class="ldt">NO DATA STORED</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">UPLOAD MEMORY</div>
-      <div class="chips">
-        <span class="chip" onclick="fillMem('My name')">NAME</span>
-        <span class="chip" onclick="fillMem('My age')">AGE</span>
-        <span class="chip" onclick="fillMem('My city')">CITY</span>
-        <span class="chip" onclick="fillMem('My hobby')">HOBBY</span>
-        <span class="chip" onclick="fillMem('My job')">JOB</span>
-        <span class="chip" onclick="fillMem('My goal')">GOAL</span>
-        <span class="chip" onclick="fillMem('My college')">COLLEGE</span>
-        <span class="chip" onclick="fillMem('My friend')">FRIEND</span>
+  <div class="inp-wrap">
+    <div class="inp-box">
+      <textarea id="msg" rows="1" placeholder="Ask PEPPER anything..."></textarea>
+      <div class="inp-btns">
+        <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+        <button class="send-btn" id="sbtn" onclick="send()">▶</button>
       </div>
-      <input class="mem-inp" id="memK" placeholder="Topic (e.g. My name)">
-      <input class="mem-inp" id="memV" placeholder="Value (e.g. Nazib)">
-      <button class="brief-btn" onclick="addMem()">SAVE TO CORE</button>
     </div>
   </div>
 </div>
 
-<div class="pg" id="pg-mood">
-  <div class="pg-body">
-    <div class="card">
-      <div class="card-title">EMOTIONAL STATUS</div>
-      <div class="mood-grid">
-        <div class="mood-opt" onclick="logMood('Happy',this)"><span class="mood-emoji">😊</span><span class="mood-lbl">HAPPY</span></div>
-        <div class="mood-opt" onclick="logMood('Sad',this)"><span class="mood-emoji">😔</span><span class="mood-lbl">SAD</span></div>
-        <div class="mood-opt" onclick="logMood('Stressed',this)"><span class="mood-emoji">😤</span><span class="mood-lbl">STRESSED</span></div>
-        <div class="mood-opt" onclick="logMood('Tired',this)"><span class="mood-emoji">😴</span><span class="mood-lbl">TIRED</span></div>
-        <div class="mood-opt" onclick="logMood('Motivated',this)"><span class="mood-emoji">🔥</span><span class="mood-lbl">MOTIVATED</span></div>
-        <div class="mood-opt" onclick="logMood('Anxious',this)"><span class="mood-emoji">😰</span><span class="mood-lbl">ANXIOUS</span></div>
-        <div class="mood-opt" onclick="logMood('Loved',this)"><span class="mood-emoji">🥰</span><span class="mood-lbl">LOVED</span></div>
-        <div class="mood-opt" onclick="logMood('Excited',this)"><span class="mood-emoji">😁</span><span class="mood-lbl">EXCITED</span></div>
-        <div class="mood-opt" onclick="logMood('Meh',this)"><span class="mood-emoji">😐</span><span class="mood-lbl">MEH</span></div>
-      </div>
-      <div class="energy-bar">
-        <div class="energy-lbl">ENERGY LEVEL: <span id="energyVal">5</span>/10</div>
-        <input type="range" min="1" max="10" value="5" id="energySlider" oninput="document.getElementById('energyVal').textContent=this.value">
-      </div>
-      <button class="brief-btn" onclick="saveMoodEntry()">LOG STATUS</button>
-    </div>
-    <div class="card">
-      <div class="card-title">STATUS HISTORY</div>
-      <div id="moodHist"><div class="ldt">NO DATA</div></div>
-    </div>
+<!-- BRIEF PAGE -->
+<div class="pg" id="pg-brief" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">DAILY BRIEFING</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:3px" id="bGreet">GOOD MORNING</div>
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:14px" id="bDate"></div>
+    <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);font-style:italic;border-left:2px solid var(--pink);padding-left:10px;line-height:1.6;margin-bottom:14px" id="bQuote">Loading...</div>
+    <input style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px" id="bCity" placeholder="Enter your city...">
+    <button onclick="loadBrief()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">GET BRIEFING</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:none" id="bWeatherCard">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">WEATHER</div>
+    <div id="bWeather"></div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:none" id="bNewsCard">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">TOP NEWS</div>
+    <div id="bNews"></div>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="bni on" onclick="showPg('chat',this)"><span class="bni-ic">💬</span>CHAT</button>
-  <button class="bni" onclick="showPg('brief',this)"><span class="bni-ic">📡</span>BRIEF</button>
-  <button class="bni" onclick="showPg('hist',this)"><span class="bni-ic">🗂</span>LOG</button>
-  <button class="bni" onclick="showPg('mem',this)"><span class="bni-ic">🧠</span>MEMORY</button>
-  <button class="bni" onclick="showPg('mood',this)"><span class="bni-ic">💠</span>MOOD</button>
-</nav>
+<!-- MEMORY PAGE -->
+<div class="pg" id="pg-mem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">MEMORY CORE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">STORED DATA</div>
+    <div id="memList"><div style="font-size:0.75rem;color:var(--dim);padding:8px">No data stored yet</div></div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">ADD MEMORY</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      <span onclick="fillMem('My name')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">Name</span>
+      <span onclick="fillMem('My age')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">Age</span>
+      <span onclick="fillMem('My city')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">City</span>
+      <span onclick="fillMem('My hobby')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">Hobby</span>
+      <span onclick="fillMem('My job')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">Job</span>
+      <span onclick="fillMem('My college')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">College</span>
+    </div>
+    <input id="memK" placeholder="Topic (e.g. My name)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:6px">
+    <input id="memV" placeholder="Value (e.g. Nazib)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <button onclick="addMem()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">SAVE TO CORE</button>
+  </div>
+</div>
+
+<!-- MOOD PAGE -->
+<div class="pg" id="pg-mood" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">MOOD TRACKER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">HOW ARE YOU FEELING?</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+      <div class="mood-opt" onclick="logMood('Happy',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all 0.2s"><span style="font-size:1.3rem;display:block;margin-bottom:3px">😊</span><span style="font-size:0.55rem;color:var(--dim)">Happy</span></div>
+      <div class="mood-opt" onclick="logMood('Sad',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer"><span style="font-size:1.3rem;display:block;margin-bottom:3px">😔</span><span style="font-size:0.55rem;color:var(--dim)">Sad</span></div>
+      <div class="mood-opt" onclick="logMood('Stressed',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer"><span style="font-size:1.3rem;display:block;margin-bottom:3px">😤</span><span style="font-size:0.55rem;color:var(--dim)">Stressed</span></div>
+      <div class="mood-opt" onclick="logMood('Tired',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer"><span style="font-size:1.3rem;display:block;margin-bottom:3px">😴</span><span style="font-size:0.55rem;color:var(--dim)">Tired</span></div>
+      <div class="mood-opt" onclick="logMood('Motivated',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer"><span style="font-size:1.3rem;display:block;margin-bottom:3px">🔥</span><span style="font-size:0.55rem;color:var(--dim)">Motivated</span></div>
+      <div class="mood-opt" onclick="logMood('Excited',this)" style="padding:12px 6px;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer"><span style="font-size:1.3rem;display:block;margin-bottom:3px">😁</span><span style="font-size:0.55rem;color:var(--dim)">Excited</span></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:0.65rem;color:var(--dim);margin-bottom:6px">Energy: <span id="energyVal">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" id="energySlider" style="width:100%;accent-color:var(--cyan)" oninput="document.getElementById('energyVal').textContent=this.value">
+    </div>
+    <button onclick="saveMoodEntry()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">LOG MOOD</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">MOOD HISTORY</div>
+    <div id="moodHist"><div style="font-size:0.75rem;color:var(--dim);padding:8px">No mood logged yet</div></div>
+  </div>
+</div>
 
 <script>
 var BASE='https://maria-assistant-fthu.onrender.com';
 var DB={memory:{},moods:[]};
 try{var s=localStorage.getItem('pepper_db');if(s)DB=JSON.parse(s);}catch(e){}
 function saveDB(){try{localStorage.setItem('pepper_db',JSON.stringify(DB));}catch(e){}}
+var chatStarted=false;
 
-setInterval(function(){
-  var n=new Date(),h=n.getHours(),m=n.getMinutes();
-  document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
-},1000);
+// CLOCK
+setInterval(function(){var n=new Date(),h=n.getHours(),m=n.getMinutes();document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);},1000);
 
-function showPg(id,btn){
-  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.bni').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('pg-'+id).classList.add('on');
-  btn.classList.add('on');
-  if(id==='brief')initBrief();
-  if(id==='hist')loadHist();
-  if(id==='mem')renderMem();
-  if(id==='mood')renderMoodHist();
+// SIDEBAR
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('on');
+  document.getElementById('overlay').classList.add('on');
+  loadSbHist();
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('on');
+  document.getElementById('overlay').classList.remove('on');
+}
+function loadSbHist(){
+  fetch(BASE+'/history')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var el=document.getElementById('sbHist');
+    if(!d.history||!d.history.length){el.innerHTML='<div style="padding:8px;font-size:0.72rem;color:var(--dim)">No history yet</div>';return;}
+    el.innerHTML=d.history.slice(0,10).map(function(h){return '<div class="sb-item"><span class="sb-item-ic">💬</span>'+h.user.substring(0,35)+'</div>';}).join('');
+  }).catch(function(){});
 }
 
+// PAGES
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg-'+id).classList.add('on');
+  if(id==='brief')initBrief();
+  if(id==='mem')renderMem();
+  if(id==='mood')renderMoodHist();
+  closeSidebar();
+}
+
+// NEW CHAT
+function newChat(){
+  chatStarted=false;
+  document.getElementById('welcomeScreen').style.display='flex';
+  document.getElementById('msgs').style.display='none';
+  document.getElementById('msgs').innerHTML='';
+  showPg('chat');
+  fetch(BASE+'/clear',{method:'POST'}).catch(function(){});
+}
+
+// MEMORY
 function renderMem(){
   var el=document.getElementById('memList');
   var keys=Object.keys(DB.memory);
-  if(!keys.length){el.innerHTML='<div class="ldt">NO DATA STORED</div>';return;}
-  el.innerHTML=keys.map(function(k){return '<div class="mem-item"><span class="mem-k">'+k+'</span><span class="mem-v">'+DB.memory[k]+'</span><button class="mem-del" onclick="delMem(\''+k+'\')">×</button></div>';}).join('');
+  if(!keys.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">No data stored yet</div>';return;}
+  el.innerHTML=keys.map(function(k){return '<div style="display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:0.65rem;color:var(--cyan);margin-right:8px;min-width:80px">'+k+'</span><span style="font-size:0.82rem;flex:1">'+DB.memory[k]+'</span><button onclick="delMem(\''+k+'\')" style="background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:0.8rem">×</button></div>';}).join('');
 }
 function addMem(){
   var k=document.getElementById('memK').value.trim(),v=document.getElementById('memV').value.trim();
@@ -293,36 +331,38 @@ function autoDetect(txt){
   var c=txt.match(/i (?:live|am from|stay) in ([a-zA-Z ]+)/i);
   if(c&&c[1]){DB.memory['My city']=c[1].trim();saveDB();}
 }
-function memCtx(){var keys=Object.keys(DB.memory);return keys.length?keys.map(function(k){return k+': '+DB.memory[k];}).join(', '):'';}
+function memCtx(){var keys=Object.keys(DB.memory);return keys.length?keys.map(function(k){return k+': '+DB.memory[k];}).join(', '):'Nazib';}
 
-function logMood(mood,btn){document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');}
+// MOOD
+function logMood(mood,btn){document.querySelectorAll('.mood-opt').forEach(function(b){b.style.borderColor='var(--border)';b.style.background='var(--bg3)';});btn.style.borderColor='var(--cyan)';btn.style.background='rgba(0,229,255,0.08)';btn.dataset.mood=mood;}
 function saveMoodEntry(){
-  var mood=document.querySelector('.mood-opt.sel');
-  if(!mood){alert('Select a mood!');return;}
-  var moodName=mood.querySelector('.mood-lbl').textContent;
+  var sel=document.querySelector('.mood-opt[data-mood]');
+  if(!sel){alert('Select a mood!');return;}
+  var moodName=sel.dataset.mood;
   var energy=document.getElementById('energySlider').value;
   var now=new Date();
   DB.moods.unshift({mood:moodName,energy:energy,date:now.toLocaleDateString()+' '+now.toLocaleTimeString()});
   if(DB.moods.length>30)DB.moods=DB.moods.slice(0,30);
   saveDB();renderMoodHist();
+  showPg('chat');
+  startChat();
   addMsg('u','Mood: '+moodName+', Energy: '+energy+'/10');
-  askPepper('Nazib ka mood aaj '+moodName+' hai aur energy '+energy+'/10 hai. Short caring response do Hinglish mein.',false);
-  showPg('chat',document.querySelector('.bni'));
+  askPepper('Nazib ka mood '+moodName+' hai aur energy '+energy+'/10. Short warm response do Hinglish mein, 2 sentences.',false);
 }
 function renderMoodHist(){
   var el=document.getElementById('moodHist');
-  if(!DB.moods.length){el.innerHTML='<div class="ldt">NO DATA</div>';return;}
-  var emojis={'HAPPY':'😊','SAD':'😔','STRESSED':'😤','TIRED':'😴','MOTIVATED':'🔥','ANXIOUS':'😰','LOVED':'🥰','EXCITED':'😁','MEH':'😐'};
-  el.innerHTML=DB.moods.slice(0,10).map(function(m){return '<div class="mood-hist-item"><span style="font-size:1.1rem">'+(emojis[m.mood]||'💠')+'</span><span>'+m.mood+'</span><span style="font-size:0.62rem;color:var(--cyan)">E:'+m.energy+'/10</span><span class="mdate">'+m.date+'</span></div>';}).join('');
+  if(!DB.moods.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">No mood logged yet</div>';return;}
+  el.innerHTML=DB.moods.slice(0,8).map(function(m){return '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem"><span>'+m.mood+'</span><span style="font-size:0.65rem;color:var(--cyan)">E:'+m.energy+'/10</span><span style="font-size:0.55rem;color:var(--dim);margin-left:auto">'+m.date+'</span></div>';}).join('');
 }
 
-var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Himmat karo, sab theek hoga.','Mehnat kabhi bekar nahi jaati.'];
+// BRIEFING
+var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Mehnat kabhi bekar nahi jaati.','Himmat rakho, sab theek hoga.'];
 function initBrief(){
   var n=new Date(),h=n.getHours();
   document.getElementById('bGreet').textContent=h<12?'GOOD MORNING, NAZIB':h<17?'GOOD AFTERNOON, NAZIB':'GOOD EVENING, NAZIB';
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('bDate').textContent=days[n.getDay()]+' / '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
+  document.getElementById('bDate').textContent=days[n.getDay()]+', '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
   document.getElementById('bQuote').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   if(DB.memory['My city'])document.getElementById('bCity').value=DB.memory['My city'];
 }
@@ -331,113 +371,107 @@ function loadBrief(){
   DB.memory['My city']=city;saveDB();
   document.getElementById('bWeatherCard').style.display='block';
   document.getElementById('bNewsCard').style.display='block';
-  document.getElementById('bWeather').innerHTML='<div class="ldt">SCANNING...</div>';
-  document.getElementById('bNews').innerHTML='<div class="ldt">FETCHING INTEL...</div>';
+  document.getElementById('bWeather').innerHTML='<div style="font-size:0.72rem;color:var(--dim);padding:8px">Scanning...</div>';
+  document.getElementById('bNews').innerHTML='<div style="font-size:0.72rem;color:var(--dim);padding:8px">Fetching...</div>';
   fetch(BASE+'/weather?city='+encodeURIComponent(city))
   .then(function(r){return r.json();})
   .then(function(d){
-    if(d.error){document.getElementById('bWeather').innerHTML='<div class="ldt">'+d.error+'</div>';return;}
-    document.getElementById('bWeather').innerHTML='<div class="weather-box"><div style="font-size:2rem">🌡</div><div><div class="w-temp">'+d.temp+'°C</div><div class="w-info">'+d.description.toUpperCase()+'<br>FEELS LIKE '+d.feels_like+'°C &nbsp;|&nbsp; HUMIDITY '+d.humidity+'%<br>'+d.city.toUpperCase()+', '+d.country+'</div></div></div>';
-  }).catch(function(){document.getElementById('bWeather').innerHTML='<div class="ldt">UNAVAILABLE</div>';});
+    if(d.error){document.getElementById('bWeather').innerHTML='<div style="font-size:0.72rem;color:var(--dim)">'+d.error+'</div>';return;}
+    document.getElementById('bWeather').innerHTML='<div style="display:flex;align-items:center;gap:12px;padding:8px;background:var(--bg3);border-radius:12px"><div style="font-size:1.8rem">🌡</div><div><div style="font-size:1.3rem;font-weight:700;color:var(--cyan)">'+d.temp+'°C</div><div style="font-size:0.65rem;color:var(--dim);line-height:1.6">'+d.description+'<br>Feels '+d.feels_like+'°C · Humidity '+d.humidity+'%<br>'+d.city+', '+d.country+'</div></div></div>';
+  }).catch(function(){});
   fetch(BASE+'/news')
   .then(function(r){return r.json();})
   .then(function(d){
-    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div class="ldt">NO INTEL</div>';return;}
-    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">// '+a.source+'</div></div>';}).join('');
-  }).catch(function(){document.getElementById('bNews').innerHTML='<div class="ldt">UNAVAILABLE</div>';});
+    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div style="font-size:0.72rem;color:var(--dim)">No news available</div>';return;}
+    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div style="padding:8px 0;border-bottom:1px solid var(--border)"><div style="font-size:0.78rem;color:var(--text);line-height:1.4">'+a.title+'</div><div style="font-size:0.58rem;color:var(--cyan);margin-top:2px;opacity:0.6">'+a.source+'</div></div>';}).join('');
+  }).catch(function(){});
 }
 
-function loadHist(){
-  fetch(BASE+'/history')
-  .then(function(r){return r.json();})
-  .then(function(d){
-    var el=document.getElementById('histList');
-    if(!d.history||!d.history.length){el.innerHTML='<div class="ldt">NO RECORDS</div>';return;}
-    el.innerHTML=d.history.map(function(h){return '<div class="hist-item"><div class="hist-u">// NAZIB: '+h.user+'</div><div class="hist-b">PEPPER: '+(h.assistant||'...')+'</div><div class="hist-t">'+h.time+'</div></div>';}).join('');
-  }).catch(function(){document.getElementById('histList').innerHTML='<div class="ldt">COULD NOT LOAD</div>';});
-}
-function clearHistory(){
-  if(!confirm('Purge all records?'))return;
-  fetch(BASE+'/clear',{method:'POST'}).then(function(){loadHist();});
+// CHAT
+function startChat(){
+  if(!chatStarted){
+    chatStarted=true;
+    document.getElementById('welcomeScreen').style.display='none';
+    document.getElementById('msgs').style.display='flex';
+  }
 }
 
-document.getElementById('msg').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
+document.getElementById('msg').addEventListener('input',function(){
+  this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';
+  document.getElementById('sbtn').className=this.value.trim()?'send-btn active':'send-btn';
+});
 document.getElementById('msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
 
 function addMsg(role,text){
+  startChat();
   var msgs=document.getElementById('msgs');
-  var d=document.createElement('div');d.className='msg '+role;
+  var row=document.createElement('div');row.className='msg-row '+role;
   var safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  d.innerHTML='<div class="lbl">'+(role==='u'?'// NAZIB':'// PEPPER')+'</div><div class="bub">'+safe+'</div>';
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
-  return d;
+  if(role==='b'){
+    row.innerHTML='<div class="msg-av b">P</div><div class="bub">'+safe+'</div>';
+  } else {
+    row.innerHTML='<div class="bub">'+safe+'</div><div class="msg-av u">N</div>';
+  }
+  msgs.appendChild(row);msgs.scrollTop=msgs.scrollHeight;
+  return row;
 }
 
-// ElevenLabs realistic voice
+// SPINNING LOGO
+function setSpinning(on){
+  var svg=document.getElementById('logoSvg');
+  if(on)svg.classList.add('spin');else svg.classList.remove('spin');
+}
+
+// ElevenLabs voice
 var EL_KEY='sk_6d79929d2599863eee39adfec4b8bd7feb8d6a5d5271ec04';
-var EL_VOICE='21m00Tcm4TlvDq8ikWAM'; // Rachel - warm female voice
+var EL_VOICE='21m00Tcm4TlvDq8ikWAM';
 var speaking=false;
-var audioCtx=null;
-
 function cleanForSpeech(t){var out='';for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if((c>=32&&c<=126)||(c>=2304&&c<=2431))out+=t[i];else out+=' ';}return out.replace(/ +/g,' ').trim();}
-
 function speak(text){
-  var clean=cleanForSpeech(text);
-  if(!clean||speaking)return;
-  speaking=true;
+  var clean=cleanForSpeech(text);if(!clean||speaking)return;speaking=true;
   fetch('https://api.elevenlabs.io/v1/text-to-speech/'+EL_VOICE+'/stream',{
     method:'POST',
-    headers:{
-      'xi-api-key':EL_KEY,
-      'Content-Type':'application/json',
-      'Accept':'audio/mpeg'
-    },
-    body:JSON.stringify({
-      text:clean,
-      model_id:'eleven_multilingual_v2',
-      voice_settings:{stability:0.5,similarity_boost:0.75,style:0.3,use_speaker_boost:true}
-    })
+    headers:{'xi-api-key':EL_KEY,'Content-Type':'application/json','Accept':'audio/mpeg'},
+    body:JSON.stringify({text:clean,model_id:'eleven_multilingual_v2',voice_settings:{stability:0.5,similarity_boost:0.75,style:0.3,use_speaker_boost:true}})
   })
-  .then(function(r){
-    if(!r.ok)throw new Error('EL failed');
-    return r.blob();
-  })
+  .then(function(r){if(!r.ok)throw new Error('EL failed');return r.blob();})
   .then(function(blob){
-    var url=URL.createObjectURL(blob);
-    var audio=new Audio(url);
+    var url=URL.createObjectURL(blob);var audio=new Audio(url);
     audio.onended=function(){speaking=false;URL.revokeObjectURL(url);};
     audio.onerror=function(){speaking=false;fallbackSpeak(clean);};
     audio.play().catch(function(){speaking=false;fallbackSpeak(clean);});
-  })
-  .catch(function(){speaking=false;fallbackSpeak(clean);});
+  }).catch(function(){speaking=false;fallbackSpeak(clean);});
 }
-
 function fallbackSpeak(text){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(text);
-  u.rate=0.93;u.pitch=1.05;u.volume=1;
+  var u=new SpeechSynthesisUtterance(text);u.rate=0.93;u.pitch=1.05;
   window.speechSynthesis.speak(u);
 }
-if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 function askPepper(txt,doSpeak){
   var btn=document.getElementById('sbtn');btn.disabled=true;
-  document.getElementById('statusTxt').textContent='PROCESSING...';
+  document.getElementById('statusTxt').textContent='Thinking...';
   document.getElementById('typing').classList.add('show');
+  document.getElementById('typingAv').style.display='flex';
+  setSpinning(true);
   document.getElementById('msgs').scrollTop=99999;
   fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,memory:memCtx()})})
   .then(function(r){return r.json();})
   .then(function(d){
     document.getElementById('typing').classList.remove('show');
-    btn.disabled=false;document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
-    var reply=d.reply||'Error. Retry.';
+    document.getElementById('typingAv').style.display='none';
+    btn.disabled=false;setSpinning(false);
+    document.getElementById('statusTxt').textContent='Online';
+    var reply=d.reply||'Error, retry.';
     addMsg('b',reply);
     if(doSpeak)speak(reply);
   })
   .catch(function(){
     document.getElementById('typing').classList.remove('show');
-    btn.disabled=false;document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
+    document.getElementById('typingAv').style.display='none';
+    btn.disabled=false;setSpinning(false);
+    document.getElementById('statusTxt').textContent='Online';
     addMsg('b','Connection lost. Retry.');
   });
 }
@@ -445,9 +479,16 @@ function askPepper(txt,doSpeak){
 function send(){
   var inp=document.getElementById('msg');var txt=inp.value.trim();if(!txt)return;
   inp.value='';inp.style.height='auto';
+  document.getElementById('sbtn').className='send-btn';
   addMsg('u',txt);autoDetect(txt);askPepper(txt,true);
 }
 
+function quickSend(txt){
+  startChat();
+  addMsg('u',txt);askPepper(txt,true);
+}
+
+// MIC
 var recog=null,listening=false;
 function toggleMic(){
   if(listening){stopMic();return;}
@@ -455,16 +496,18 @@ function toggleMic(){
   if(!SR){addMsg('b','Use Chrome for voice');return;}
   if(window.speechSynthesis)window.speechSynthesis.cancel();
   recog=new SR();recog.lang='hi-IN';recog.continuous=false;recog.interimResults=false;
-  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='LISTENING...';};
+  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
   recog.onresult=function(e){var txt=e.results[0][0].transcript.trim();stopMic();if(txt){addMsg('u',txt);autoDetect(txt);askPepper(txt,true);}};
   recog.onerror=function(){stopMic();};recog.onend=function(){stopMic();};
   try{recog.start();}catch(e){stopMic();}
 }
 function stopMic(){
-  listening=false;document.getElementById('micBtn').classList.remove('on');document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
+  listening=false;document.getElementById('micBtn').classList.remove('on');
+  document.getElementById('statusTxt').textContent='Online';
   if(recog){try{recog.stop();}catch(e){}recog=null;}
 }
 
+// GREET
 setTimeout(function(){
   var h=new Date().getHours();var t=h<12?'morning':h<17?'afternoon':'evening';
   askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences. You are PEPPER.',false);
