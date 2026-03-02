@@ -135,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- TOP -->
-  <div class="top">
+<div class="top">
   <button class="menu-btn" onclick="openSidebar()">☰</button>
   <div class="logo-wrap">
     <div class="logo-ring">
@@ -153,6 +153,14 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   <div class="top-right">
     <div class="clk" id="clk">--:--</div>
   </div>
+</div>
+
+<!-- MODE BAR -->
+<div class="mode-bar" id="modeBar">
+  <button class="mode-chip on" onclick="setMode('normal',this)">💬 NORMAL</button>
+  <button class="mode-chip" onclick="setMode('study',this)">📚 STUDY</button>
+  <button class="mode-chip" onclick="setMode('focus',this)">🎯 FOCUS</button>
+  <button class="mode-chip emergency" onclick="setMode('emergency',this)">🚨 EMERGENCY</button>
 </div>
 
 <!-- CHAT PAGE -->
@@ -242,7 +250,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- MOOD PAGE -->
-<div class="pg" id="pg-mood" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+  <div class="pg" id="pg-mood" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">MOOD TRACKER</span>
@@ -266,6 +274,154 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
     <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">MOOD HISTORY</div>
     <div id="moodHist"><div style="font-size:0.75rem;color:var(--dim);padding:8px">No mood logged yet</div></div>
+  </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div class="pg" id="pg-dash" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">DASHBOARD</span>
+  </div>
+  <div class="dash-grid">
+    <div class="dash-card"><div class="dash-val" id="dTime">--:--</div><div class="dash-lbl">CURRENT TIME</div></div>
+    <div class="dash-card"><div class="dash-val" id="dDate">--</div><div class="dash-lbl">TODAY</div></div>
+    <div class="dash-card"><div class="dash-val" id="dMood">--</div><div class="dash-lbl">LAST MOOD</div></div>
+    <div class="dash-card"><div class="dash-val" id="dTasks">0</div><div class="dash-lbl">TASKS LEFT</div></div>
+  </div>
+  <div class="dash-wide">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">QUICK ACTIONS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="showPg('rem')" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">⏰ Reminders</button>
+      <button onclick="showPg('tasks')" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">✅ Tasks</button>
+      <button onclick="showPg('calc')" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🧮 Calculator</button>
+      <button onclick="showPg('decide')" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🤔 Decide</button>
+    </div>
+  </div>
+  <div class="dash-wide" id="dashReminders">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">UPCOMING REMINDERS</div>
+    <div id="dashRemList"><div style="font-size:0.75rem;color:var(--dim)">No reminders set</div></div>
+  </div>
+</div>
+
+<!-- REMINDERS PAGE -->
+<div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">REMINDERS</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <input id="remText" placeholder="Reminder text..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <input id="remTime" type="time" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <button onclick="addReminder()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">ADD REMINDER</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">ALL REMINDERS</div>
+    <div id="remList"><div style="font-size:0.75rem;color:var(--dim)">No reminders yet</div></div>
+  </div>
+</div>
+
+<!-- TASKS PAGE -->
+<div class="pg" id="pg-tasks" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">TASK MANAGER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <input id="taskTxt" placeholder="Add a task..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <div style="display:flex;gap:6px;margin-bottom:8px">
+      <button onclick="setTaskPri('high')" id="priHigh" style="flex:1;padding:7px;border-radius:10px;background:rgba(255,45,120,0.1);border:1px solid rgba(255,45,120,0.2);color:var(--pink);font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">HIGH</button>
+      <button onclick="setTaskPri('med')" id="priMed" style="flex:1;padding:7px;border-radius:10px;background:rgba(255,200,0,0.1);border:1px solid rgba(255,200,0,0.2);color:#ffc800;font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">MED</button>
+      <button onclick="setTaskPri('low')" id="priLow" style="flex:1;padding:7px;border-radius:10px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">LOW</button>
+    </div>
+    <button onclick="addTask()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">ADD TASK</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">MY TASKS</div>
+    <div id="taskList"><div style="font-size:0.75rem;color:var(--dim)">No tasks yet</div></div>
+  </div>
+</div>
+
+<!-- CALCULATOR PAGE -->
+<div class="pg" id="pg-calc" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">CALCULATOR</span>
+  </div>
+  <div class="calc-display">
+    <div class="calc-expr" id="calcExpr"></div>
+    <div class="calc-result" id="calcResult">0</div>
+  </div>
+  <div class="calc-grid">
+    <button class="calc-btn clr" onclick="calcClear()">AC</button>
+    <button class="calc-btn clr" onclick="calcDel()">⌫</button>
+    <button class="calc-btn op" onclick="calcOp('%')">%</button>
+    <button class="calc-btn op" onclick="calcOp('÷')">÷</button>
+    <button class="calc-btn" onclick="calcNum('7')">7</button>
+    <button class="calc-btn" onclick="calcNum('8')">8</button>
+    <button class="calc-btn" onclick="calcNum('9')">9</button>
+    <button class="calc-btn op" onclick="calcOp('×')">×</button>
+    <button class="calc-btn" onclick="calcNum('4')">4</button>
+    <button class="calc-btn" onclick="calcNum('5')">5</button>
+    <button class="calc-btn" onclick="calcNum('6')">6</button>
+    <button class="calc-btn op" onclick="calcOp('-')">−</button>
+    <button class="calc-btn" onclick="calcNum('1')">1</button>
+    <button class="calc-btn" onclick="calcNum('2')">2</button>
+    <button class="calc-btn" onclick="calcNum('3')">3</button>
+    <button class="calc-btn op" onclick="calcOp('+')">+</button>
+    <button class="calc-btn" onclick="calcNum('0')">0</button>
+    <button class="calc-btn" onclick="calcNum('.')">.</button>
+    <button class="calc-btn eq wide" onclick="calcEquals()">=</button>
+  </div>
+</div>
+
+<!-- DECISION AI PAGE -->
+<div class="pg" id="pg-decide" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">DECISION AI</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">WHAT ARE YOU DECIDING?</div>
+    <input id="decQuestion" placeholder="e.g. Should I switch jobs?" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <div id="decOptions">
+      <div class="dec-option"><span class="dec-num">1</span><input class="dec-inp-opt" placeholder="Option A..."></div>
+      <div class="dec-option"><span class="dec-num">2</span><input class="dec-inp-opt" placeholder="Option B..."></div>
+    </div>
+    <button onclick="addDecOption()" style="width:100%;padding:8px;background:transparent;border:1px dashed rgba(255,255,255,0.1);border-radius:12px;color:var(--dim);font-size:0.75rem;cursor:pointer;margin-bottom:8px">+ Add option</button>
+    <button onclick="askDecision()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(255,45,120,0.15));border:1px solid var(--cyan);border-radius:14px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">ANALYZE WITH AI</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="decResult">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">PEPPER'S ANALYSIS</div>
+    <div id="decAnswer" style="font-size:0.85rem;line-height:1.7;color:var(--text)"></div>
+  </div>
+</div>
+
+<!-- FOCUS MODE PAGE -->
+<div class="pg" id="pg-focus" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">FOCUS MODE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:16px;letter-spacing:0.1em;font-family:'Orbitron',sans-serif" id="focusLabel">POMODORO TIMER</div>
+    <div class="focus-ring">
+      <svg viewBox="0 0 150 150">
+        <defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#ff2d78"/></linearGradient></defs>
+        <circle class="bg-ring" cx="75" cy="75" r="65"/>
+        <circle class="fg-ring" id="focusCircle" cx="75" cy="75" r="65" stroke-dasharray="408" stroke-dashoffset="0"/>
+      </svg>
+      <div class="focus-time" id="focusTime">25:00</div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
+      <button onclick="setFocus(25,'FOCUS')" style="padding:6px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">25 MIN</button>
+      <button onclick="setFocus(10,'SHORT BREAK')" style="padding:6px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">10 MIN</button>
+      <button onclick="setFocus(5,'BREAK')" style="padding:6px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer;font-family:'Orbitron',sans-serif">5 MIN</button>
+    </div>
+    <div class="focus-btns">
+      <button class="focus-btn start" id="focusStartBtn" onclick="toggleFocus()">START</button>
+      <button class="focus-btn" onclick="resetFocus()">RESET</button>
+    </div>
   </div>
 </div>
 
@@ -302,10 +458,14 @@ function loadSbHist(){
 // PAGES
 function showPg(id){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.getElementById('pg-'+id).classList.add('on');
+  var pg=document.getElementById('pg-'+id);
+  if(pg)pg.classList.add('on');
   if(id==='brief')initBrief();
   if(id==='mem')renderMem();
   if(id==='mood')renderMoodHist();
+  if(id==='dash'){initDash();}
+  if(id==='rem')renderReminders();
+  if(id==='tasks')renderTasks();
   closeSidebar();
 }
 
@@ -485,20 +645,75 @@ function askPepper(txt,doSpeak){
   });
 }
 
+// APP LINKS
+var APPS={
+  'youtube':'https://youtube.com','yt':'https://youtube.com',
+  'whatsapp':'https://web.whatsapp.com','wa':'https://web.whatsapp.com',
+  'instagram':'https://instagram.com','insta':'https://instagram.com',
+  'google':'https://google.com',
+  'spotify':'https://open.spotify.com',
+  'twitter':'https://twitter.com','x':'https://twitter.com',
+  'gmail':'https://mail.google.com',
+  'maps':'https://maps.google.com',
+  'netflix':'https://netflix.com',
+  'github':'https://github.com',
+  'linkedin':'https://linkedin.com',
+  'reddit':'https://reddit.com',
+  'amazon':'https://amazon.in',
+  'flipkart':'https://flipkart.com',
+  'zomato':'https://zomato.com',
+  'swiggy':'https://swiggy.com',
+  'paytm':'https://paytm.com',
+  'gpay':'https://pay.google.com'
+};
+
+function detectApp(txt){
+  var lower=txt.toLowerCase();
+  // Open command detect
+  var openMatch=lower.match(/(?:open|launch|start|chalu|kholo|show)\s+([a-zA-Z]+)/i);
+  if(openMatch){
+    var appName=openMatch[1].toLowerCase();
+    if(APPS[appName]){
+      window.open(APPS[appName],'_blank');
+      addMsg('b','Opening '+appName.charAt(0).toUpperCase()+appName.slice(1)+' for you, Nazib!');
+      return true;
+    }
+  }
+  // Search command detect
+  var searchMatch=lower.match(/(?:search|google|dhundo|find)\s+(.+)/i);
+  if(searchMatch){
+    var query=searchMatch[1];
+    window.open('https://google.com/search?q='+encodeURIComponent(query),'_blank');
+    addMsg('b','Searching "'+query+'" on Google for you!');
+    return true;
+  }
+  // YouTube search
+  var ytMatch=lower.match(/(?:play|youtube|watch)\s+(.+)/i);
+  if(ytMatch){
+    var ytQuery=ytMatch[1];
+    window.open('https://youtube.com/results?search_query='+encodeURIComponent(ytQuery),'_blank');
+    addMsg('b','Opening YouTube search for "'+ytQuery+'"!');
+    return true;
+  }
+  return false;
+}
+
 function send(){
   var inp=document.getElementById('msg');var txt=inp.value.trim();if(!txt)return;
   inp.value='';inp.style.height='auto';
   document.getElementById('sbtn').className='send-btn';
-  addMsg('u',txt);autoDetect(txt);askPepper(txt,true);
+  addMsg('u',txt);autoDetect(txt);
+  if(!detectApp(txt)) askPepper(txt,true);
 }
 
 function quickSend(txt){
   startChat();
-  addMsg('u',txt);askPepper(txt,true);
+  addMsg('u',txt);
+  if(!detectApp(txt)) askPepper(txt,true);
 }
 
 // MIC
-var recog=null,listening=false;
+  var recog=null,listening=false;
 function toggleMic(){
   if(listening){stopMic();return;}
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -521,6 +736,229 @@ setTimeout(function(){
   var h=new Date().getHours();var t=h<12?'morning':h<17?'afternoon':'evening';
   askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences. You are PEPPER.',false);
 },1000);
+
+// MODES
+var currentMode='normal';
+var modePrompts={
+  normal:'You are PEPPER, warm friendly Hinglish AI for Nazib.',
+  study:'You are PEPPER in STUDY MODE. Give detailed educational explanations, use examples, be like a teacher. Focus on learning.',
+  focus:'You are PEPPER in FOCUS MODE. Be minimal and direct. No small talk. Only task-relevant responses.',
+  emergency:'You are PEPPER in EMERGENCY MODE. Be calm, direct, and immediately helpful. Prioritize safety and quick solutions.'
+};
+function setMode(mode,btn){
+  currentMode=mode;
+  document.querySelectorAll('.mode-chip').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var labels={normal:'💬 Normal Mode',study:'📚 Study Mode — detailed explanations',focus:'🎯 Focus Mode — minimal responses',emergency:'🚨 Emergency Mode — stay calm'};
+  document.getElementById('statusTxt').textContent=labels[mode]||'Online';
+  if(mode!=='normal'){
+    addMsg('b','Mode switched: '+mode.toUpperCase()+'. How can I help you, Nazib?');
+  }
+}
+
+// Update sidebar to show modes button
+document.querySelector('.sb-body').innerHTML += '<div class="sb-section" style="margin-top:8px">MODES</div><div class="sb-item" onclick="toggleModeBar();closeSidebar()"><span class="sb-item-ic">⚡</span> Switch Mode</div>';
+
+function toggleModeBar(){
+  var bar=document.getElementById('modeBar');
+  bar.classList.toggle('show');
+}
+
+// Override askPepper to use mode
+var _origAskPepper=askPepper;
+askPepper=function(txt,doSpeak){
+  _origAskPepper(txt,doSpeak);
+};
+
+// DASHBOARD
+function initDash(){
+  var n=new Date();
+  document.getElementById('dTime').textContent=(n.getHours()<10?'0':'')+n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
+  var days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  document.getElementById('dDate').textContent=days[n.getDay()]+' '+n.getDate();
+  document.getElementById('dMood').textContent=DB.moods.length?DB.moods[0].mood:'--';
+  var left=(DB.tasks||[]).filter(function(t){return !t.done;}).length;
+  document.getElementById('dTasks').textContent=left;
+  renderDashRem();
+}
+function renderDashRem(){
+  var el=document.getElementById('dashRemList');
+  var rems=DB.reminders||[];
+  if(!rems.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim)">No reminders set</div>';return;}
+  el.innerHTML=rems.slice(0,3).map(function(r){return '<div class="rem-item"><span class="rem-time">'+r.time+'</span><span class="rem-text"'+(r.done?' class="rem-done"':'')+'>'+r.text+'</span></div>';}).join('');
+}
+
+// REMINDERS
+  if(!DB.reminders)DB.reminders=[];
+function addReminder(){
+  var txt=document.getElementById('remText').value.trim();
+  var time=document.getElementById('remTime').value;
+  if(!txt)return;
+  DB.reminders.push({text:txt,time:time||'--:--',done:false,id:Date.now()});
+  saveDB();renderReminders();
+  document.getElementById('remText').value='';
+  document.getElementById('remTime').value='';
+  scheduleReminder(DB.reminders[DB.reminders.length-1]);
+}
+function scheduleReminder(rem){
+  if(!rem.time||rem.time==='--:--')return;
+  var now=new Date();
+  var parts=rem.time.split(':');
+  var target=new Date();
+  target.setHours(parseInt(parts[0]),parseInt(parts[1]),0,0);
+  var diff=target-now;
+  if(diff<0)diff+=86400000;
+  setTimeout(function(){
+    if(!rem.done){
+      alert('PEPPER REMINDER: '+rem.text);
+      addMsg('b','Reminder: '+rem.text);
+    }
+  },diff);
+}
+function renderReminders(){
+  var el=document.getElementById('remList');
+  if(!DB.reminders.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim)">No reminders yet</div>';return;}
+  el.innerHTML=DB.reminders.map(function(r,i){
+    return '<div class="rem-item"><span class="rem-time">'+r.time+'</span><span class="rem-text'+(r.done?' rem-done':'')+'">'+r.text+'</span><button onclick="delReminder('+i+')" class="rem-del">×</button></div>';
+  }).join('');
+}
+function delReminder(i){DB.reminders.splice(i,1);saveDB();renderReminders();}
+
+// TASKS
+if(!DB.tasks)DB.tasks=[];
+var selPri='med';
+function setTaskPri(p){
+  selPri=p;
+  ['high','med','low'].forEach(function(x){document.getElementById('pri'+x.charAt(0).toUpperCase()+x.slice(1)).style.opacity=x===p?'1':'0.4';});
+}
+function addTask(){
+  var txt=document.getElementById('taskTxt').value.trim();
+  if(!txt)return;
+  DB.tasks.push({text:txt,priority:selPri,done:false,id:Date.now()});
+  saveDB();renderTasks();
+  document.getElementById('taskTxt').value='';
+}
+function toggleTask(i){DB.tasks[i].done=!DB.tasks[i].done;saveDB();renderTasks();}
+function delTask(i){DB.tasks.splice(i,1);saveDB();renderTasks();}
+function renderTasks(){
+  var el=document.getElementById('taskList');
+  if(!DB.tasks.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim)">No tasks yet</div>';return;}
+  el.innerHTML=DB.tasks.map(function(t,i){
+    return '<div class="task-item"><div class="task-check'+(t.done?' done':'')+'" onclick="toggleTask('+i+')">'+(t.done?'✓':'')+'</div><span class="task-txt'+(t.done?' done':'')+'">'+t.text+'</span><span class="task-pri '+t.priority+'">'+t.priority.toUpperCase()+'</span><button class="task-del" onclick="delTask('+i+')">×</button></div>';
+  }).join('');
+}
+
+// CALCULATOR
+var calcExpr='',calcNew=true;
+function calcNum(n){
+  if(calcNew){calcExpr='';calcNew=false;}
+  calcExpr+=n;
+  document.getElementById('calcResult').textContent=calcExpr;
+}
+function calcOp(op){
+  calcNew=false;
+  calcExpr+=op;
+  document.getElementById('calcResult').textContent=calcExpr;
+}
+function calcClear(){calcExpr='';calcNew=true;document.getElementById('calcResult').textContent='0';document.getElementById('calcExpr').textContent='';}
+function calcDel(){calcExpr=calcExpr.slice(0,-1);document.getElementById('calcResult').textContent=calcExpr||'0';}
+function calcEquals(){
+  try{
+    document.getElementById('calcExpr').textContent=calcExpr+' =';
+    var expr=calcExpr.replace(/÷/g,'/').replace(/×/g,'*').replace(/−/g,'-');
+    var result=Function('"use strict";return ('+expr+')')();
+    document.getElementById('calcResult').textContent=parseFloat(result.toFixed(10)).toString();
+    calcExpr=result.toString();calcNew=true;
+  }catch(e){document.getElementById('calcResult').textContent='Error';}
+}
+
+// DECISION AI
+function addDecOption(){
+  var n=document.querySelectorAll('.dec-option').length+1;
+  var div=document.createElement('div');div.className='dec-option';
+  div.innerHTML='<span class="dec-num">'+n+'</span><input class="dec-inp-opt" placeholder="Option '+String.fromCharCode(64+n)+'...">';
+  document.getElementById('decOptions').appendChild(div);
+}
+function askDecision(){
+  var q=document.getElementById('decQuestion').value.trim();
+  var opts=Array.from(document.querySelectorAll('.dec-inp-opt')).map(function(i){return i.value.trim();}).filter(Boolean);
+  if(!q||opts.length<2){alert('Add question and at least 2 options!');return;}
+  document.getElementById('decResult').style.display='block';
+  document.getElementById('decAnswer').textContent='Analyzing...';
+  var prompt='Nazib ko decide karna hai: "'+q+'". Options hain: '+opts.map(function(o,i){return (i+1)+'. '+o;}).join(', ')+'. Pros and cons batao aur best option recommend karo. Hinglish mein, clear aur helpful.';
+  fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,memory:memCtx()})})
+  .then(function(r){return r.json();})
+  .then(function(d){document.getElementById('decAnswer').textContent=d.reply||'Error';})
+  .catch(function(){document.getElementById('decAnswer').textContent='Error. Try again.';});
+}
+
+// FOCUS TIMER
+var focusSecs=25*60,focusTotal=25*60,focusRunning=false,focusInterval=null;
+function setFocus(mins,label){
+  resetFocus();
+  focusSecs=mins*60;focusTotal=mins*60;
+  document.getElementById('focusLabel').textContent=label+' TIMER';
+  updateFocusDisplay();
+}
+function updateFocusDisplay(){
+  var m=Math.floor(focusSecs/60),s=focusSecs%60;
+  document.getElementById('focusTime').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  var prog=1-(focusSecs/focusTotal);
+  var circum=408;
+  document.getElementById('focusCircle').style.strokeDashoffset=circum-(prog*circum);
+}
+function toggleFocus(){
+  if(focusRunning){
+    clearInterval(focusInterval);focusRunning=false;
+    document.getElementById('focusStartBtn').textContent='RESUME';
+  } else {
+    focusRunning=true;
+    document.getElementById('focusStartBtn').textContent='PAUSE';
+    focusInterval=setInterval(function(){
+      if(focusSecs<=0){
+        clearInterval(focusInterval);focusRunning=false;
+        document.getElementById('focusStartBtn').textContent='START';
+        alert('Timer done! Great work, Nazib!');
+        addMsg('b','Timer khatam! Bahut accha kaam kiya Nazib, thoda break lo!');
+        return;
+      }
+      focusSecs--;updateFocusDisplay();
+    },1000);
+  }
+}
+function resetFocus(){
+  clearInterval(focusInterval);focusRunning=false;
+  focusSecs=focusTotal;
+  document.getElementById('focusStartBtn').textContent='START';
+  updateFocusDisplay();
+}
+
+// OVERRIDE showPg to handle new pages
+showPg=function(id){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  var pg=document.getElementById('pg-'+id);
+  if(pg)pg.classList.add('on');
+  if(id==='brief')initBrief();
+  if(id==='mem')renderMem();
+  if(id==='mood')renderMoodHist();
+  if(id==='dash'){initDash();renderReminders();renderTasks();}
+  if(id==='rem')renderReminders();
+  if(id==='tasks')renderTasks();
+  closeSidebar();
+};
+
+// Add sidebar links for new pages
+setTimeout(function(){
+  var sbBody=document.querySelector('.sb-body');
+  if(sbBody){
+    sbBody.innerHTML+='<div class="sb-item" onclick="showPg(\'dash\');closeSidebar()"><span class="sb-item-ic">📊</span> Dashboard</div><div class="sb-item" onclick="showPg(\'focus\');closeSidebar()"><span class="sb-item-ic">⏱</span> Focus Timer</div>';
+  }
+},100);
+
+// Check reminders on load
+setTimeout(function(){
+  (DB.reminders||[]).forEach(function(r){if(!r.done)scheduleReminder(r);});
+},500);
 </script>
 </body>
 </html>
