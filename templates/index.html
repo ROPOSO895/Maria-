@@ -221,19 +221,26 @@ function send(){
   askPepper(txt, false);
 }
 
-// ── IMAGE GENERATION (Pollinations AI - free) ──
+// ── IMAGE GENERATION (Hugging Face - free) ──
 function generateImage(prompt){
   var d=addMsg('b','Generating image, please wait...', false);
-  var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?model=flux&width=1024&height=1024&nologo=true&seed='+Math.floor(Math.random()*1000);
-  var img=new Image();
-  img.onload=function(){
+  fetch('https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell',{
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer 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',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({inputs:prompt})
+  })
+  .then(function(r){return r.blob();})
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);
     d.querySelector('.bub').innerHTML='<img class="msg-img" src="'+url+'" alt="'+prompt+'"><br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">'+prompt+'</span>';
     document.getElementById('msgs').scrollTop=99999;
-  };
-  img.onerror=function(){
+  })
+  .catch(function(){
     d.querySelector('.bub').innerHTML='Image generate nahi ho paya, dobara try karo';
-  };
-  img.src=url;
+  });
 }
 
 // ── WEATHER ──
