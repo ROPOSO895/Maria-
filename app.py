@@ -143,6 +143,25 @@ def news():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/imagine", methods=["POST"])
+def imagine():
+    data = request.get_json()
+    prompt = data.get("prompt", "").strip()
+    if not prompt:
+        return jsonify({"error": "No prompt"}), 400
+    try:
+        url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
+        headers = {"Authorization": "Bearer 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"}
+        response = requests.post(url, headers=headers, json={"inputs": prompt}, timeout=60)
+        if response.status_code == 200:
+            import base64
+            img_b64 = base64.b64encode(response.content).decode('utf-8')
+            return jsonify({"image": f"data:image/jpeg;base64,{img_b64}"})
+        else:
+            return jsonify({"error": "Model loading, try again in 30 seconds"}), 503
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/clear", methods=["POST"])
 def clear():
     conn = get_db()
