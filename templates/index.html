@@ -3,113 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0d0015">
+<meta name="theme-color" content="#010a13">
 <title>P.E.P.P.E.R</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+:root{
+  --cyan:#00f5ff;
+  --pink:#ff2d78;
+  --bg:#010a13;
+  --bg2:#050d18;
+  --glass:rgba(0,245,255,0.04);
+  --border:rgba(0,245,255,0.15);
+  --text:rgba(255,255,255,0.85);
+  --dim:rgba(255,255,255,0.35);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0015;color:#eee;font-family:'Poppins',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* STARS BG */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,245,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(255,45,120,0.04) 0%,transparent 60%);pointer-events:none;z-index:0}
 
 /* TOP */
-.top{background:#1a0030;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,110,180,0.3);flex-shrink:0}
-.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:white;flex-shrink:0;box-shadow:0 0 12px rgba(255,110,180,0.4);letter-spacing:0.05em}
-.name{font-weight:600;font-size:0.95rem;color:#ff6eb4;letter-spacing:0.05em}
-.status{font-size:0.65rem;color:rgba(255,255,255,0.4)}
-.top-right{margin-left:auto;display:flex;align-items:center;gap:6px}
-.clk{font-size:0.75rem;color:rgba(255,255,255,0.35)}
-.icon-btn{background:rgba(255,110,180,0.08);border:1px solid rgba(255,110,180,0.2);color:rgba(255,255,255,0.5);font-size:0.7rem;cursor:pointer;padding:4px 8px;border-radius:10px;font-family:'Poppins',sans-serif}
-.icon-btn:active{background:rgba(255,110,180,0.2)}
+.top{position:relative;z-index:10;background:rgba(1,10,19,0.95);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px)}
+.top::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent)}
+.avatar{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:700;font-family:'Orbitron',sans-serif;color:var(--cyan);flex-shrink:0;box-shadow:0 0 15px rgba(0,245,255,0.3),inset 0 0 15px rgba(0,245,255,0.05)}
+.name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;color:var(--cyan);letter-spacing:0.15em;text-shadow:0 0 20px rgba(0,245,255,0.5)}
+.sub{font-size:0.6rem;color:var(--dim);letter-spacing:0.05em}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.clk{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--cyan);letter-spacing:0.1em}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
 
-/* TABS */
-.tabs{display:flex;background:#120022;border-bottom:1px solid rgba(255,110,180,0.1);flex-shrink:0}
-.tab{flex:1;padding:8px 4px;background:transparent;border:none;color:rgba(255,255,255,0.3);font-family:'Poppins',sans-serif;font-size:0.6rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
-.tab.on{color:#ff6eb4;border-bottom-color:#ff6eb4}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(1,10,19,0.97);border-top:1px solid var(--border);display:flex;backdrop-filter:blur(20px)}
+.bnav::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent)}
+.bni{flex:1;padding:8px 4px 10px;background:transparent;border:none;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:0.55rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;letter-spacing:0.05em;transition:all 0.2s}
+.bni-ic{font-size:1.1rem;line-height:1}
+.bni.on{color:var(--cyan)}
+.bni.on .bni-ic{filter:drop-shadow(0 0 6px var(--cyan))}
 
 /* PAGES */
-.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.pg{display:none;flex:1;overflow-y:auto;flex-direction:column;padding-bottom:70px;position:relative;z-index:1}
 .pg.on{display:flex}
-.pg::-webkit-scrollbar{width:3px}
-.pg::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
+.pg::-webkit-scrollbar{width:2px}
+.pg::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.3);border-radius:2px}
 
 /* CHAT */
-.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:90px;display:flex;flex-direction:column;gap:10px}
-.msgs::-webkit-scrollbar{width:3px}
-.msgs::-webkit-scrollbar-thumb{background:rgba(255,110,180,0.3);border-radius:3px}
-.msg{display:flex;flex-direction:column;max-width:82%}
+.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:140px;display:flex;flex-direction:column;gap:10px}
+.msgs::-webkit-scrollbar{width:2px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px}
+.msg{display:flex;flex-direction:column;max-width:85%}
 .msg.u{align-self:flex-end;align-items:flex-end}
 .msg.b{align-self:flex-start;align-items:flex-start}
-.lbl{font-size:0.58rem;color:rgba(255,255,255,0.28);margin-bottom:3px;letter-spacing:0.05em}
-.bub{padding:10px 14px;border-radius:18px;font-size:0.88rem;line-height:1.65;font-weight:300}
-.msg.u .bub{background:linear-gradient(135deg,rgba(255,110,180,0.22),rgba(180,79,255,0.18));border:1px solid rgba(255,110,180,0.28);border-bottom-right-radius:4px}
-.msg.b .bub{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-bottom-left-radius:4px;color:rgba(255,255,255,0.88)}
-.typing{display:none;align-self:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px;border-bottom-left-radius:4px;padding:10px 14px;gap:5px;margin:0 14px}
+.lbl{font-size:0.55rem;color:var(--dim);margin-bottom:3px;letter-spacing:0.1em;font-family:'Orbitron',sans-serif}
+.bub{padding:10px 14px;border-radius:16px;font-size:0.9rem;line-height:1.65;font-weight:400;font-family:'Rajdhani',sans-serif}
+.msg.u .bub{background:linear-gradient(135deg,rgba(0,245,255,0.1),rgba(255,45,120,0.08));border:1px solid rgba(0,245,255,0.25);border-bottom-right-radius:3px}
+.msg.b .bub{background:var(--glass);border:1px solid var(--border);border-bottom-left-radius:3px;color:rgba(255,255,255,0.88)}
+.typing{display:none;align-self:flex-start;background:var(--glass);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:3px;padding:10px 16px;gap:5px;margin:0 14px}
 .typing.show{display:flex}
-.dot{width:7px;height:7px;border-radius:50%;background:#b44fff;animation:bounce 1.2s infinite}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:bounce 1.2s infinite;box-shadow:0 0 6px var(--cyan)}
 .dot:nth-child(2){animation-delay:0.2s}
 .dot:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
 
-/* BOT */
-.bot{position:fixed;bottom:0;left:0;right:0;background:#1a0030;border-top:1px solid rgba(255,110,180,0.2);padding:8px 12px 12px;display:flex;gap:8px;align-items:flex-end;z-index:999}
-#msg{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,110,180,0.3);border-radius:22px;padding:10px 16px;color:white;font-family:'Poppins',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:100px}
-#msg:focus{border-color:#ff6eb4}
-#msg::placeholder{color:rgba(255,255,255,0.22)}
-.send-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#b44fff);border:none;color:white;font-size:1rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 14px rgba(255,110,180,0.4)}
-.send-btn:disabled{opacity:0.4}
-.mic-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,110,180,0.1);border:1px solid rgba(255,110,180,0.3);color:#ff6eb4;font-size:1rem;cursor:pointer;flex-shrink:0;transition:all 0.2s}
-.mic-btn.on{background:#ff6eb4;color:white;animation:pulse 1s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,110,180,0.7)}70%{box-shadow:0 0 0 10px rgba(255,110,180,0)}100%{box-shadow:0 0 0 0 rgba(255,110,180,0)}}
+/* INPUT */
+.inp-bar{position:fixed;bottom:58px;left:0;right:0;background:rgba(1,10,19,0.97);border-top:1px solid var(--border);padding:8px 12px;display:flex;gap:8px;align-items:flex-end;z-index:99;backdrop-filter:blur(20px)}
+#msg{flex:1;background:rgba(0,245,255,0.05);border:1px solid var(--border);border-radius:20px;padding:9px 15px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:90px}
+#msg:focus{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,245,255,0.15)}
+#msg::placeholder{color:rgba(255,255,255,0.2)}
+.mic-btn{width:40px;height:40px;border-radius:50%;background:rgba(0,245,255,0.08);border:1px solid var(--border);color:var(--cyan);font-size:0.9rem;cursor:pointer;flex-shrink:0}
+.mic-btn.on{background:var(--cyan);color:#010a13;animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,245,255,0.7)}70%{box-shadow:0 0 0 10px rgba(0,245,255,0)}100%{box-shadow:0 0 0 0 rgba(0,245,255,0)}}
+.send-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));border:none;color:#010a13;font-size:0.95rem;cursor:pointer;flex-shrink:0;box-shadow:0 0 15px rgba(0,245,255,0.3);font-weight:700}
+.send-btn:disabled{opacity:0.3}
 
-/* PAGES CONTENT */
-.pg-body{padding:14px;display:flex;flex-direction:column;gap:12px;padding-bottom:20px}
-.card{background:rgba(26,0,48,0.8);border:1px solid rgba(255,110,180,0.12);border-radius:16px;padding:14px}
-.card-title{font-size:0.65rem;font-weight:600;color:#ff6eb4;letter-spacing:0.1em;margin-bottom:12px}
+/* CARDS */
+.pg-body{padding:12px;display:flex;flex-direction:column;gap:10px}
+.card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:14px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.card-title{font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:600;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px;text-transform:uppercase}
 
 /* BRIEFING */
-.brief-greeting{font-size:1.3rem;font-weight:600;color:#ff6eb4;margin-bottom:4px}
-.brief-date{font-size:0.65rem;color:rgba(255,255,255,0.35);margin-bottom:12px}
-.brief-quote{font-size:0.78rem;color:rgba(255,255,255,0.55);font-style:italic;border-left:2px solid #b44fff;padding-left:10px;line-height:1.6;margin-bottom:12px}
-.weather-box{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.04);border-radius:12px;margin-bottom:8px}
-.w-temp{font-size:1.4rem;font-weight:600;color:#ffaa44}
-.w-info{font-size:0.68rem;color:rgba(255,255,255,0.5);line-height:1.6}
-.brief-inp{width:100%;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,110,180,0.2);border-radius:10px;color:white;font-family:'Poppins',sans-serif;font-size:0.8rem;outline:none;margin-bottom:8px}
-.brief-inp::placeholder{color:rgba(255,255,255,0.25)}
-.brief-btn{width:100%;padding:9px;background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(180,79,255,0.2));border:1px solid rgba(255,110,180,0.3);border-radius:12px;color:#ff6eb4;font-family:'Poppins',sans-serif;font-size:0.75rem;cursor:pointer}
-.news-item{padding:8px 0;border-bottom:1px solid rgba(255,110,180,0.07)}
+.brief-greeting{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--cyan);margin-bottom:2px;text-shadow:0 0 20px rgba(0,245,255,0.4)}
+.brief-date{font-size:0.65rem;color:var(--dim);margin-bottom:12px;letter-spacing:0.05em}
+.brief-quote{font-size:0.78rem;color:rgba(255,255,255,0.5);font-style:italic;border-left:2px solid var(--pink);padding-left:10px;line-height:1.6;margin-bottom:12px}
+.weather-box{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.1);border-radius:12px;margin-bottom:8px}
+.w-temp{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:var(--cyan);text-shadow:0 0 15px rgba(0,245,255,0.4)}
+.w-info{font-size:0.65rem;color:var(--dim);line-height:1.7}
+.brief-inp{width:100%;padding:8px 12px;background:rgba(0,245,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px;letter-spacing:0.05em}
+.brief-inp::placeholder{color:rgba(255,255,255,0.2)}
+.brief-inp:focus{border-color:var(--cyan)}
+.brief-btn{width:100%;padding:9px;background:linear-gradient(135deg,rgba(0,245,255,0.1),rgba(255,45,120,0.1));border:1px solid var(--border);border-radius:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em}
+.brief-btn:active{background:rgba(0,245,255,0.15)}
+.news-item{padding:8px 0;border-bottom:1px solid rgba(0,245,255,0.06)}
 .news-item:last-child{border-bottom:none}
-.news-title{font-size:0.78rem;color:rgba(255,255,255,0.82);line-height:1.4}
-.news-src{font-size:0.58rem;color:rgba(255,255,255,0.3);margin-top:2px}
-.ldt{text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.25);padding:12px}
+.news-title{font-size:0.78rem;color:rgba(255,255,255,0.8);line-height:1.4}
+.news-src{font-size:0.58rem;color:var(--cyan);margin-top:2px;opacity:0.6}
 
 /* HISTORY */
-.hist-item{padding:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,110,180,0.07);border-radius:12px;margin-bottom:8px}
-.hist-u{font-size:0.72rem;color:#ff6eb4;margin-bottom:4px}
-.hist-b{font-size:0.75rem;color:rgba(255,255,255,0.65);line-height:1.5}
-.hist-t{font-size:0.55rem;color:rgba(255,255,255,0.2);margin-top:4px}
-.hist-clear{width:100%;padding:9px;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.2);border-radius:12px;color:rgba(255,100,100,0.7);font-family:'Poppins',sans-serif;font-size:0.72rem;cursor:pointer;margin-bottom:10px}
+.hist-item{padding:10px;background:rgba(0,245,255,0.02);border:1px solid rgba(0,245,255,0.07);border-radius:12px;margin-bottom:8px}
+.hist-u{font-size:0.7rem;color:var(--cyan);margin-bottom:4px;font-weight:500}
+.hist-b{font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.5}
+.hist-t{font-size:0.52rem;color:var(--dim);margin-top:4px;font-family:'Orbitron',sans-serif}
+.hist-clear{width:100%;padding:9px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:12px;color:rgba(255,45,120,0.7);font-family:'Orbitron',sans-serif;font-size:0.55rem;cursor:pointer;letter-spacing:0.1em;margin-bottom:10px}
 
 /* MEMORY */
-.mem-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px}
-.mem-k{font-size:0.7rem;color:#b44fff;font-weight:500;margin-right:8px}
-.mem-v{font-size:0.75rem;color:rgba(255,255,255,0.7);flex:1}
-.mem-del{background:none;border:none;color:rgba(255,80,80,0.5);cursor:pointer;font-size:0.8rem;padding:0 4px}
+.mem-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.08);border-radius:10px;margin-bottom:6px}
+.mem-k{font-size:0.65rem;color:var(--cyan);font-family:'Orbitron',sans-serif;letter-spacing:0.05em;margin-right:8px}
+.mem-v{font-size:0.8rem;color:var(--text);flex:1}
+.mem-del{background:none;border:none;color:rgba(255,45,120,0.5);cursor:pointer;font-size:0.8rem;padding:0 4px}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
-.chip{padding:3px 9px;border-radius:10px;background:rgba(180,79,255,0.1);border:1px solid rgba(180,79,255,0.2);color:rgba(255,255,255,0.45);font-size:0.6rem;cursor:pointer}
-.mem-inp{width:100%;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,110,180,0.2);border-radius:10px;color:white;font-family:'Poppins',sans-serif;font-size:0.8rem;outline:none;margin-bottom:6px}
-.mem-inp::placeholder{color:rgba(255,255,255,0.25)}
+.chip{padding:3px 10px;border-radius:10px;background:rgba(0,245,255,0.06);border:1px solid rgba(0,245,255,0.15);color:rgba(255,255,255,0.45);font-size:0.6rem;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
+.chip:active{background:rgba(0,245,255,0.15)}
+.mem-inp{width:100%;padding:8px 12px;background:rgba(0,245,255,0.04);border:1px solid var(--border);border-radius:10px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.85rem;outline:none;margin-bottom:6px}
+.mem-inp::placeholder{color:rgba(255,255,255,0.2)}
+.mem-inp:focus{border-color:var(--cyan)}
+.ldt{text-align:center;font-size:0.7rem;color:var(--dim);padding:14px;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
 
 /* MOOD */
 .mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.mood-opt{padding:12px 8px;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,110,180,0.1);border-radius:14px;cursor:pointer;transition:all 0.2s}
-.mood-opt.sel{background:linear-gradient(135deg,rgba(255,110,180,0.18),rgba(180,79,255,0.18));border-color:#ff6eb4}
+.mood-opt{padding:12px 8px;text-align:center;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.1);border-radius:14px;cursor:pointer;transition:all 0.2s}
+.mood-opt.sel{background:linear-gradient(135deg,rgba(0,245,255,0.12),rgba(255,45,120,0.1));border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,0.15)}
 .mood-emoji{font-size:1.4rem;display:block;margin-bottom:3px}
-.mood-lbl{font-size:0.55rem;color:rgba(255,255,255,0.5)}
+.mood-lbl{font-size:0.52rem;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
 .energy-bar{margin-bottom:12px}
-.energy-lbl{font-size:0.65rem;color:rgba(255,255,255,0.4);margin-bottom:6px}
-input[type=range]{width:100%;accent-color:#ff6eb4}
-.mood-hist-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,110,180,0.06);font-size:0.75rem}
+.energy-lbl{font-size:0.62rem;color:var(--dim);margin-bottom:6px;font-family:'Orbitron',sans-serif;letter-spacing:0.05em}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.mood-hist-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(0,245,255,0.05);font-size:0.78rem}
 .mood-hist-item:last-child{border-bottom:none}
-.mdate{font-size:0.55rem;color:rgba(255,255,255,0.25);margin-left:auto}
+.mdate{font-size:0.52rem;color:var(--dim);margin-left:auto;font-family:'Orbitron',sans-serif}
 </style>
 </head>
 <body>
@@ -118,214 +140,189 @@ input[type=range]{width:100%;accent-color:#ff6eb4}
   <div class="avatar">P.E.P</div>
   <div>
     <div class="name">P.E.P.P.E.R</div>
-    <div class="status" id="statusTxt">Online</div>
+    <div class="sub" id="statusTxt">SYSTEM ONLINE</div>
   </div>
   <div class="top-right">
+    <div class="status-dot"></div>
     <div class="clk" id="clk">--:--</div>
   </div>
 </div>
 
-<div class="tabs">
-  <button class="tab on" onclick="showPg('chat',this)">Chat</button>
-  <button class="tab" onclick="showPg('brief',this)">Briefing</button>
-  <button class="tab" onclick="showPg('hist',this)">History</button>
-  <button class="tab" onclick="showPg('mem',this)">Memory</button>
-  <button class="tab" onclick="showPg('mood',this)">Mood</button>
-</div>
-
-<!-- CHAT -->
+<!-- PAGES -->
 <div class="pg on" id="pg-chat" style="flex-direction:column">
   <div class="msgs" id="msgs"></div>
   <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <div class="bot">
+  <div class="inp-bar">
     <textarea id="msg" rows="1" placeholder="Talk to PEPPER..."></textarea>
     <button class="mic-btn" id="micBtn" onclick="toggleMic()">&#127908;</button>
     <button class="send-btn" id="sbtn" onclick="send()">&#9658;</button>
   </div>
 </div>
 
-<!-- BRIEFING -->
 <div class="pg" id="pg-brief">
   <div class="pg-body">
     <div class="card">
-      <div class="brief-greeting" id="bGreet">Good Morning</div>
+      <div class="brief-greeting" id="bGreet">GOOD MORNING</div>
       <div class="brief-date" id="bDate"></div>
-      <div class="brief-quote" id="bQuote">Loading quote...</div>
-      <input class="brief-inp" id="bCity" placeholder="Your city for weather...">
-      <button class="brief-btn" onclick="loadBrief()">Get My Briefing</button>
+      <div class="brief-quote" id="bQuote">Loading...</div>
+      <input class="brief-inp" id="bCity" placeholder="Enter your city...">
+      <button class="brief-btn" onclick="loadBrief()">INITIALIZE BRIEFING</button>
     </div>
     <div class="card" id="bWeatherCard" style="display:none">
-      <div class="card-title">WEATHER</div>
+      <div class="card-title">ENVIRONMENT STATUS</div>
       <div id="bWeather"></div>
     </div>
     <div class="card" id="bNewsCard" style="display:none">
-      <div class="card-title">TOP NEWS</div>
+      <div class="card-title">INTEL FEED</div>
       <div id="bNews"></div>
     </div>
   </div>
 </div>
 
-<!-- HISTORY -->
 <div class="pg" id="pg-hist">
   <div class="pg-body">
     <div class="card">
-      <div class="card-title">CHAT HISTORY</div>
-      <button class="hist-clear" onclick="clearHistory()">Clear All History</button>
-      <div id="histList"><div class="ldt">Loading...</div></div>
+      <div class="card-title">CONVERSATION LOG</div>
+      <button class="hist-clear" onclick="clearHistory()">PURGE ALL RECORDS</button>
+      <div id="histList"><div class="ldt">LOADING...</div></div>
     </div>
   </div>
 </div>
 
-<!-- MEMORY -->
 <div class="pg" id="pg-mem">
   <div class="pg-body">
     <div class="card">
-      <div class="card-title">AI MEMORY PROFILE</div>
-      <div id="memList"><div class="ldt">Nothing saved yet</div></div>
+      <div class="card-title">MEMORY CORE</div>
+      <div id="memList"><div class="ldt">NO DATA STORED</div></div>
     </div>
     <div class="card">
-      <div class="card-title">ADD MEMORY</div>
+      <div class="card-title">UPLOAD MEMORY</div>
       <div class="chips">
-        <span class="chip" onclick="fillMem('My name')">Name</span>
-        <span class="chip" onclick="fillMem('My age')">Age</span>
-        <span class="chip" onclick="fillMem('My city')">City</span>
-        <span class="chip" onclick="fillMem('My hobby')">Hobby</span>
-        <span class="chip" onclick="fillMem('My job')">Job</span>
-        <span class="chip" onclick="fillMem('My goal')">Goal</span>
-        <span class="chip" onclick="fillMem('My college')">College</span>
-        <span class="chip" onclick="fillMem('My friend')">Friend</span>
+        <span class="chip" onclick="fillMem('My name')">NAME</span>
+        <span class="chip" onclick="fillMem('My age')">AGE</span>
+        <span class="chip" onclick="fillMem('My city')">CITY</span>
+        <span class="chip" onclick="fillMem('My hobby')">HOBBY</span>
+        <span class="chip" onclick="fillMem('My job')">JOB</span>
+        <span class="chip" onclick="fillMem('My goal')">GOAL</span>
+        <span class="chip" onclick="fillMem('My college')">COLLEGE</span>
+        <span class="chip" onclick="fillMem('My friend')">FRIEND</span>
       </div>
       <input class="mem-inp" id="memK" placeholder="Topic (e.g. My name)">
       <input class="mem-inp" id="memV" placeholder="Value (e.g. Nazib)">
-      <button class="brief-btn" onclick="addMem()">Save to Memory</button>
+      <button class="brief-btn" onclick="addMem()">SAVE TO CORE</button>
     </div>
   </div>
 </div>
 
-<!-- MOOD -->
 <div class="pg" id="pg-mood">
   <div class="pg-body">
     <div class="card">
-      <div class="card-title">HOW ARE YOU FEELING?</div>
+      <div class="card-title">EMOTIONAL STATUS</div>
       <div class="mood-grid">
-        <div class="mood-opt" onclick="logMood('Happy',this)"><span class="mood-emoji">😊</span><span class="mood-lbl">Happy</span></div>
-        <div class="mood-opt" onclick="logMood('Sad',this)"><span class="mood-emoji">😔</span><span class="mood-lbl">Sad</span></div>
-        <div class="mood-opt" onclick="logMood('Stressed',this)"><span class="mood-emoji">😤</span><span class="mood-lbl">Stressed</span></div>
-        <div class="mood-opt" onclick="logMood('Tired',this)"><span class="mood-emoji">😴</span><span class="mood-lbl">Tired</span></div>
-        <div class="mood-opt" onclick="logMood('Motivated',this)"><span class="mood-emoji">🔥</span><span class="mood-lbl">Motivated</span></div>
-        <div class="mood-opt" onclick="logMood('Anxious',this)"><span class="mood-emoji">😰</span><span class="mood-lbl">Anxious</span></div>
-        <div class="mood-opt" onclick="logMood('Loved',this)"><span class="mood-emoji">🥰</span><span class="mood-lbl">Loved</span></div>
-        <div class="mood-opt" onclick="logMood('Excited',this)"><span class="mood-emoji">😁</span><span class="mood-lbl">Excited</span></div>
-        <div class="mood-opt" onclick="logMood('Meh',this)"><span class="mood-emoji">😐</span><span class="mood-lbl">Meh</span></div>
+        <div class="mood-opt" onclick="logMood('Happy',this)"><span class="mood-emoji">😊</span><span class="mood-lbl">HAPPY</span></div>
+        <div class="mood-opt" onclick="logMood('Sad',this)"><span class="mood-emoji">😔</span><span class="mood-lbl">SAD</span></div>
+        <div class="mood-opt" onclick="logMood('Stressed',this)"><span class="mood-emoji">😤</span><span class="mood-lbl">STRESSED</span></div>
+        <div class="mood-opt" onclick="logMood('Tired',this)"><span class="mood-emoji">😴</span><span class="mood-lbl">TIRED</span></div>
+        <div class="mood-opt" onclick="logMood('Motivated',this)"><span class="mood-emoji">🔥</span><span class="mood-lbl">MOTIVATED</span></div>
+        <div class="mood-opt" onclick="logMood('Anxious',this)"><span class="mood-emoji">😰</span><span class="mood-lbl">ANXIOUS</span></div>
+        <div class="mood-opt" onclick="logMood('Loved',this)"><span class="mood-emoji">🥰</span><span class="mood-lbl">LOVED</span></div>
+        <div class="mood-opt" onclick="logMood('Excited',this)"><span class="mood-emoji">😁</span><span class="mood-lbl">EXCITED</span></div>
+        <div class="mood-opt" onclick="logMood('Meh',this)"><span class="mood-emoji">😐</span><span class="mood-lbl">MEH</span></div>
       </div>
       <div class="energy-bar">
-        <div class="energy-lbl">Energy Level: <span id="energyVal">5</span>/10</div>
+        <div class="energy-lbl">ENERGY LEVEL: <span id="energyVal">5</span>/10</div>
         <input type="range" min="1" max="10" value="5" id="energySlider" oninput="document.getElementById('energyVal').textContent=this.value">
       </div>
-      <button class="brief-btn" onclick="saveMoodEntry()">Save Today's Mood</button>
+      <button class="brief-btn" onclick="saveMoodEntry()">LOG STATUS</button>
     </div>
     <div class="card">
-      <div class="card-title">MOOD HISTORY</div>
-      <div id="moodHist"><div class="ldt">No mood logged yet</div></div>
+      <div class="card-title">STATUS HISTORY</div>
+      <div id="moodHist"><div class="ldt">NO DATA</div></div>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bni on" onclick="showPg('chat',this)"><span class="bni-ic">💬</span>CHAT</button>
+  <button class="bni" onclick="showPg('brief',this)"><span class="bni-ic">📡</span>BRIEF</button>
+  <button class="bni" onclick="showPg('hist',this)"><span class="bni-ic">🗂</span>LOG</button>
+  <button class="bni" onclick="showPg('mem',this)"><span class="bni-ic">🧠</span>MEMORY</button>
+  <button class="bni" onclick="showPg('mood',this)"><span class="bni-ic">💠</span>MOOD</button>
+</nav>
+
 <script>
 var BASE='https://maria-assistant-fthu.onrender.com';
-
-// DB
 var DB={memory:{},moods:[]};
 try{var s=localStorage.getItem('pepper_db');if(s)DB=JSON.parse(s);}catch(e){}
 function saveDB(){try{localStorage.setItem('pepper_db',JSON.stringify(DB));}catch(e){}}
 
-// CLOCK
 setInterval(function(){
   var n=new Date(),h=n.getHours(),m=n.getMinutes();
   document.getElementById('clk').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
 },1000);
 
-// TABS
 function showPg(id,btn){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.querySelectorAll('.bni').forEach(function(t){t.classList.remove('on');});
   document.getElementById('pg-'+id).classList.add('on');
   btn.classList.add('on');
-  if(id==='brief') initBrief();
-  if(id==='hist') loadHist();
-  if(id==='mem') renderMem();
-  if(id==='mood') renderMoodHist();
+  if(id==='brief')initBrief();
+  if(id==='hist')loadHist();
+  if(id==='mem')renderMem();
+  if(id==='mood')renderMoodHist();
 }
 
-// MEMORY
 function renderMem(){
   var el=document.getElementById('memList');
   var keys=Object.keys(DB.memory);
-  if(!keys.length){el.innerHTML='<div class="ldt">Nothing saved yet</div>';return;}
-  el.innerHTML=keys.map(function(k){
-    return '<div class="mem-item"><span class="mem-k">'+k+'</span><span class="mem-v">'+DB.memory[k]+'</span><button class="mem-del" onclick="delMem(\''+k+'\')">x</button></div>';
-  }).join('');
+  if(!keys.length){el.innerHTML='<div class="ldt">NO DATA STORED</div>';return;}
+  el.innerHTML=keys.map(function(k){return '<div class="mem-item"><span class="mem-k">'+k+'</span><span class="mem-v">'+DB.memory[k]+'</span><button class="mem-del" onclick="delMem(\''+k+'\')">×</button></div>';}).join('');
 }
 function addMem(){
-  var k=document.getElementById('memK').value.trim();
-  var v=document.getElementById('memV').value.trim();
+  var k=document.getElementById('memK').value.trim(),v=document.getElementById('memV').value.trim();
   if(!k||!v)return;
   DB.memory[k]=v;saveDB();renderMem();
-  document.getElementById('memK').value='';
-  document.getElementById('memV').value='';
+  document.getElementById('memK').value='';document.getElementById('memV').value='';
 }
 function delMem(k){delete DB.memory[k];saveDB();renderMem();}
 function fillMem(k){document.getElementById('memK').value=k;document.getElementById('memV').focus();}
 function autoDetect(txt){
   var n=txt.match(/my name is ([a-zA-Z]+)/i)||txt.match(/mera naam ([a-zA-Z]+)/i)||txt.match(/call me ([a-zA-Z]+)/i);
-  if(n&&n[1]&&n[1].length>1){DB.memory['My name']=n[1].charAt(0).toUpperCase()+n[1].slice(1);saveDB();}
+  if(n&&n[1]){DB.memory['My name']=n[1].charAt(0).toUpperCase()+n[1].slice(1);saveDB();}
   var c=txt.match(/i (?:live|am from|stay) in ([a-zA-Z ]+)/i);
   if(c&&c[1]){DB.memory['My city']=c[1].trim();saveDB();}
-  var a=txt.match(/i(?:'m| am) (\d+) years old/i)||txt.match(/meri umar (\d+)/i);
-  if(a&&a[1]){DB.memory['My age']=a[1];saveDB();}
 }
-function memCtx(){
-  var keys=Object.keys(DB.memory);
-  if(!keys.length)return '';
-  return keys.map(function(k){return k+': '+DB.memory[k];}).join(', ');
-}
+function memCtx(){var keys=Object.keys(DB.memory);return keys.length?keys.map(function(k){return k+': '+DB.memory[k];}).join(', '):'';}
 
-// MOOD
-function logMood(mood,btn){
-  document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');});
-  btn.classList.add('sel');
-}
+function logMood(mood,btn){document.querySelectorAll('.mood-opt').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');}
 function saveMoodEntry(){
   var mood=document.querySelector('.mood-opt.sel');
-  if(!mood){alert('Please select a mood!');return;}
+  if(!mood){alert('Select a mood!');return;}
   var moodName=mood.querySelector('.mood-lbl').textContent;
   var energy=document.getElementById('energySlider').value;
   var now=new Date();
   DB.moods.unshift({mood:moodName,energy:energy,date:now.toLocaleDateString()+' '+now.toLocaleTimeString()});
   if(DB.moods.length>30)DB.moods=DB.moods.slice(0,30);
   saveDB();renderMoodHist();
-  // Tell PEPPER
-  addMsg('u','My mood today: '+moodName+', Energy: '+energy+'/10');
-  askPepper('Nazib ka mood aaj '+moodName+' hai aur energy '+energy+'/10 hai. Thoda caring response do Hinglish mein, 2 sentences.',false);
-  showPg('chat',document.querySelector('.tab'));
+  addMsg('u','Mood: '+moodName+', Energy: '+energy+'/10');
+  askPepper('Nazib ka mood aaj '+moodName+' hai aur energy '+energy+'/10 hai. Short caring response do Hinglish mein.',false);
+  showPg('chat',document.querySelector('.bni'));
 }
 function renderMoodHist(){
   var el=document.getElementById('moodHist');
-  if(!DB.moods.length){el.innerHTML='<div class="ldt">No mood logged yet</div>';return;}
-  var emojis={'Happy':'😊','Sad':'😔','Stressed':'😤','Tired':'😴','Motivated':'🔥','Anxious':'😰','Loved':'🥰','Excited':'😁','Meh':'😐'};
-  el.innerHTML=DB.moods.slice(0,10).map(function(m){
-    return '<div class="mood-hist-item"><span style="font-size:1.1rem">'+(emojis[m.mood]||'😊')+'</span><span>'+m.mood+'</span><span style="font-size:0.65rem;color:rgba(255,255,255,0.3)">Energy: '+m.energy+'/10</span><span class="mdate">'+m.date+'</span></div>';
-  }).join('');
+  if(!DB.moods.length){el.innerHTML='<div class="ldt">NO DATA</div>';return;}
+  var emojis={'HAPPY':'😊','SAD':'😔','STRESSED':'😤','TIRED':'😴','MOTIVATED':'🔥','ANXIOUS':'😰','LOVED':'🥰','EXCITED':'😁','MEH':'😐'};
+  el.innerHTML=DB.moods.slice(0,10).map(function(m){return '<div class="mood-hist-item"><span style="font-size:1.1rem">'+(emojis[m.mood]||'💠')+'</span><span>'+m.mood+'</span><span style="font-size:0.62rem;color:var(--cyan)">E:'+m.energy+'/10</span><span class="mdate">'+m.date+'</span></div>';}).join('');
 }
 
-// BRIEFING
-var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Himmat karo, sab theek hoga.','Kal se behtar aaj bano.','Mehnat kabhi bekar nahi jaati.'];
+var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Himmat karo, sab theek hoga.','Mehnat kabhi bekar nahi jaati.'];
 function initBrief(){
   var n=new Date(),h=n.getHours();
-  document.getElementById('bGreet').textContent=h<12?'Good Morning, Nazib':h<17?'Good Afternoon, Nazib':'Good Evening, Nazib';
+  document.getElementById('bGreet').textContent=h<12?'GOOD MORNING, NAZIB':h<17?'GOOD AFTERNOON, NAZIB':'GOOD EVENING, NAZIB';
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('bDate').textContent=days[n.getDay()]+', '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
+  document.getElementById('bDate').textContent=days[n.getDay()]+' / '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
   document.getElementById('bQuote').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   if(DB.memory['My city'])document.getElementById('bCity').value=DB.memory['My city'];
 }
@@ -334,40 +331,36 @@ function loadBrief(){
   DB.memory['My city']=city;saveDB();
   document.getElementById('bWeatherCard').style.display='block';
   document.getElementById('bNewsCard').style.display='block';
-  document.getElementById('bWeather').innerHTML='<div class="ldt">Loading...</div>';
-  document.getElementById('bNews').innerHTML='<div class="ldt">Loading...</div>';
+  document.getElementById('bWeather').innerHTML='<div class="ldt">SCANNING...</div>';
+  document.getElementById('bNews').innerHTML='<div class="ldt">FETCHING INTEL...</div>';
   fetch(BASE+'/weather?city='+encodeURIComponent(city))
   .then(function(r){return r.json();})
   .then(function(d){
     if(d.error){document.getElementById('bWeather').innerHTML='<div class="ldt">'+d.error+'</div>';return;}
-    document.getElementById('bWeather').innerHTML='<div class="weather-box"><div style="font-size:2rem">☁️</div><div><div class="w-temp">'+d.temp+'°C</div><div class="w-info">'+d.description+'<br>Feels like '+d.feels_like+'°C | Humidity '+d.humidity+'%<br>'+d.city+', '+d.country+'</div></div></div>';
-  }).catch(function(){document.getElementById('bWeather').innerHTML='<div class="ldt">Weather unavailable</div>';});
+    document.getElementById('bWeather').innerHTML='<div class="weather-box"><div style="font-size:2rem">🌡</div><div><div class="w-temp">'+d.temp+'°C</div><div class="w-info">'+d.description.toUpperCase()+'<br>FEELS LIKE '+d.feels_like+'°C &nbsp;|&nbsp; HUMIDITY '+d.humidity+'%<br>'+d.city.toUpperCase()+', '+d.country+'</div></div></div>';
+  }).catch(function(){document.getElementById('bWeather').innerHTML='<div class="ldt">UNAVAILABLE</div>';});
   fetch(BASE+'/news')
   .then(function(r){return r.json();})
   .then(function(d){
-    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';return;}
-    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">'+a.source+'</div></div>';}).join('');
-  }).catch(function(){document.getElementById('bNews').innerHTML='<div class="ldt">News unavailable</div>';});
+    if(!d.articles||!d.articles.length){document.getElementById('bNews').innerHTML='<div class="ldt">NO INTEL</div>';return;}
+    document.getElementById('bNews').innerHTML=d.articles.map(function(a){return '<div class="news-item"><div class="news-title">'+a.title+'</div><div class="news-src">// '+a.source+'</div></div>';}).join('');
+  }).catch(function(){document.getElementById('bNews').innerHTML='<div class="ldt">UNAVAILABLE</div>';});
 }
 
-// HISTORY
 function loadHist(){
   fetch(BASE+'/history')
   .then(function(r){return r.json();})
   .then(function(d){
     var el=document.getElementById('histList');
-    if(!d.history||!d.history.length){el.innerHTML='<div class="ldt">No history yet</div>';return;}
-    el.innerHTML=d.history.map(function(h){
-      return '<div class="hist-item"><div class="hist-u">You: '+h.user+'</div><div class="hist-b">PEPPER: '+(h.assistant||'...')+'</div><div class="hist-t">'+h.time+'</div></div>';
-    }).join('');
-  }).catch(function(){document.getElementById('histList').innerHTML='<div class="ldt">Could not load history</div>';});
+    if(!d.history||!d.history.length){el.innerHTML='<div class="ldt">NO RECORDS</div>';return;}
+    el.innerHTML=d.history.map(function(h){return '<div class="hist-item"><div class="hist-u">// NAZIB: '+h.user+'</div><div class="hist-b">PEPPER: '+(h.assistant||'...')+'</div><div class="hist-t">'+h.time+'</div></div>';}).join('');
+  }).catch(function(){document.getElementById('histList').innerHTML='<div class="ldt">COULD NOT LOAD</div>';});
 }
 function clearHistory(){
-  if(!confirm('Clear all chat history?'))return;
+  if(!confirm('Purge all records?'))return;
   fetch(BASE+'/clear',{method:'POST'}).then(function(){loadHist();});
 }
 
-// CHAT
 document.getElementById('msg').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
 document.getElementById('msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
 
@@ -375,19 +368,12 @@ function addMsg(role,text){
   var msgs=document.getElementById('msgs');
   var d=document.createElement('div');d.className='msg '+role;
   var safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  d.innerHTML='<div class="lbl">'+(role==='u'?'YOU':'PEPPER')+'</div><div class="bub">'+safe+'</div>';
+  d.innerHTML='<div class="lbl">'+(role==='u'?'// NAZIB':'// PEPPER')+'</div><div class="bub">'+safe+'</div>';
   msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
   return d;
 }
 
-// CLEAN FOR SPEECH
-function cleanForSpeech(t){
-  var out='';
-  for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if((c>=32&&c<=126)||(c>=2304&&c<=2431))out+=t[i];else out+=' ';}
-  return out.replace(/ +/g,' ').trim();
-}
-
-// SPEAK
+function cleanForSpeech(t){var out='';for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if((c>=32&&c<=126)||(c>=2304&&c<=2431))out+=t[i];else out+=' ';}return out.replace(/ +/g,' ').trim();}
 function speak(text){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
@@ -400,63 +386,52 @@ function speak(text){
 if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 function askPepper(txt,doSpeak){
-  var btn=document.getElementById('sbtn');
-  btn.disabled=true;
-  document.getElementById('statusTxt').textContent='Thinking...';
+  var btn=document.getElementById('sbtn');btn.disabled=true;
+  document.getElementById('statusTxt').textContent='PROCESSING...';
   document.getElementById('typing').classList.add('show');
   document.getElementById('msgs').scrollTop=99999;
   fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,memory:memCtx()})})
   .then(function(r){return r.json();})
   .then(function(d){
     document.getElementById('typing').classList.remove('show');
-    btn.disabled=false;
-    document.getElementById('statusTxt').textContent='Online';
-    var reply=d.reply||'Kuch toh hua, dobara try karo';
+    btn.disabled=false;document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
+    var reply=d.reply||'Error. Retry.';
     addMsg('b',reply);
     if(doSpeak)speak(reply);
   })
   .catch(function(){
     document.getElementById('typing').classList.remove('show');
-    btn.disabled=false;
-    document.getElementById('statusTxt').textContent='Online';
-    addMsg('b','Connection error, dobara try karo');
+    btn.disabled=false;document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
+    addMsg('b','Connection lost. Retry.');
   });
 }
 
 function send(){
-  var inp=document.getElementById('msg');
-  var txt=inp.value.trim();if(!txt)return;
+  var inp=document.getElementById('msg');var txt=inp.value.trim();if(!txt)return;
   inp.value='';inp.style.height='auto';
-  addMsg('u',txt);autoDetect(txt);
-  askPepper(txt,true);
+  addMsg('u',txt);autoDetect(txt);askPepper(txt,true);
 }
 
-// MIC
 var recog=null,listening=false;
 function toggleMic(){
   if(listening){stopMic();return;}
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){addMsg('b','Chrome mein voice use karo');return;}
+  if(!SR){addMsg('b','Use Chrome for voice');return;}
   if(window.speechSynthesis)window.speechSynthesis.cancel();
   recog=new SR();recog.lang='hi-IN';recog.continuous=false;recog.interimResults=false;
-  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
+  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='LISTENING...';};
   recog.onresult=function(e){var txt=e.results[0][0].transcript.trim();stopMic();if(txt){addMsg('u',txt);autoDetect(txt);askPepper(txt,true);}};
-  recog.onerror=function(){stopMic();};
-  recog.onend=function(){stopMic();};
+  recog.onerror=function(){stopMic();};recog.onend=function(){stopMic();};
   try{recog.start();}catch(e){stopMic();}
 }
 function stopMic(){
-  listening=false;
-  document.getElementById('micBtn').classList.remove('on');
-  document.getElementById('statusTxt').textContent='Online';
+  listening=false;document.getElementById('micBtn').classList.remove('on');document.getElementById('statusTxt').textContent='SYSTEM ONLINE';
   if(recog){try{recog.stop();}catch(e){}recog=null;}
 }
 
-// GREET
 setTimeout(function(){
-  var h=new Date().getHours();
-  var t=h<12?'morning':h<17?'afternoon':'evening';
-  askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences.',false);
+  var h=new Date().getHours();var t=h<12?'morning':h<17?'afternoon':'evening';
+  askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences. You are PEPPER.',false);
 },1000);
 </script>
 </body>
