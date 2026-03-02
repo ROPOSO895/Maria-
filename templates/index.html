@@ -373,14 +373,50 @@ function addMsg(role,text){
   return d;
 }
 
+// ElevenLabs realistic voice
+var EL_KEY='sk_6d79929d2599863eee39adfec4b8bd7feb8d6a5d5271ec04';
+var EL_VOICE='21m00Tcm4TlvDq8ikWAM'; // Rachel - warm female voice
+var speaking=false;
+var audioCtx=null;
+
 function cleanForSpeech(t){var out='';for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if((c>=32&&c<=126)||(c>=2304&&c<=2431))out+=t[i];else out+=' ';}return out.replace(/ +/g,' ').trim();}
+
 function speak(text){
+  var clean=cleanForSpeech(text);
+  if(!clean||speaking)return;
+  speaking=true;
+  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+EL_VOICE+'/stream',{
+    method:'POST',
+    headers:{
+      'xi-api-key':EL_KEY,
+      'Content-Type':'application/json',
+      'Accept':'audio/mpeg'
+    },
+    body:JSON.stringify({
+      text:clean,
+      model_id:'eleven_multilingual_v2',
+      voice_settings:{stability:0.5,similarity_boost:0.75,style:0.3,use_speaker_boost:true}
+    })
+  })
+  .then(function(r){
+    if(!r.ok)throw new Error('EL failed');
+    return r.blob();
+  })
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);
+    var audio=new Audio(url);
+    audio.onended=function(){speaking=false;URL.revokeObjectURL(url);};
+    audio.onerror=function(){speaking=false;fallbackSpeak(clean);};
+    audio.play().catch(function(){speaking=false;fallbackSpeak(clean);});
+  })
+  .catch(function(){speaking=false;fallbackSpeak(clean);});
+}
+
+function fallbackSpeak(text){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  var u=new SpeechSynthesisUtterance(text);
   u.rate=0.93;u.pitch=1.05;u.volume=1;
-  var voices=window.speechSynthesis.getVoices();
-  for(var i=0;i<voices.length;i++){if(voices[i].lang==='hi-IN'||voices[i].lang==='en-IN'){u.voice=voices[i];break;}}
   window.speechSynthesis.speak(u);
 }
 if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
