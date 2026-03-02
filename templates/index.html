@@ -221,21 +221,21 @@ function send(){
   askPepper(txt, false);
 }
 
-// ── IMAGE GENERATION (Hugging Face - free) ──
+// ── IMAGE GENERATION (via backend) ──
 function generateImage(prompt){
-  var d=addMsg('b','Generating image, please wait...', false);
-  fetch('https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell',{
+  var d=addMsg('b','Generating image, please wait up to 30 seconds...', false);
+  fetch(BASE+'/imagine',{
     method:'POST',
-    headers:{
-      'Authorization':'Bearer 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',
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify({inputs:prompt})
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt:prompt})
   })
-  .then(function(r){return r.blob();})
-  .then(function(blob){
-    var url=URL.createObjectURL(blob);
-    d.querySelector('.bub').innerHTML='<img class="msg-img" src="'+url+'" alt="'+prompt+'"><br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">'+prompt+'</span>';
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data.image){
+      d.querySelector('.bub').innerHTML='<img class="msg-img" src="'+data.image+'" alt="'+prompt+'"><br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4)">'+prompt+'</span>';
+    } else {
+      d.querySelector('.bub').innerHTML='Model load ho raha hai, 30 second baad try karo';
+    }
     document.getElementById('msgs').scrollTop=99999;
   })
   .catch(function(){
