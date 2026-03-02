@@ -208,15 +208,15 @@ function send(){
   if(!txt) return;
   inp.value=''; inp.style.height='auto';
 
-  // Image generation command
-  if(txt.match(/^(generate|create|make|draw|show) (image|photo|picture|img)/i)){
-    var prompt=txt.replace(/^(generate|create|make|draw|show) (image|photo|picture|img) (of |for )?/i,'');
+  addMsg('u', txt);
+
+  // Image generation command - detect before sending to AI
+  if(txt.match(/(generate|create|make|draw|show|bana).{0,15}(image|photo|picture|img|tasveer)/i)){
+    var prompt=txt.replace(/(generate|create|make|draw|show|bana).{0,15}(image|photo|picture|img|tasveer).{0,10}(of|for|ka|ki)?/i,'').trim();
+    if(!prompt) prompt=txt;
     generateImage(prompt);
-    addMsg('u', txt);
     return;
   }
-
-  addMsg('u', txt);
   autoDetect(txt);
   askPepper(txt, false);
 }
