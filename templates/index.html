@@ -85,12 +85,13 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 
 /* TYPING */
 .typing-row{display:flex;align-items:center;gap:10px;padding:0 14px;margin-top:-4px}
-.typing{display:none;background:transparent;padding:8px 0;gap:5px}
+.typing{display:none;background:transparent;padding:8px 0;align-items:center;gap:10px}
 .typing.show{display:flex}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:bounce 1.2s infinite}
-.dot:nth-child(2){animation-delay:0.2s}
-.dot:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}
+.pepper-thinking{width:28px;height:28px;position:relative;flex-shrink:0}
+.pepper-thinking svg{width:100%;height:100%;animation:spin 1s linear infinite}
+.pepper-thinking-inner{position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:0.38rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#000}
+.thinking-text{font-size:0.75rem;color:var(--dim);font-style:italic}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 /* INPUT AREA */
 .inp-wrap{position:fixed;bottom:0;left:0;right:0;background:var(--bg);padding:10px 14px 16px;z-index:99}
@@ -134,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- TOP -->
-<div class="top">
+  <div class="top">
   <button class="menu-btn" onclick="openSidebar()">☰</button>
   <div class="logo-wrap">
     <div class="logo-ring">
@@ -169,8 +170,16 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   </div>
   <div class="msgs" id="msgs" style="display:none"></div>
   <div class="typing-row">
-    <div class="msg-av b" id="typingAv" style="display:none">P</div>
-    <div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="typing" id="typing">
+      <div class="pepper-thinking">
+        <svg viewBox="0 0 30 30" fill="none">
+          <circle cx="15" cy="15" r="13" stroke="url(#tg)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <defs><linearGradient id="tg" x1="0" y1="0" x2="30" y2="30"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#ff2d78"/></linearGradient></defs>
+        </svg>
+        <div class="pepper-thinking-inner">P</div>
+      </div>
+      <span class="thinking-text">PEPPER is thinking...</span>
+    </div>
   </div>
   <div class="inp-wrap">
     <div class="inp-box">
@@ -453,14 +462,14 @@ function askPepper(txt,doSpeak){
   var btn=document.getElementById('sbtn');btn.disabled=true;
   document.getElementById('statusTxt').textContent='Thinking...';
   document.getElementById('typing').classList.add('show');
-  document.getElementById('typingAv').style.display='flex';
+  
   setSpinning(true);
   document.getElementById('msgs').scrollTop=99999;
   fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,memory:memCtx()})})
   .then(function(r){return r.json();})
   .then(function(d){
     document.getElementById('typing').classList.remove('show');
-    document.getElementById('typingAv').style.display='none';
+    
     btn.disabled=false;setSpinning(false);
     document.getElementById('statusTxt').textContent='Online';
     var reply=d.reply||'Error, retry.';
@@ -469,7 +478,7 @@ function askPepper(txt,doSpeak){
   })
   .catch(function(){
     document.getElementById('typing').classList.remove('show');
-    document.getElementById('typingAv').style.display='none';
+    
     btn.disabled=false;setSpinning(false);
     document.getElementById('statusTxt').textContent='Online';
     addMsg('b','Connection lost. Retry.');
