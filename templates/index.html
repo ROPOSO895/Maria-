@@ -106,6 +106,16 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .send-btn{width:36px;height:36px;border-radius:50%;background:var(--dim);border:none;color:#000;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-weight:700}
 .send-btn.active{background:white;color:#000}
 .send-btn:disabled{opacity:0.3}
+/* WAKE PILL */
+.wake-pill{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);z-index:150;display:flex;align-items:center;gap:8px;padding:9px 18px 9px 12px;border-radius:50px;background:rgba(10,10,10,0.92);border:1px solid rgba(0,229,255,0.35);backdrop-filter:blur(16px);cursor:pointer;opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 0 20px rgba(0,229,255,0.15),0 4px 24px rgba(0,0,0,0.5);user-select:none;-webkit-user-select:none}
+.wake-pill.show{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
+.wake-pill.sleeping{border-color:rgba(255,45,120,0.35);box-shadow:0 0 20px rgba(255,45,120,0.15),0 4px 24px rgba(0,0,0,0.5)}
+.wake-pill-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);flex-shrink:0;animation:pillPulse 1.5s ease-in-out infinite}
+.wake-pill.sleeping .wake-pill-dot{background:var(--pink);animation:none}
+.wake-pill-label{font-family:'Orbitron',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;color:var(--cyan);white-space:nowrap}
+.wake-pill.sleeping .wake-pill-label{color:var(--pink)}
+.wake-pill-action{font-size:0.55rem;color:var(--dim);letter-spacing:0.08em;white-space:nowrap}
+@keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.5)}50%{box-shadow:0 0 0 5px rgba(0,229,255,0)}}
 </style>
 </head>
 <body>
@@ -527,6 +537,16 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- VOICE LISTENING OVERLAY -->
+<!-- WAKE PILL -->
+<div class="wake-pill" id="wakePill" onclick="togglePowerFromPill()">
+  <div class="wake-pill-dot"></div>
+  <div>
+    <div class="wake-pill-label" id="wakePillLabel">PEPPER ACTIVE</div>
+    <div class="wake-pill-action" id="wakePillAction">TAP TO SLEEP</div>
+  </div>
+  <div style="margin-left:4px;font-size:0.85rem" id="wakePillIcon">⚡</div>
+</div>
+
 <div class="voice-listening" id="voiceListening">
   <div class="voice-pulse">🎤</div>
   <div class="voice-text" id="voiceStatus">LISTENING...</div>
@@ -567,9 +587,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
     <div class="setting-row">
       <div><div class="setting-label">Voice Language</div></div>
       <select id="voiceLang" onchange="saveVoiceSettings()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:4px 8px;font-size:0.75rem;outline:none">
-        <option value="hi-IN">Hindi</option>
-        <option value="en-IN">English (India)</option>
+        <option value="hi-IN">Hindi (हिंदी)</option>
+        <option value="en-IN">Hinglish / English India ⭐</option>
         <option value="en-US">English (US)</option>
+        <option value="en-GB">English (UK)</option>
       </select>
     </div>
     <div style="margin-top:10px">
@@ -1085,7 +1106,7 @@ function loadSbHist(){
 }
 
 // PAGES
-function showPg(id){
+    function showPg(id){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
   var pg=document.getElementById('pg-'+id);
   if(pg)pg.classList.add('on');
@@ -1275,7 +1296,7 @@ function askPepper(txt,doSpeak){
 }
 
 // APP LINKS
-var APPS={
+    var APPS={
   'youtube':'https://youtube.com','yt':'https://youtube.com',
   'whatsapp':'https://web.whatsapp.com','wa':'https://web.whatsapp.com',
   'instagram':'https://instagram.com','insta':'https://instagram.com',
@@ -1348,10 +1369,37 @@ function toggleMic(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){addMsg('b','Use Chrome for voice');return;}
   if(window.speechSynthesis)window.speechSynthesis.cancel();
-  recog=new SR();recog.lang='hi-IN';recog.continuous=false;recog.interimResults=false;
-  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
-  recog.onresult=function(e){var txt=e.results[0][0].transcript.trim();stopMic();if(txt){addMsg('u',txt);autoDetect(txt);askPepper(txt,true);}};
-  recog.onerror=function(){stopMic();};recog.onend=function(){stopMic();};
+  recog=new SR();
+  recog.lang=voiceSettings.lang||'hi-IN';
+  recog.continuous=false;
+  recog.interimResults=true;
+  recog.maxAlternatives=3;
+  var finalTxt='';
+  recog.onstart=function(){listening=true;finalTxt='';document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
+  recog.onresult=function(e){
+    var interim='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal){
+        // pick highest confidence alternative
+        var best=e.results[i][0].transcript;
+        var bestConf=e.results[i][0].confidence||0;
+        for(var j=1;j<e.results[i].length;j++){
+          if((e.results[i][j].confidence||0)>bestConf){best=e.results[i][j].transcript;bestConf=e.results[i][j].confidence;}
+        }
+        finalTxt+=best;
+      } else { interim+=e.results[i][0].transcript; }
+    }
+    document.getElementById('statusTxt').textContent=finalTxt||interim?'Heard: '+(finalTxt||interim):'Listening...';
+  };
+  recog.onerror=function(e){
+    if(e.error==='no-speech'){document.getElementById('statusTxt').textContent='No speech detected';}
+    else if(e.error==='not-allowed'){addMsg('b','Mic permission denied. Allow mic in browser settings.');}
+    stopMic();
+  };
+  recog.onend=function(){
+    if(finalTxt.trim()){addMsg('u',finalTxt.trim());autoDetect(finalTxt.trim());askPepper(finalTxt.trim(),true);}
+    stopMic();
+  };
   try{recog.start();}catch(e){stopMic();}
 }
 function stopMic(){
@@ -1588,7 +1636,7 @@ setTimeout(function(){
 // ══ ALL FEATURE JS ══
 
 // Helper: AI call
-function aiCall(prompt, callback){
+    function aiCall(prompt, callback){
   fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,memory:memCtx()})})
   .then(function(r){return r.json();})
   .then(function(d){callback(d.reply||'Error');})
@@ -1777,7 +1825,7 @@ function doMoodBoard(){
 }
 
 // MIRROR MODE
-function startMirror(){
+    function startMirror(){
   var msgs=document.getElementById('mirrorMsgs');msgs.innerHTML='';
   aiCall('Start a Mirror Mode session with Nazib. Ask one deep introspective question about his life, values, or goals. Be gentle and thoughtful. Hinglish mein.',function(r){
     var d=document.createElement('div');
@@ -1899,7 +1947,7 @@ function doTranslate(){
 }
 
 // Auto-init mirror when page opens
-var _origShowPg2=showPg;
+    var _origShowPg2=showPg;
 showPg=function(id){
   _origShowPg2(id);
   if(id==='mirror'&&document.getElementById('mirrorMsgs').children.length===0)setTimeout(startMirror,300);
@@ -1927,12 +1975,49 @@ function togglePower(){
       document.getElementById('powerOverlay').classList.remove('show');
       addMsg('b','PEPPER back online! Kya hukum hai, Nazib?');
       speak('PEPPER back online');
+      updateWakePill();
     },1500);
   } else {
     btn.classList.remove('on');
     txt.textContent='PEPPER SLEEPING — TAP TO WAKE';
     document.getElementById('statusTxt').textContent='Sleeping';
+    updateWakePill();
   }
+}
+
+function updateWakePill(){
+  var pill=document.getElementById('wakePill');
+  var label=document.getElementById('wakePillLabel');
+  var action=document.getElementById('wakePillAction');
+  var icon=document.getElementById('wakePillIcon');
+  pill.classList.add('show');
+  if(pepperOn){
+    pill.classList.remove('sleeping');
+    label.textContent='PEPPER ACTIVE';
+    action.textContent='TAP TO SLEEP';
+    icon.textContent='⚡';
+  } else {
+    pill.classList.add('sleeping');
+    label.textContent='PEPPER SLEEPING';
+    action.textContent='TAP TO WAKE';
+    icon.textContent='🌙';
+  }
+}
+
+function togglePowerFromPill(){
+  pepperOn=!pepperOn;
+  var btn=document.getElementById('powerBtnBig');
+  var txt=document.getElementById('powerText');
+  if(pepperOn){
+    btn.classList.add('on');
+    document.getElementById('statusTxt').textContent='Online';
+    addMsg('b','PEPPER back online! Kya hukum hai, Nazib?');
+    speak('PEPPER back online');
+  } else {
+    btn.classList.remove('on');
+    document.getElementById('statusTxt').textContent='Sleeping';
+  }
+  updateWakePill();
 }
 // Tap outside to close power screen
 document.getElementById('powerOverlay').addEventListener('click',function(e){
@@ -2102,7 +2187,7 @@ function clearHistory(){
 }
 
 // ADD HISTORY + IMGGEN to sidebar
-setTimeout(function(){
+    setTimeout(function(){
   try{
     var sbBody=document.querySelector('.sb-body');
     if(sbBody){
@@ -2118,10 +2203,11 @@ setTimeout(function(){
 // SHOW POWER SCREEN ON FIRST LOAD
 setTimeout(function(){
   showPowerScreen();
+  setTimeout(updateWakePill, 600);
 },500);
 
 // ══ VOICE-TO-VOICE CONVERSATION ══
-var voiceSettings={voice:true,wake:false,lang:'hi-IN',speed:1.0};
+var voiceSettings={voice:true,wake:false,lang:'en-IN',speed:1.0};
 try{var vs=localStorage.getItem('pepper_voice');if(vs)voiceSettings=JSON.parse(vs);}catch(e){}
 function saveVoiceSettings(){
   voiceSettings.lang=document.getElementById('voiceLang').value;
@@ -2149,17 +2235,19 @@ function listenForVoice(){
   voiceConvoRecog.interimResults=true;
   document.getElementById('voiceStatus').textContent='LISTENING...';
   document.getElementById('voiceTranscript').textContent='Bol do...';
+  voiceConvoRecog.maxAlternatives=3;
   voiceConvoRecog.onresult=function(e){
     var interim='',final='';
     for(var i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
-      else interim+=e.results[i][0].transcript;
+      if(e.results[i].isFinal){
+        var best=e.results[i][0].transcript;
+        var bestConf=e.results[i][0].confidence||0;
+        for(var j=1;j<e.results[i].length;j++){if((e.results[i][j].confidence||0)>bestConf){best=e.results[i][j].transcript;bestConf=e.results[i][j].confidence;}}
+        final+=best;
+      } else { interim+=e.results[i][0].transcript; }
     }
     document.getElementById('voiceTranscript').textContent=final||interim;
-    if(final){
-      document.getElementById('voiceStatus').textContent='PROCESSING...';
-      processVoiceInput(final.trim());
-    }
+    if(final){document.getElementById('voiceStatus').textContent='PROCESSING...';processVoiceInput(final.trim());}
   };
   voiceConvoRecog.onerror=function(){
     if(voiceConvoActive){
@@ -2240,7 +2328,7 @@ function stopVoiceConvo(){
 }
 
 // WAKE WORD DETECTION
-var wakeRecog=null;
+    var wakeRecog=null;
 function startWakeWord(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR)return;
@@ -2323,7 +2411,7 @@ function doSmartFeature(type){
 }
 
 // Add settings to sidebar
-setTimeout(function(){
+    setTimeout(function(){
   try{
     var sbBody=document.querySelector('.sb-body');
     if(sbBody){
@@ -2422,7 +2510,7 @@ function extractAndSaveContext(userMsg, pepperReply){
     }
   }
   // Auto-detect problems/goals
-  if(lower.match(/i want to|mujhe chahiye|mera goal|i need to/)){
+      if(lower.match(/i want to|mujhe chahiye|mera goal|i need to/)){
     DB.memory['Recent goal']=userMsg.substring(0,60);
     saveDB();
   }
