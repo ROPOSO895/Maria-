@@ -51,7 +51,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .new-chat-btn:active{background:rgba(255,255,255,0.05)}
 
 /* PAGES */
-  .pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .pg.on{display:flex}
 .pg::-webkit-scrollbar{width:2px}
 .pg::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
@@ -123,6 +123,29 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
     <div class="sb-item" onclick="closeSidebar();showPg('brief')"><span class="sb-item-ic">📡</span> Daily Briefing</div>
     <div class="sb-item" onclick="closeSidebar();showPg('mem')"><span class="sb-item-ic">🧠</span> Memory</div>
     <div class="sb-item" onclick="closeSidebar();showPg('mood')"><span class="sb-item-ic">💠</span> Mood Tracker</div>
+    <div class="sb-section" style="margin-top:8px">FUN & CREATIVE</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('roast')"><span class="sb-item-ic">🎭</span> Roast Mode</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('astro')"><span class="sb-item-ic">🔮</span> AI Astrologer</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('conspiracy')"><span class="sb-item-ic">👻</span> Conspiracy Mode</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('alter')"><span class="sb-item-ic">🤖</span> Alter Ego</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('roleplay')"><span class="sb-item-ic">🎭</span> Role Play</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('story')"><span class="sb-item-ic">📖</span> Story Builder</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('fakecall')"><span class="sb-item-ic">📞</span> Fake Call</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('radio')"><span class="sb-item-ic">📻</span> PEPPER Radio</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('emotweather')"><span class="sb-item-ic">🌊</span> Emotional Weather</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('talent')"><span class="sb-item-ic">🎪</span> Talent Show</div>
+    <div class="sb-section" style="margin-top:8px">PRODUCTIVITY</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('capture')"><span class="sb-item-ic">⚡</span> Quick Capture</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('braindump')"><span class="sb-item-ic">🧠</span> Brain Dump</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('moodboard')"><span class="sb-item-ic">🎨</span> Mood Board</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('mirror')"><span class="sb-item-ic">🪞</span> Mirror Mode</div>
+    <div class="sb-section" style="margin-top:8px">CAREER & SKILLS</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('interview')"><span class="sb-item-ic">🎯</span> Interview Prep</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('email')"><span class="sb-item-ic">📧</span> Cold Email</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('negotiate')"><span class="sb-item-ic">🤝</span> Negotiation Coach</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('exam')"><span class="sb-item-ic">🎓</span> Exam Warrior</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('letter')"><span class="sb-item-ic">💌</span> Letter Writer</div>
+    <div class="sb-item" onclick="closeSidebar();showPg('translate')"><span class="sb-item-ic">🌐</span> Translator</div>
     <div class="sb-section" style="margin-top:8px">RECENT CHATS</div>
     <div id="sbHist"><div style="padding:8px;font-size:0.72rem;color:var(--dim)">Loading...</div></div>
   </div>
@@ -201,7 +224,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- BRIEF PAGE -->
-<div class="pg" id="pg-brief" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+  <div class="pg" id="pg-brief" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">DAILY BRIEFING</span>
@@ -425,6 +448,410 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   </div>
 </div>
 
+<!-- ══ NEW FEATURE PAGES ══ -->
+
+<!-- ROAST MODE -->
+  <div class="pg" id="pg-roast" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎭 ROAST MODE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center">
+    <div style="font-size:2rem;margin-bottom:10px">🔥</div>
+    <div style="font-size:0.82rem;color:var(--dim);margin-bottom:14px">Tell PEPPER something about yourself and get roasted!</div>
+    <textarea id="roastInput" placeholder="e.g. main roz gym jaata hoon kehta hoon but..." rows="3" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doRoast()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(255,45,120,0.2),rgba(255,100,0,0.2));border:1px solid var(--pink);border-radius:14px;color:var(--pink);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">ROAST ME 🔥</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid rgba(255,45,120,0.2);border-radius:16px;padding:16px;display:none" id="roastResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="roastText"></div>
+  </div>
+</div>
+
+<!-- AI ASTROLOGER -->
+<div class="pg" id="pg-astro" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🔮 AI ASTROLOGER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">Apni details batao, PEPPER tere stars padhe!</div>
+    <input id="astroName" placeholder="Your name" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <input id="astroDob" type="date" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <select id="astroQ" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:10px">
+      <option value="general">General Reading</option>
+      <option value="love">Love & Relationships</option>
+      <option value="career">Career & Money</option>
+      <option value="health">Health & Energy</option>
+      <option value="future">Future Predictions</option>
+    </select>
+    <button onclick="doAstro()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(180,79,255,0.15),rgba(0,229,255,0.15));border:1px solid rgba(180,79,255,0.4);border-radius:14px;color:#b44fff;font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">READ MY STARS ✨</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid rgba(180,79,255,0.2);border-radius:16px;padding:16px;display:none" id="astroResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="astroText"></div>
+  </div>
+</div>
+
+<!-- CONSPIRACY MODE -->
+<div class="pg" id="pg-conspiracy" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">👻 CONSPIRACY MODE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">Koi bhi topic do — PEPPER funny conspiracy theory banayegi!</div>
+    <input id="conspTopic" placeholder="e.g. pigeons, WiFi, Monday mornings..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:10px">
+    <button onclick="doConspiracy()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(180,79,255,0.1));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">REVEAL THE TRUTH 🕵️</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:none" id="conspResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="conspText"></div>
+  </div>
+</div>
+
+<!-- ALTER EGO -->
+<div class="pg" id="pg-alter" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🤖 ALTER EGO — VENOM</span>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(255,0,0,0.05),rgba(0,0,0,0));border:1px solid rgba(255,0,0,0.15);border-radius:16px;padding:14px;text-align:center;margin-bottom:10px">
+    <div style="font-size:1.5rem;margin-bottom:6px">😈</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:#ff4444;letter-spacing:0.1em">VENOM MODE ACTIVE</div>
+    <div style="font-size:0.7rem;color:var(--dim);margin-top:4px">Sarcastic. Brutal. Honest. No filter.</div>
+  </div>
+  <div class="msgs" id="alterMsgs" style="min-height:200px;max-height:400px;overflow-y:auto;padding:10px;background:var(--bg2);border:1px solid rgba(255,0,0,0.1);border-radius:16px;gap:10px;display:flex;flex-direction:column;margin-bottom:10px"></div>
+  <div style="display:flex;gap:8px">
+    <input id="alterMsg" placeholder="Bol kya bolna hai..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid rgba(255,0,0,0.2);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendAlter()" style="padding:10px 16px;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.3);border-radius:20px;color:#ff4444;font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">SEND</button>
+  </div>
+</div>
+
+<!-- ROLE PLAY -->
+<div class="pg" id="pg-roleplay" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎭 ROLE PLAY</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">PEPPER kaunsa character bane?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button onclick="setRole('Tony Stark')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">🦾 Tony Stark</button>
+      <button onclick="setRole('Sherlock Holmes')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">🔍 Sherlock</button>
+      <button onclick="setRole('Yoda')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">🌿 Yoda</button>
+      <button onclick="setRole('a strict desi mom')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">👩 Desi Mom</button>
+      <button onclick="setRole('a motivational coach')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">💪 Life Coach</button>
+      <button onclick="setRole('a pirate')" class="role-btn" style="padding:10px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.75rem;cursor:pointer">🏴‍☠️ Pirate</button>
+    </div>
+    <input id="customRole" placeholder="Ya custom role likho..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <button onclick="startRoleplay()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">START ROLEPLAY</button>
+  </div>
+  <div class="msgs" id="roleMsgs" style="min-height:150px;max-height:350px;overflow-y:auto;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;gap:10px;display:flex;flex-direction:column;margin-bottom:10px"></div>
+  <div style="display:flex;gap:8px">
+    <input id="roleMsg" placeholder="Bolo..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendRole()" style="padding:10px 16px;background:rgba(0,229,255,0.1);border:1px solid var(--border);border-radius:20px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">SEND</button>
+  </div>
+</div>
+
+<!-- STORY BUILDER -->
+  <div class="pg" id="pg-story" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📖 STORY BUILDER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-size:0.7rem;color:var(--dim);margin-bottom:10px">Tum ek line, PEPPER ek line — story banao saath mein!</div>
+    <input id="storyGenre" placeholder="Genre: horror, romance, comedy, sci-fi..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <button onclick="startStory()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em;margin-bottom:10px">START STORY</button>
+  </div>
+  <div id="storyContent" style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;min-height:150px;max-height:400px;overflow-y:auto;font-size:0.85rem;line-height:1.8;color:var(--text);display:none"></div>
+  <div style="display:flex;gap:8px">
+    <input id="storyLine" placeholder="Add your line..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="addStoryLine()" style="padding:10px 16px;background:rgba(0,229,255,0.1);border:1px solid var(--border);border-radius:20px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">ADD</button>
+  </div>
+</div>
+
+<!-- FAKE CALL -->
+<div class="pg" id="pg-fakecall" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📞 FAKE CALL</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:12px">Boring meeting mein ho? Set karo kitne minute baad call aaye!</div>
+    <input id="callerName" placeholder="Caller name (e.g. Maa, Boss, Friend)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button onclick="setCallDelay(0.5)" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer">30 sec</button>
+      <button onclick="setCallDelay(1)" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer">1 min</button>
+      <button onclick="setCallDelay(2)" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer">2 min</button>
+      <button onclick="setCallDelay(5)" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer">5 min</button>
+    </div>
+    <button onclick="scheduleFakeCall()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,255,100,0.1),rgba(0,229,255,0.1));border:1px solid rgba(0,255,100,0.3);border-radius:14px;color:#00ff64;font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">SCHEDULE CALL 📞</button>
+    <div id="callStatus" style="text-align:center;font-size:0.72rem;color:var(--dim);margin-top:10px"></div>
+  </div>
+  <!-- Fake call screen -->
+  <div id="fakeCallScreen" style="display:none;position:fixed;inset:0;background:#0a2a1a;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+    <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.2em">INCOMING CALL</div>
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#00ff64,#00e5ff);display:flex;align-items:center;justify-content:center;font-size:2rem;animation:pulse 1s infinite">👤</div>
+    <div id="fakeCallerName" style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:white">Maa</div>
+    <div style="font-size:0.75rem;color:rgba(255,255,255,0.4)">Mobile</div>
+    <div style="display:flex;gap:40px;margin-top:20px">
+      <button onclick="endFakeCall()" style="width:60px;height:60px;border-radius:50%;background:#ff2d2d;border:none;color:white;font-size:1.5rem;cursor:pointer">📵</button>
+      <button onclick="endFakeCall()" style="width:60px;height:60px;border-radius:50%;background:#00c853;border:none;color:white;font-size:1.5rem;cursor:pointer">📞</button>
+    </div>
+  </div>
+</div>
+
+<!-- PEPPER RADIO -->
+<div class="pg" id="pg-radio" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📻 PEPPER RADIO</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:14px;text-align:center">Apna mood batao — PEPPER playlist YouTube pe open karega!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="playRadio('happy upbeat Bollywood songs')" style="padding:14px 8px;border-radius:14px;background:rgba(255,220,0,0.08);border:1px solid rgba(255,220,0,0.2);color:#ffd700;font-size:0.75rem;cursor:pointer;text-align:center">😊<br><span style="font-size:0.6rem">Happy Vibes</span></button>
+      <button onclick="playRadio('sad emotional Hindi songs')" style="padding:14px 8px;border-radius:14px;background:rgba(100,149,237,0.08);border:1px solid rgba(100,149,237,0.2);color:#6495ed;font-size:0.75rem;cursor:pointer;text-align:center">😔<br><span style="font-size:0.6rem">Sad Songs</span></button>
+      <button onclick="playRadio('motivational workout gym music')" style="padding:14px 8px;border-radius:14px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);color:var(--pink);font-size:0.75rem;cursor:pointer;text-align:center">🔥<br><span style="font-size:0.6rem">Hustle Mode</span></button>
+      <button onclick="playRadio('lo-fi chill study music')" style="padding:14px 8px;border-radius:14px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);font-size:0.75rem;cursor:pointer;text-align:center">🎯<br><span style="font-size:0.6rem">Focus</span></button>
+      <button onclick="playRadio('late night chill hip hop')" style="padding:14px 8px;border-radius:14px;background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.2);color:#b44fff;font-size:0.75rem;cursor:pointer;text-align:center">🌙<br><span style="font-size:0.6rem">Night Vibes</span></button>
+      <button onclick="playRadio('romantic love songs Hindi')" style="padding:14px 8px;border-radius:14px;background:rgba(255,100,150,0.08);border:1px solid rgba(255,100,150,0.2);color:#ff6496;font-size:0.75rem;cursor:pointer;text-align:center">🥰<br><span style="font-size:0.6rem">Love Songs</span></button>
+    </div>
+    <input id="radioCustom" placeholder="Custom mood ya genre..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-top:10px;margin-bottom:8px">
+    <button onclick="playRadio(document.getElementById('radioCustom').value)" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">PLAY ON YOUTUBE 🎵</button>
+  </div>
+</div>
+
+<!-- EMOTIONAL WEATHER -->
+<div class="pg" id="pg-emotweather" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🌊 EMOTIONAL WEATHER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:12px">Aaj kaisa feel ho raha hai? PEPPER tera emotional forecast banayegi!</div>
+    <textarea id="emotInput" placeholder="Batao — kya chal raha hai zindagi mein aajkal..." rows="4" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doEmotWeather()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(180,79,255,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">GET MY FORECAST 🌤</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:none" id="emotResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="emotText"></div>
+  </div>
+</div>
+
+<!-- TALENT SHOW -->
+  <div class="pg" id="pg-talent" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎪 TALENT SHOW</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:14px">Roz ek naya skill — sirf 5 minutes mein!</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
+      <button onclick="doTalent('coding trick')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">💻 Coding</button>
+      <button onclick="doTalent('life hack')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">⚡ Life Hack</button>
+      <button onclick="doTalent('communication skill')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🗣️ Communication</button>
+      <button onclick="doTalent('psychology trick')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🧠 Psychology</button>
+      <button onclick="doTalent('English speaking tip')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🇬🇧 English</button>
+      <button onclick="doTalent('random amazing fact')" style="padding:8px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:0.72rem;cursor:pointer">🎲 Random</button>
+    </div>
+    <button onclick="doTalent('surprise me with any skill')" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(255,220,0,0.12),rgba(255,45,120,0.12));border:1px solid rgba(255,220,0,0.3);border-radius:14px;color:#ffd700;font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">SURPRISE ME! 🎲</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:none" id="talentResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="talentText"></div>
+  </div>
+</div>
+
+<!-- QUICK CAPTURE -->
+<div class="pg" id="pg-capture" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">⚡ QUICK CAPTURE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <textarea id="captureInput" placeholder="Jo dimag mein aaya likho — idea, thought, anything..." rows="4" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;resize:none;margin-bottom:8px"></textarea>
+    <div style="display:flex;gap:8px">
+      <button onclick="saveCapture('idea')" style="flex:1;padding:9px;border-radius:12px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);font-size:0.65rem;cursor:pointer">💡 Idea</button>
+      <button onclick="saveCapture('task')" style="flex:1;padding:9px;border-radius:12px;background:rgba(255,220,0,0.08);border:1px solid rgba(255,220,0,0.2);color:#ffd700;font-size:0.65rem;cursor:pointer">✅ Task</button>
+      <button onclick="saveCapture('thought')" style="flex:1;padding:9px;border-radius:12px;background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.2);color:#b44fff;font-size:0.65rem;cursor:pointer">💭 Thought</button>
+    </div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">CAPTURED</div>
+    <div id="captureList"><div style="font-size:0.75rem;color:var(--dim)">Nothing captured yet</div></div>
+  </div>
+</div>
+
+<!-- BRAIN DUMP -->
+<div class="pg" id="pg-braindump" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🧠 BRAIN DUMP</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">Dimag mein jo bhi chal raha hai — sab bol do. PEPPER organize kar degi!</div>
+    <textarea id="dumpInput" placeholder="Sab kuch yahan dump karo — thoughts, worries, ideas, tasks, random stuff..." rows="6" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doBrainDump()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(180,79,255,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">ORGANIZE MY THOUGHTS 🧠</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="dumpResult">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">ORGANIZED</div>
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="dumpText"></div>
+  </div>
+</div>
+
+<!-- MOOD BOARD -->
+<div class="pg" id="pg-moodboard" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎨 MOOD BOARD</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">Apna current vibe describe karo — words mein!</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px" id="mbChips">
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🌊 Calm</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🔥 Passionate</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🌙 Dreamy</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">⚡ Electric</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🌿 Grounded</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">💥 Chaotic</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🌸 Soft</span>
+      <span onclick="toggleMbChip(this)" style="padding:6px 12px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.72rem;cursor:pointer">🏔️ Focused</span>
+    </div>
+    <button onclick="doMoodBoard()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">CREATE MY VIBE ✨</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="mbResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="mbText"></div>
+  </div>
+</div>
+
+<!-- MIRROR MODE -->
+<div class="pg" id="pg-mirror" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🪞 MIRROR MODE</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center;margin-bottom:10px">
+    <div style="font-size:1.5rem;margin-bottom:8px">🪞</div>
+    <div style="font-size:0.75rem;color:var(--dim)">PEPPER tujhse tere baare mein deep sawaal puchhegi — self-reflection ke liye!</div>
+  </div>
+  <div class="msgs" id="mirrorMsgs" style="min-height:200px;max-height:400px;overflow-y:auto;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;gap:10px;display:flex;flex-direction:column;margin-bottom:10px"></div>
+  <div style="display:flex;gap:8px">
+    <input id="mirrorMsg" placeholder="Jawab do..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid rgba(180,79,255,0.3);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendMirror()" style="padding:10px 16px;background:rgba(180,79,255,0.12);border:1px solid rgba(180,79,255,0.3);border-radius:20px;color:#b44fff;font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">REPLY</button>
+  </div>
+</div>
+
+<!-- INTERVIEW PREP -->
+<div class="pg" id="pg-interview" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎯 INTERVIEW PREP</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px">
+    <input id="interviewRole" placeholder="Job role (e.g. Software Engineer, Manager...)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <button onclick="startInterview()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">START MOCK INTERVIEW</button>
+  </div>
+  <div class="msgs" id="interviewMsgs" style="min-height:150px;max-height:400px;overflow-y:auto;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;gap:10px;display:flex;flex-direction:column;margin-bottom:10px"></div>
+  <div style="display:flex;gap:8px">
+    <input id="interviewMsg" placeholder="Apna answer do..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendInterview()" style="padding:10px 16px;background:rgba(0,229,255,0.1);border:1px solid var(--border);border-radius:20px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">ANSWER</button>
+  </div>
+</div>
+
+<!-- COLD EMAIL -->
+<div class="pg" id="pg-email" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📧 COLD EMAIL WRITER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <select id="emailType" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+      <option>Job Application</option><option>Internship Request</option><option>Business Collaboration</option><option>Client Outreach</option><option>Networking</option>
+    </select>
+    <input id="emailRecipient" placeholder="Recipient (e.g. Google HR, startup founder)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <textarea id="emailContext" placeholder="Apne baare mein batao — skills, goal, kya chahte ho..." rows="3" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doEmail()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">WRITE MY EMAIL ✉️</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="emailResult">
+    <div style="font-size:0.82rem;line-height:1.8;color:var(--text);white-space:pre-wrap" id="emailText"></div>
+  </div>
+</div>
+
+<!-- NEGOTIATION COACH -->
+<div class="pg" id="pg-negotiate" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🤝 NEGOTIATION COACH</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <select id="negoType" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+      <option>Salary Negotiation</option><option>Business Deal</option><option>Argument Resolution</option><option>Rent Negotiation</option><option>Price Bargaining</option>
+    </select>
+    <textarea id="negoContext" placeholder="Situation batao — kya negotiate karna hai, kya offer mila, tumhara goal kya hai..." rows="4" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doNegotiate()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">COACH ME 🤝</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="negoResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="negoText"></div>
+  </div>
+</div>
+
+<!-- EXAM WARRIOR -->
+<div class="pg" id="pg-exam" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎓 EXAM WARRIOR</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px">
+    <input id="examSubject" placeholder="Subject (e.g. Physics, History, Maths...)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <div style="display:flex;gap:8px">
+      <button onclick="startExam('mcq')" style="flex:1;padding:10px;border-radius:12px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.55rem;cursor:pointer;letter-spacing:0.05em">MCQ PRACTICE</button>
+      <button onclick="startExam('explain')" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,220,0,0.08);border:1px solid rgba(255,220,0,0.2);color:#ffd700;font-family:'Orbitron',sans-serif;font-size:0.55rem;cursor:pointer;letter-spacing:0.05em">EXPLAIN TOPIC</button>
+      <button onclick="startExam('tips')" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);color:var(--pink);font-family:'Orbitron',sans-serif;font-size:0.55rem;cursor:pointer;letter-spacing:0.05em">EXAM TIPS</button>
+    </div>
+  </div>
+  <div class="msgs" id="examMsgs" style="min-height:150px;max-height:400px;overflow-y:auto;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;gap:10px;display:flex;flex-direction:column;margin-bottom:10px"></div>
+  <div style="display:flex;gap:8px">
+    <input id="examMsg" placeholder="Answer ya sawaal..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendExam()" style="padding:10px 16px;background:rgba(0,229,255,0.1);border:1px solid var(--border);border-radius:20px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">SEND</button>
+  </div>
+</div>
+
+<!-- LETTER WRITER -->
+<div class="pg" id="pg-letter" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">💌 LETTER WRITER</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <select id="letterType" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+      <option>Love Letter</option><option>Apology Letter</option><option>Thank You Letter</option><option>Farewell Letter</option><option>Motivation Letter</option>
+    </select>
+    <input id="letterTo" placeholder="Kisko (e.g. best friend, girlfriend, parents)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <textarea id="letterContext" placeholder="Kya feel karte ho, kya kehna chahte ho..." rows="3" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:10px"></textarea>
+    <button onclick="doLetter()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(255,45,120,0.12),rgba(180,79,255,0.12));border:1px solid rgba(255,45,120,0.3);border-radius:14px;color:var(--pink);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">WRITE MY LETTER 💌</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid rgba(255,45,120,0.15);border-radius:16px;padding:14px;display:none" id="letterResult">
+    <div style="font-size:0.85rem;line-height:1.9;color:var(--text);white-space:pre-wrap;font-style:italic" id="letterText"></div>
+  </div>
+</div>
+
+<!-- LANGUAGE TRANSLATOR -->
+<div class="pg" id="pg-translate" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🌐 TRANSLATOR</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <textarea id="translateInput" placeholder="Yahan text likho jo translate karna hai..." rows="4" style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;resize:none;margin-bottom:8px"></textarea>
+    <select id="translateTo" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:10px">
+      <option value="Hindi">Hindi</option><option value="English">English</option><option value="Urdu">Urdu</option><option value="Arabic">Arabic</option><option value="French">French</option><option value="Spanish">Spanish</option><option value="Japanese">Japanese</option><option value="Korean">Korean</option><option value="German">German</option><option value="Bengali">Bengali</option>
+    </select>
+    <button onclick="doTranslate()" style="width:100%;padding:10px;background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(255,45,120,0.12));border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">TRANSLATE 🌐</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="translateResult">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:8px" id="translateLang">TRANSLATION</div>
+    <div style="font-size:0.95rem;line-height:1.7;color:var(--text)" id="translateText"></div>
+  </div>
+</div>
+
 <script>
 var BASE='https://maria-assistant-fthu.onrender.com';
 var DB={memory:{},moods:[]};
@@ -586,7 +1013,7 @@ function addMsg(role,text){
 }
 
 // SPINNING LOGO
-function setSpinning(on){
+  function setSpinning(on){
   var svg=document.getElementById('logoSvg');
   if(on)svg.classList.add('spin');else svg.classList.remove('spin');
 }
@@ -821,7 +1248,7 @@ function renderReminders(){
 function delReminder(i){DB.reminders.splice(i,1);saveDB();renderReminders();}
 
 // TASKS
-  if(!DB.tasks)DB.tasks=[];
+if(!DB.tasks)DB.tasks=[];
 var selPri='med';
 function setTaskPri(p){
   selPri=p;
@@ -869,7 +1296,7 @@ function calcEquals(){
 }
 
 // DECISION AI
-  function addDecOption(){
+function addDecOption(){
   var n=document.querySelectorAll('.dec-option').length+1;
   var div=document.createElement('div');div.className='dec-option';
   div.innerHTML='<span class="dec-num">'+n+'</span><input class="dec-inp-opt" placeholder="Option '+String.fromCharCode(64+n)+'...">';
@@ -955,6 +1382,477 @@ setTimeout(function(){
 setTimeout(function(){
   (DB.reminders||[]).forEach(function(r){if(!r.done)scheduleReminder(r);});
 },500);
+
+// ══ ALL FEATURE JS ══
+
+// Helper: AI call
+function aiCall(prompt, callback){
+  fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:prompt,memory:memCtx()})})
+  .then(function(r){return r.json();})
+  .then(function(d){callback(d.reply||'Error');})
+  .catch(function(){callback('Error. Try again.');});
+}
+
+// ROAST
+function doRoast(){
+  var txt=document.getElementById('roastInput').value.trim();
+  if(!txt)return;
+  var el=document.getElementById('roastResult');
+  el.style.display='block';
+  document.getElementById('roastText').textContent='Roasting...';
+  aiCall('Nazib ke baare mein yeh baat hai: "'+txt+'". Isko funny aur savage tarike se roast karo Hinglish mein. Keep it fun not mean. 3-4 lines.',function(r){document.getElementById('roastText').textContent=r;});
+}
+
+// ASTRO
+function doAstro(){
+  var name=document.getElementById('astroName').value.trim()||'Nazib';
+  var dob=document.getElementById('astroDob').value;
+  var q=document.getElementById('astroQ').value;
+  var el=document.getElementById('astroResult');
+  el.style.display='block';
+  document.getElementById('astroText').textContent='Reading stars...';
+  aiCall('Act as a mystical astrologer. '+name+' ki date of birth hai '+dob+'. Unka '+q+' reading karo Hinglish mein — mystical aur engaging style mein. Be creative and specific.',function(r){document.getElementById('astroText').textContent=r;});
+}
+
+// CONSPIRACY
+function doConspiracy(){
+  var topic=document.getElementById('conspTopic').value.trim();
+  if(!topic)return;
+  var el=document.getElementById('conspResult');
+  el.style.display='block';
+  document.getElementById('conspText').textContent='Uncovering truth...';
+  aiCall('"'+topic+'" ke baare mein ek funny aur absurd conspiracy theory banao Hinglish mein. Creative aur satirical raho.',function(r){document.getElementById('conspText').textContent=r;});
+}
+
+// ALTER EGO (VENOM)
+function sendAlter(){
+  var inp=document.getElementById('alterMsg');
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  var msgs=document.getElementById('alterMsgs');
+  var d=document.createElement('div');
+  d.style.cssText='align-self:flex-end;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+  d.textContent=txt;msgs.appendChild(d);
+  aiCall('You are VENOM — sarcastic, brutal, no-filter version of PEPPER. Respond to: "'+txt+'" in Hinglish. Be savage but not actually mean. Max 3 lines.',function(r){
+    var rb=document.createElement('div');
+    rb.style.cssText='align-self:flex-start;background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.15);border-radius:14px;padding:8px 12px;font-size:0.82rem;color:#ff6666;max-width:85%';
+    rb.textContent='😈 '+r;msgs.appendChild(rb);msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+document.getElementById('alterMsg').addEventListener('keydown',function(e){if(e.key==='Enter')sendAlter();});
+
+// ROLE PLAY
+var roleChar='';
+function setRole(r){roleChar=r;document.querySelectorAll('.role-btn').forEach(function(b){b.style.borderColor='var(--border)';});event.target.style.borderColor='var(--cyan)';}
+function startRoleplay(){
+  var custom=document.getElementById('customRole').value.trim();
+  if(custom)roleChar=custom;
+  if(!roleChar){alert('Select or enter a character!');return;}
+  var msgs=document.getElementById('roleMsgs');msgs.innerHTML='';
+  aiCall('You are now playing the role of '+roleChar+'. Introduce yourself to Nazib in character. Stay in character throughout. Hinglish ok.',function(r){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+    d.textContent=r;msgs.appendChild(d);
+  });
+}
+function sendRole(){
+  var inp=document.getElementById('roleMsg');var txt=inp.value.trim();if(!txt||!roleChar)return;inp.value='';
+  var msgs=document.getElementById('roleMsgs');
+  var d=document.createElement('div');
+  d.style.cssText='align-self:flex-end;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%;align-self:flex-end';
+  d.textContent=txt;msgs.appendChild(d);
+  aiCall('You are '+roleChar+'. Nazib says: "'+txt+'". Respond in character. Keep it fun and engaging.',function(r){
+    var rb=document.createElement('div');
+    rb.style.cssText='background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+    rb.textContent=r;msgs.appendChild(rb);msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+document.getElementById('roleMsg').addEventListener('keydown',function(e){if(e.key==='Enter')sendRole();});
+
+// STORY BUILDER
+var storyText='',storyGenreVal='';
+function startStory(){
+  storyGenreVal=document.getElementById('storyGenre').value.trim()||'adventure';
+  storyText='';
+  var el=document.getElementById('storyContent');el.style.display='block';el.innerHTML='';
+  aiCall('Start a '+storyGenreVal+' story in Hinglish. Write just 2 sentences. End with a cliffhanger for Nazib to continue.',function(r){storyText+=r+'<br><br>';el.innerHTML=storyText;});
+}
+function addStoryLine(){
+  var inp=document.getElementById('storyLine');var txt=inp.value.trim();if(!txt)return;inp.value='';
+  var sc=document.getElementById('storyContent');
+  storyText+='<span style="color:var(--cyan)">You: </span>'+txt+'<br>';
+  sc.innerHTML=storyText;
+  var soFar=sc.innerText||txt;
+  aiCall('Story so far: '+soFar+' Continue in '+storyGenreVal+' style, 2 sentences.',function(r){
+    storyText+='<span style="color:var(--pink)">PEPPER: </span>'+r+'<br><br>';
+    sc.innerHTML=storyText;sc.scrollTop=99999;
+  });
+}
+document.getElementById('storyLine').addEventListener('keydown',function(e){if(e.key==='Enter')addStoryLine();});
+
+// FAKE CALL
+var callDelay=1;
+function setCallDelay(m){callDelay=m;document.getElementById('callStatus').textContent='Call in '+m+' min!';}
+function scheduleFakeCall(){
+  var name=document.getElementById('callerName').value.trim()||'Maa';
+  document.getElementById('callStatus').textContent='Call coming in '+callDelay+' min...';
+  setTimeout(function(){showFakeCall(name);},callDelay*60*1000);
+}
+function showFakeCall(name){
+  document.getElementById('fakeCallerName').textContent=name;
+  var sc=document.getElementById('fakeCallScreen');
+  sc.style.display='flex';
+  if(navigator.vibrate)navigator.vibrate([500,300,500,300,500]);
+}
+function endFakeCall(){document.getElementById('fakeCallScreen').style.display='none';}
+
+// RADIO
+function playRadio(mood){
+  if(!mood)return;
+  window.open('https://youtube.com/results?search_query='+encodeURIComponent(mood),'_blank');
+  addMsg('b','Opening YouTube: '+mood+' — enjoy the music, Nazib!');
+  showPg('chat');
+}
+
+// EMOTIONAL WEATHER
+function doEmotWeather(){
+  var txt=document.getElementById('emotInput').value.trim();
+  if(!txt)return;
+  var el=document.getElementById('emotResult');el.style.display='block';
+  document.getElementById('emotText').textContent='Forecasting...';
+  aiCall('Nazib ne bataya: "'+txt+'". Iska emotional weather forecast banao jaise real weather forecast hoti hai (e.g. "Aaj 70% productivity ki ummeed, shaam mein thoda emotional cloudy..."). Creative aur caring Hinglish mein.',function(r){document.getElementById('emotText').textContent=r;});
+}
+
+// TALENT SHOW
+function doTalent(type){
+  var el=document.getElementById('talentResult');el.style.display='block';
+  document.getElementById('talentText').textContent='Loading skill...';
+  aiCall('Teach Nazib one amazing '+type+' that can be learned in 5 minutes. Make it practical, interesting aur immediately useful. Hinglish mein, with clear steps.',function(r){document.getElementById('talentText').textContent=r;});
+}
+
+// QUICK CAPTURE
+if(!DB.captures)DB.captures=[];
+function saveCapture(type){
+  var txt=document.getElementById('captureInput').value.trim();
+  if(!txt)return;
+  var icons={'idea':'💡','task':'✅','thought':'💭'};
+  DB.captures.unshift({text:txt,type:type,icon:icons[type],date:new Date().toLocaleTimeString()});
+  if(DB.captures.length>50)DB.captures=DB.captures.slice(0,50);
+  saveDB();renderCaptures();
+  document.getElementById('captureInput').value='';
+}
+function renderCaptures(){
+  var el=document.getElementById('captureList');
+  if(!DB.captures||!DB.captures.length){el.innerHTML='<div style="font-size:0.75rem;color:var(--dim)">Nothing captured yet</div>';return;}
+  el.innerHTML=DB.captures.slice(0,20).map(function(c,i){
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span>'+c.icon+'</span><span style="flex:1;font-size:0.8rem;color:var(--text)">'+c.text+'</span><span style="font-size:0.55rem;color:var(--dim)">'+c.date+'</span><button onclick="DB.captures.splice('+i+',1);saveDB();renderCaptures()" style="background:none;border:none;color:rgba(255,80,80,0.4);cursor:pointer;font-size:0.8rem">×</button></div>';
+  }).join('');
+}
+
+// BRAIN DUMP
+function doBrainDump(){
+  var txt=document.getElementById('dumpInput').value.trim();
+  if(!txt)return;
+  var el=document.getElementById('dumpResult');el.style.display='block';
+  document.getElementById('dumpText').textContent='Organizing...';
+  aiCall('Nazib ne brain dump kiya: "'+txt+'". Isko organize karo categories mein: Tasks, Ideas, Worries, Notes. Clear aur actionable format mein Hinglish mein.',function(r){document.getElementById('dumpText').textContent=r;});
+}
+
+// MOOD BOARD
+function toggleMbChip(el){
+  if(el.style.borderColor==='var(--cyan)'||el.dataset.sel==='1'){
+    el.style.borderColor='var(--border)';el.style.color='var(--dim)';el.dataset.sel='0';
+  } else {
+    el.style.borderColor='var(--cyan)';el.style.color='var(--text)';el.dataset.sel='1';
+  }
+}
+function doMoodBoard(){
+  var selected=Array.from(document.querySelectorAll('#mbChips span[data-sel="1"]')).map(function(e){return e.textContent;});
+  if(!selected.length){alert('Select at least one vibe!');return;}
+  var el=document.getElementById('mbResult');el.style.display='block';
+  document.getElementById('mbText').textContent='Creating vibe...';
+  aiCall('Nazib ka aaj ka vibe hai: '+selected.join(', ')+'. Iske basis pe ek poetic mood board banao — colors, emotions, activities, music genre, aur ek motivational line. Creative Hinglish mein.',function(r){document.getElementById('mbText').textContent=r;});
+}
+
+// MIRROR MODE
+function startMirror(){
+  var msgs=document.getElementById('mirrorMsgs');msgs.innerHTML='';
+  aiCall('Start a Mirror Mode session with Nazib. Ask one deep introspective question about his life, values, or goals. Be gentle and thoughtful. Hinglish mein.',function(r){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.2);border-radius:14px;padding:10px 14px;font-size:0.85rem;max-width:90%';
+    d.textContent='🪞 '+r;msgs.appendChild(d);
+  });
+}
+function sendMirror(){
+  var inp=document.getElementById('mirrorMsg');var txt=inp.value.trim();if(!txt)return;inp.value='';
+  var msgs=document.getElementById('mirrorMsgs');
+  var d=document.createElement('div');
+  d.style.cssText='align-self:flex-end;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+  d.textContent=txt;msgs.appendChild(d);
+  aiCall('Mirror mode. Nazib replied: "'+txt+'". Acknowledge thoughtfully and ask another deep question or give a reflection. Hinglish mein.',function(r){
+    var rb=document.createElement('div');
+    rb.style.cssText='background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.2);border-radius:14px;padding:10px 14px;font-size:0.85rem;max-width:90%';
+    rb.textContent='🪞 '+r;msgs.appendChild(rb);msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+document.getElementById('mirrorMsg').addEventListener('keydown',function(e){if(e.key==='Enter')sendMirror();});
+
+// INTERVIEW
+function startInterview(){
+  var role=document.getElementById('interviewRole').value.trim()||'Software Engineer';
+  var msgs=document.getElementById('interviewMsgs');msgs.innerHTML='';
+  aiCall('You are a strict interviewer. Start a mock interview for '+role+' position. Ask your first interview question to Nazib. Professional tone.',function(r){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:10px 14px;font-size:0.85rem;max-width:90%';
+    d.textContent='👔 '+r;msgs.appendChild(d);
+  });
+}
+function sendInterview(){
+  var inp=document.getElementById('interviewMsg');var txt=inp.value.trim();if(!txt)return;inp.value='';
+  var msgs=document.getElementById('interviewMsgs');
+  var d=document.createElement('div');
+  d.style.cssText='align-self:flex-end;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+  d.textContent=txt;msgs.appendChild(d);
+  var role=document.getElementById('interviewRole').value.trim()||'Software Engineer';
+  aiCall('Interviewer for '+role+'. Candidate answered: "'+txt+'". Give brief feedback on the answer and ask the next interview question.',function(r){
+    var rb=document.createElement('div');
+    rb.style.cssText='background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:10px 14px;font-size:0.85rem;max-width:90%';
+    rb.textContent='👔 '+r;msgs.appendChild(rb);msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+document.getElementById('interviewMsg').addEventListener('keydown',function(e){if(e.key==='Enter')sendInterview();});
+
+// COLD EMAIL
+function doEmail(){
+  var type=document.getElementById('emailType').value;
+  var rec=document.getElementById('emailRecipient').value.trim();
+  var ctx=document.getElementById('emailContext').value.trim();
+  if(!ctx)return;
+  var el=document.getElementById('emailResult');el.style.display='block';
+  document.getElementById('emailText').textContent='Writing email...';
+  aiCall('Write a professional '+type+' cold email to '+rec+'. About the sender: '+ctx+'. Make it concise, compelling and professional. Include subject line.',function(r){document.getElementById('emailText').textContent=r;});
+}
+
+// NEGOTIATION
+function doNegotiate(){
+  var type=document.getElementById('negoType').value;
+  var ctx=document.getElementById('negoContext').value.trim();
+  if(!ctx)return;
+  var el=document.getElementById('negoResult');el.style.display='block';
+  document.getElementById('negoText').textContent='Analyzing...';
+  aiCall('Nazib ko '+type+' mein help chahiye. Situation: "'+ctx+'". Coach karo: strategy, exact phrases to use, what to avoid, aur expected outcome. Practical Hinglish mein.',function(r){document.getElementById('negoText').textContent=r;});
+}
+
+// EXAM WARRIOR
+function startExam(mode){
+  var subj=document.getElementById('examSubject').value.trim();
+  if(!subj){alert('Subject batao!');return;}
+  var msgs=document.getElementById('examMsgs');msgs.innerHTML='';
+  var prompts={
+    mcq:'Create 3 MCQ questions for '+subj+' exam. Number them. Give options A B C D.',
+    explain:'Explain the most important concept in '+subj+' in simple Hinglish with examples.',
+    tips:'Give 5 most important exam tips for '+subj+' exam. Practical aur specific.'
+  };
+  aiCall(prompts[mode],function(r){
+    var d=document.createElement('div');
+    d.style.cssText='background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:10px 14px;font-size:0.85rem;line-height:1.7;max-width:95%';
+    d.textContent=r;msgs.appendChild(d);
+  });
+}
+function sendExam(){
+  var inp=document.getElementById('examMsg');var txt=inp.value.trim();if(!txt)return;inp.value='';
+  var msgs=document.getElementById('examMsgs');
+  var d=document.createElement('div');
+  d.style.cssText='align-self:flex-end;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:8px 12px;font-size:0.82rem;max-width:85%';
+  d.textContent=txt;msgs.appendChild(d);
+  var subj=document.getElementById('examSubject').value.trim()||'the subject';
+  aiCall('Exam prep for '+subj+'. Student said: "'+txt+'". Respond as a teacher — evaluate answer if it was MCQ, or answer their question. Be educational.',function(r){
+    var rb=document.createElement('div');
+    rb.style.cssText='background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:10px 14px;font-size:0.85rem;max-width:95%';
+    rb.textContent=r;msgs.appendChild(rb);msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+document.getElementById('examMsg').addEventListener('keydown',function(e){if(e.key==='Enter')sendExam();});
+
+// LETTER WRITER
+function doLetter(){
+  var type=document.getElementById('letterType').value;
+  var to=document.getElementById('letterTo').value.trim();
+  var ctx=document.getElementById('letterContext').value.trim();
+  if(!ctx)return;
+  var el=document.getElementById('letterResult');el.style.display='block';
+  document.getElementById('letterText').textContent='Writing...';
+  aiCall('Write a heartfelt '+type+' from Nazib to '+to+'. His feelings: "'+ctx+'". Make it emotional, genuine aur beautifully written. Mix of Hindi aur English.',function(r){document.getElementById('letterText').textContent=r;});
+}
+
+// TRANSLATOR
+function doTranslate(){
+  var txt=document.getElementById('translateInput').value.trim();
+  var lang=document.getElementById('translateTo').value;
+  if(!txt)return;
+  var el=document.getElementById('translateResult');el.style.display='block';
+  document.getElementById('translateLang').textContent='TRANSLATION TO '+lang.toUpperCase();
+  document.getElementById('translateText').textContent='Translating...';
+  aiCall('Translate this text to '+lang+': "'+txt+'". Give only the translation, nothing else.',function(r){document.getElementById('translateText').textContent=r;});
+}
+
+// Auto-init mirror when page opens
+var _origShowPg2=showPg;
+showPg=function(id){
+  _origShowPg2(id);
+  if(id==='mirror'&&document.getElementById('mirrorMsgs').children.length===0)setTimeout(startMirror,300);
+  if(id==='capture')renderCaptures();
+};
+
+// ══ JARVIS CAPABILITIES ══
+
+// 1. PREDICTIVE INTELLIGENCE
+// Track patterns and predict what user needs
+var activityLog=[];
+function logActivity(type){
+  var h=new Date().getHours();
+  activityLog.push({type:type,hour:h,day:new Date().getDay()});
+  if(activityLog.length>100)activityLog=activityLog.slice(-100);
+  try{localStorage.setItem('pepper_activity',JSON.stringify(activityLog));}catch(e){}
+}
+try{var al=localStorage.getItem('pepper_activity');if(al)activityLog=JSON.parse(al);}catch(e){}
+
+function getPrediction(){
+  var h=new Date().getHours();
+  var suggestions=[];
+  if(h>=6&&h<9) suggestions=['Good morning routine check?','Aaj ka plan banao','Weather check karo'];
+  else if(h>=9&&h<13) suggestions=['Focus mode start karo','Tasks check karo','Study session?'];
+  else if(h>=13&&h<15) suggestions=['Lunch break — music?','Quick capture — koi idea?','Energy level kaisa hai?'];
+  else if(h>=15&&h<18) suggestions=['Afternoon productivity check','Brain dump karo','Exam prep?'];
+  else if(h>=18&&h<21) suggestions=['Evening wind down','Mood log karo','Kal ka plan banao'];
+  else suggestions=['Night reflection karo','Sleep story sunna chahoge?','Kal ke reminders set karo'];
+  return suggestions;
+}
+
+function showPredictions(){
+  var preds=getPrediction();
+  var bar=document.getElementById('predBar');
+  if(!bar)return;
+  bar.innerHTML=preds.map(function(p){
+    var escaped=p.replace(/'/g,"&apos;");
+    return '<button onclick="document.getElementById(\'msg\').value=\''+escaped+'\';send()" style="padding:5px 12px;border-radius:14px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.12);color:var(--dim);font-size:0.65rem;cursor:pointer;white-space:nowrap;flex-shrink:0">'+p+'</button>';
+  }).join('');
+}
+
+// 2. EMOTIONAL CALIBRATION ENGINE
+// Analyze tone of messages and adapt response style
+var emotionalState={tone:'neutral',energy:5,lastUpdate:null};
+function analyzeEmotion(text){
+  var lower=text.toLowerCase();
+  if(lower.match(/sad|dukhi|rone|cry|depress|bura|kharab|hurt|pain/))emotionalState.tone='sad';
+  else if(lower.match(/happy|khush|great|amazing|best|mast|achha|love|excited/))emotionalState.tone='happy';
+  else if(lower.match(/angry|gussa|frustrated|irritat|bakwas|stupid/))emotionalState.tone='frustrated';
+  else if(lower.match(/scared|darr|anxious|nervous|tension|stress|worried/))emotionalState.tone='anxious';
+  else if(lower.match(/tired|thak|sleepy|neend|exhausted|bore/))emotionalState.tone='tired';
+  else emotionalState.tone='neutral';
+  emotionalState.lastUpdate=Date.now();
+  updateEmotionalUI();
+}
+function updateEmotionalUI(){
+  var dot=document.getElementById('emotDot');
+  if(!dot)return;
+  var colors={happy:'#00ff88',sad:'#6495ed',frustrated:'#ff4444',anxious:'#ffaa00',tired:'#9988aa',neutral:'#00e5ff'};
+  dot.style.background=colors[emotionalState.tone]||'#00e5ff';
+  dot.title='Detected tone: '+emotionalState.tone;
+}
+function getEmotionalContext(){
+  if(emotionalState.tone==='neutral')return '';
+  var ctxMap={
+    sad:'Nazib thoda sad lag raha hai. Extra caring aur supportive raho.',
+    happy:'Nazib khush hai! Energetic aur fun raho.',
+    frustrated:'Nazib frustrated hai. Patient aur solution-focused raho.',
+    anxious:'Nazib anxious hai. Calm aur reassuring raho.',
+    tired:'Nazib tired hai. Gentle aur brief raho.'
+  };
+  return ctxMap[emotionalState.tone]||'';
+}
+
+// 3. PERSISTENT CONTEXTUAL MEMORY UPGRADE
+// Smart memory that learns from conversations
+function extractAndSaveContext(userMsg, pepperReply){
+  var lower=userMsg.toLowerCase();
+  // Auto-detect interests
+  if(lower.match(/i (?:like|love|enjoy|prefer) (.+)/i)){
+    var match=lower.match(/i (?:like|love|enjoy|prefer) ([^.!?]+)/i);
+    if(match&&match[1]){
+      var interest=match[1].trim().substring(0,30);
+      if(!DB.memory['Interests'])DB.memory['Interests']=interest;
+      else if(!DB.memory['Interests'].includes(interest))DB.memory['Interests']+=', '+interest;
+      saveDB();
+    }
+  }
+  // Auto-detect problems/goals
+  if(lower.match(/i want to|mujhe chahiye|mera goal|i need to/)){
+    DB.memory['Recent goal']=userMsg.substring(0,60);
+    saveDB();
+  }
+}
+
+// 4. SEAMLESS HMI — Override send to add all intelligence
+var _baseSend=send;
+send=function(){
+  var txt=document.getElementById('msg').value.trim();
+  if(!txt)return;
+  // Log activity
+  logActivity('chat');
+  // Analyze emotion
+  analyzeEmotion(txt);
+  _baseSend();
+};
+
+// Override askPepper to inject emotional context
+var _baseAskPepper=askPepper;
+askPepper=function(txt,doSpeak){
+  var emotCtx=getEmotionalContext();
+  var enhancedMsg=txt;
+  // Only add emotional context for real chat, not feature prompts
+  if(doSpeak&&emotCtx&&txt.length<200){
+    enhancedMsg=txt;// Pass emotion via memory context
+    DB.memory['_emotState']=emotCtx;
+  } else {
+    delete DB.memory['_emotState'];
+  }
+  _baseAskPepper(enhancedMsg,doSpeak);
+};
+
+// 5. PREDICTIVE SUGGESTIONS BAR in chat
+setTimeout(function(){
+  var msgsEl=document.getElementById('msgs');
+  if(msgsEl){
+    var predDiv=document.createElement('div');
+    predDiv.id='predBar';
+    predDiv.style.cssText='display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--bg)';
+    predDiv.style.cssText+=';scrollbar-width:none;-webkit-overflow-scrolling:touch';
+    // Insert before msgs
+    msgsEl.parentNode.insertBefore(predDiv,msgsEl);
+    showPredictions();
+    // Refresh predictions every 30 min
+    setInterval(showPredictions,1800000);
+  }
+  // Add emotion dot to status
+  var statusEl=document.getElementById('statusTxt');
+  if(statusEl){
+    var dot=document.createElement('span');
+    dot.id='emotDot';
+    dot.style.cssText='display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-left:5px;vertical-align:middle;transition:background 0.5s';
+    statusEl.parentNode.insertBefore(dot,statusEl.nextSibling);
+  }
+},800);
+
+// 6. CONTEXT MEMORY — extract from every conversation
+var _origAddMsg=addMsg;
+addMsg=function(role,text){
+  var el=_origAddMsg(role,text);
+  if(role==='u')logActivity('message');
+  return el;
+};
 </script>
 </body>
 </html>
+  
+  
