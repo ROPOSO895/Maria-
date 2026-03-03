@@ -51,7 +51,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .new-chat-btn:active{background:rgba(255,255,255,0.05)}
 
 /* PAGES */
-.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
+  .pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .pg.on{display:flex}
 .pg::-webkit-scrollbar{width:2px}
 .pg::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
@@ -250,7 +250,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- MOOD PAGE -->
-  <div class="pg" id="pg-mood" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+<div class="pg" id="pg-mood" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">MOOD TRACKER</span>
@@ -305,7 +305,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- REMINDERS PAGE -->
-<div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">REMINDERS</span>
@@ -713,7 +713,7 @@ function quickSend(txt){
 }
 
 // MIC
-  var recog=null,listening=false;
+var recog=null,listening=false;
 function toggleMic(){
   if(listening){stopMic();return;}
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -731,11 +731,7 @@ function stopMic(){
   if(recog){try{recog.stop();}catch(e){}recog=null;}
 }
 
-// GREET
-setTimeout(function(){
-  var h=new Date().getHours();var t=h<12?'morning':h<17?'afternoon':'evening';
-  askPepper('Give a short warm '+t+' greeting to Nazib in Hinglish. No emojis. Max 2 sentences. You are PEPPER.',false);
-},1000);
+// GREET DISABLED
 
 // MODES
 var currentMode='normal';
@@ -789,7 +785,7 @@ function renderDashRem(){
 }
 
 // REMINDERS
-  if(!DB.reminders)DB.reminders=[];
+if(!DB.reminders)DB.reminders=[];
 function addReminder(){
   var txt=document.getElementById('remText').value.trim();
   var time=document.getElementById('remTime').value;
@@ -825,7 +821,7 @@ function renderReminders(){
 function delReminder(i){DB.reminders.splice(i,1);saveDB();renderReminders();}
 
 // TASKS
-if(!DB.tasks)DB.tasks=[];
+  if(!DB.tasks)DB.tasks=[];
 var selPri='med';
 function setTaskPri(p){
   selPri=p;
@@ -873,7 +869,7 @@ function calcEquals(){
 }
 
 // DECISION AI
-function addDecOption(){
+  function addDecOption(){
   var n=document.querySelectorAll('.dec-option').length+1;
   var div=document.createElement('div');div.className='dec-option';
   div.innerHTML='<span class="dec-num">'+n+'</span><input class="dec-inp-opt" placeholder="Option '+String.fromCharCode(64+n)+'...">';
