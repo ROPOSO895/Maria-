@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -175,6 +175,9 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   </div>
   <div class="top-right">
     <div class="clk" id="clk">--:--</div>
+    <button onclick="showPg('smart')" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Smart">⚡</button>
+    <button onclick="showPg('settings')" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Settings">⚙️</button>
+    <button onclick="showPowerScreen()" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid rgba(0,229,255,0.3);color:var(--cyan);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Power">⏻</button>
   </div>
 </div>
 
@@ -190,13 +193,39 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 <div class="pg on" id="pg-chat" style="flex-direction:column">
   <div id="welcomeScreen" class="welcome">
     <div class="welcome-logo">P.E.P</div>
-    <h2>What can I help with?</h2>
-    <p>Your personal AI assistant, powered by Tony Stark</p>
-    <div class="chips">
+    <h2 id="welcomeGreet">What can I help with?</h2>
+    <p>Your personal AI assistant, powered by Nazib Siddique</p>
+    <div class="chips" style="margin-bottom:16px">
       <div class="chip" onclick="quickSend('Create an image')"><span class="chip-ic">🎨</span> Create image</div>
       <div class="chip" onclick="quickSend('Make a plan for today')"><span class="chip-ic">💡</span> Make a plan</div>
       <div class="chip" onclick="quickSend('Give me advice')"><span class="chip-ic">🎓</span> Get advice</div>
       <div class="chip" onclick="quickSend('Write code for me')"><span class="chip-ic">💻</span> Code</div>
+    </div>
+    <!-- FEATURES GRID -->
+    <div style="width:100%;max-width:340px">
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:10px;text-align:left">// ALL FEATURES</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        <div onclick="showPg('brief')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📡</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Briefing</div></div>
+        <div onclick="showPg('mem')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🧠</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Memory</div></div>
+        <div onclick="showPg('mood')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">💠</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Mood</div></div>
+        <div onclick="showPg('dash')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📊</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Dashboard</div></div>
+        <div onclick="showPg('roast')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎭</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Roast</div></div>
+        <div onclick="showPg('astro')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🔮</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Astro</div></div>
+        <div onclick="showPg('radio')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📻</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Radio</div></div>
+        <div onclick="showPg('focus')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⏱</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Focus</div></div>
+        <div onclick="showPg('tasks')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">✅</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Tasks</div></div>
+        <div onclick="showPg('rem')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⏰</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Reminders</div></div>
+        <div onclick="showPg('calc')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🧮</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Calculator</div></div>
+        <div onclick="showPg('decide')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🤔</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Decision</div></div>
+        <div onclick="showPg('interview')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎯</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Interview</div></div>
+        <div onclick="showPg('exam')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎓</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Exam</div></div>
+        <div onclick="showPg('translate')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🌐</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Translate</div></div>
+        <div onclick="showPg('imggen')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid rgba(0,229,255,0.3);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎨</div><div style="font-size:0.45rem;color:var(--cyan);margin-top:3px">Image AI</div></div>
+        <div onclick="showPg('conspiracy')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">👻</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Conspiracy</div></div>
+        <div onclick="showPg('story')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📖</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Story</div></div>
+        <div onclick="showPg('letter')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">💌</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Letter</div></div>
+        <div onclick="showPg('capture')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⚡</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Capture</div></div>
+      </div>
     </div>
   </div>
   <div class="msgs" id="msgs" style="display:none"></div>
@@ -216,7 +245,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
     <div class="inp-box">
       <textarea id="msg" rows="1" placeholder="Ask PEPPER anything..."></textarea>
       <div class="inp-btns">
-        <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+        <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+        <button class="img-upload-btn" onclick="document.getElementById('imgUpload').click()" title="Upload image">📎</button>
+        <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">🎤</button>
+        <button class="mic-btn" id="voiceConvoBtn" onclick="startVoiceConvo()" title="Voice conversation" style="color:var(--pink)">🔊</button>
         <button class="send-btn" id="sbtn" onclick="send()">▶</button>
       </div>
     </div>
@@ -224,7 +256,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- BRIEF PAGE -->
-  <div class="pg" id="pg-brief" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
+<div class="pg" id="pg-brief" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:12px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">DAILY BRIEFING</span>
@@ -328,7 +360,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- REMINDERS PAGE -->
-  <div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">REMINDERS</span>
@@ -448,10 +480,180 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   </div>
 </div>
 
+<!-- POWER OVERLAY -->
+<div class="power-overlay" id="powerOverlay">
+  <div style="font-family:'Orbitron',sans-serif;font-size:0.6rem;color:var(--dim);letter-spacing:0.3em">P.E.P.P.E.R</div>
+  <button class="power-btn-big" id="powerBtnBig" onclick="togglePower()">
+    <div class="power-ring"></div>
+    <span class="power-icon">⏻</span>
+  </button>
+  <div class="power-text" id="powerText">PRESS TO ACTIVATE</div>
+</div>
+
+<!-- IMAGE GEN PAGE -->
+<div class="pg" id="pg-imggen" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎨 IMAGE GENERATOR</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px">Powered by HuggingFace FLUX.1 — Real AI image generation! 🔥</div>
+    <input id="imgPrompt" placeholder="Describe the image... (e.g. sunset over mountains)" style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;margin-bottom:8px">
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <button onclick="addToPrompt('realistic photo')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">realistic</button>
+      <button onclick="addToPrompt('anime style')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">anime</button>
+      <button onclick="addToPrompt('digital art')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">digital art</button>
+      <button onclick="addToPrompt('cinematic')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">cinematic</button>
+      <button onclick="addToPrompt('4k ultra detailed')" style="padding:4px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">4k</button>
+    </div>
+
+    <button onclick="generateImage()" style="width:100%;padding:12px;background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(255,45,120,0.15));border:1px solid var(--cyan);border-radius:14px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em">GENERATE IMAGE 🎨</button>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none;text-align:center" id="imgResult">
+    <div id="imgLoading" style="font-size:0.75rem;color:var(--dim);padding:20px">Generating...</div>
+    <img id="genImg" style="width:100%;border-radius:12px;display:none" />
+    <div id="imgError" style="font-size:0.75rem;color:var(--pink);display:none"></div>
+  </div>
+</div>
+
+<!-- HISTORY/CONTINUE CHAT PAGE -->
+<div class="pg" id="pg-history" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📜 CHAT HISTORY</span>
+    <button onclick="clearHistory()" style="margin-left:auto;padding:5px 10px;border-radius:10px;background:rgba(255,45,120,0.1);border:1px solid rgba(255,45,120,0.2);color:var(--pink);font-size:0.6rem;cursor:pointer;font-family:'Orbitron',sans-serif">CLEAR ALL</button>
+  </div>
+  <div id="historyList"><div style="font-size:0.75rem;color:var(--dim);padding:8px">Loading...</div></div>
+</div>
+
+<!-- VOICE LISTENING OVERLAY -->
+<div class="voice-listening" id="voiceListening">
+  <div class="voice-pulse">🎤</div>
+  <div class="voice-text" id="voiceStatus">LISTENING...</div>
+  <div class="voice-transcript" id="voiceTranscript">Bol do Nazib...</div>
+  <button onclick="stopVoiceConvo()" style="padding:10px 24px;border-radius:20px;background:rgba(255,45,120,0.15);border:1px solid var(--pink);color:var(--pink);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer;letter-spacing:0.1em;margin-top:10px">STOP</button>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div class="pg" id="pg-settings" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:80px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">⚙️ SETTINGS</span>
+  </div>
+
+  <!-- THEMES -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">THEMES</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="setTheme('')" style="padding:12px;border-radius:12px;background:#010a13;border:2px solid var(--border);color:white;font-size:0.72rem;cursor:pointer" id="th-dark">🌑 Dark</button>
+      <button onclick="setTheme('theme-light')" style="padding:12px;border-radius:12px;background:#f5f5f5;border:2px solid var(--border);color:#333;font-size:0.72rem;cursor:pointer" id="th-light">☀️ Light</button>
+      <button onclick="setTheme('theme-amoled')" style="padding:12px;border-radius:12px;background:#000;border:2px solid var(--border);color:white;font-size:0.72rem;cursor:pointer" id="th-amoled">⚫ Amoled</button>
+      <button onclick="setTheme('theme-cyberpunk')" style="padding:12px;border-radius:12px;background:#0d0221;border:2px solid #ff00ff;color:#ff00ff;font-size:0.72rem;cursor:pointer" id="th-cyberpunk">🟣 Cyberpunk</button>
+      <button onclick="setTheme('theme-green')" style="padding:12px;border-radius:12px;background:#021a0d;border:2px solid #00ff88;color:#00ff88;font-size:0.72rem;cursor:pointer" id="th-green">🟢 Matrix</button>
+    </div>
+  </div>
+
+  <!-- VOICE SETTINGS -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">VOICE</div>
+    <div class="setting-row">
+      <div><div class="setting-label">Voice Response</div><div class="setting-sub">PEPPER bolke jawab de</div></div>
+      <div class="toggle on" id="toggleVoice" onclick="toggleSetting('voice',this)"></div>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">Wake Word "Hey PEPPER"</div><div class="setting-sub">Hands-free activation</div></div>
+      <div class="toggle" id="toggleWake" onclick="toggleSetting('wake',this)"></div>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">Voice Language</div></div>
+      <select id="voiceLang" onchange="saveVoiceSettings()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:4px 8px;font-size:0.75rem;outline:none">
+        <option value="hi-IN">Hindi</option>
+        <option value="en-IN">English (India)</option>
+        <option value="en-US">English (US)</option>
+      </select>
+    </div>
+    <div style="margin-top:10px">
+      <div style="font-size:0.65rem;color:var(--dim);margin-bottom:6px">Voice Speed: <span id="voiceSpeedVal">1.0</span>x</div>
+      <input type="range" min="0.5" max="2" step="0.1" value="1" id="voiceSpeed" oninput="document.getElementById('voiceSpeedVal').textContent=parseFloat(this.value).toFixed(1);saveVoiceSettings()">
+    </div>
+  </div>
+
+  <!-- AI SETTINGS -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:12px">AI BEHAVIOR</div>
+    <div class="setting-row">
+      <div><div class="setting-label">Auto Emotional Detection</div><div class="setting-sub">Tone detect karke response adjust kare</div></div>
+      <div class="toggle on" id="toggleEmot" onclick="toggleSetting('emot',this)"></div>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">Predictive Suggestions</div><div class="setting-sub">Smart chips dikhaye</div></div>
+      <div class="toggle on" id="togglePred" onclick="toggleSetting('pred',this)"></div>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">Auto Memory Save</div><div class="setting-sub">Conversations se seekhe</div></div>
+      <div class="toggle on" id="toggleMem" onclick="toggleSetting('memAuto',this)"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--cyan);margin-bottom:4px">P.E.P.P.E.R</div>
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:8px">Personal Enhanced Predictive Processing Entity Robot</div>
+    <div style="font-size:0.6rem;color:var(--dim)">Powered by Nazib Siddique • v3.0</div>
+  </div>
+</div>
+
+<!-- WEB SEARCH PAGE -->
+<div class="pg" id="pg-search" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🔍 WEB SEARCH</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px">
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="searchQ" placeholder="Search anything..." style="flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none">
+      <button onclick="doWebSearch()" style="padding:10px 16px;background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(255,45,120,0.15));border:1px solid var(--cyan);border-radius:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.6rem;cursor:pointer">SEARCH</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button onclick="quickSearch('today news india')" style="padding:5px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">📰 News</button>
+      <button onclick="quickSearch('cricket score today')" style="padding:5px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">🏏 Cricket</button>
+      <button onclick="quickSearch('weather today')" style="padding:5px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">🌤 Weather</button>
+      <button onclick="quickSearch('stock market today india')" style="padding:5px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.65rem;cursor:pointer">📈 Stocks</button>
+    </div>
+  </div>
+  <div id="searchResults" style="display:none">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:10px">RESULTS</div>
+    <div id="searchList"></div>
+  </div>
+</div>
+
+<!-- SMART FEATURES PAGE -->
+<div class="pg" id="pg-smart" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+    <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
+    <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">⚡ SMART FEATURES</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div onclick="showPg('search')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">🔍</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Web Search</div></div>
+    <div onclick="doSmartFeature('joke')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">😂</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Joke</div></div>
+    <div onclick="doSmartFeature('quote')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">💬</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Quote</div></div>
+    <div onclick="doSmartFeature('word')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">📖</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Word of Day</div></div>
+    <div onclick="doSmartFeature('horoscope')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">⭐</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Horoscope</div></div>
+    <div onclick="doSmartFeature('funfact')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">🧠</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Fun Fact</div></div>
+    <div onclick="doSmartFeature('recipe')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">🍽️</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Recipe</div></div>
+    <div onclick="doSmartFeature('movie')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">🎬</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Movie Rec</div></div>
+    <div onclick="doSmartFeature('news')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">📰</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">News Brief</div></div>
+    <div onclick="doSmartFeature('affirmation')" style="padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.4rem">🌟</div><div style="font-size:0.65rem;color:var(--dim);margin-top:5px">Affirmation</div></div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px;display:none" id="smartResult">
+    <div style="font-size:0.85rem;line-height:1.7;color:var(--text)" id="smartText"></div>
+  </div>
+</div>
+
 <!-- ══ NEW FEATURE PAGES ══ -->
 
 <!-- ROAST MODE -->
-  <div class="pg" id="pg-roast" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-roast" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎭 ROAST MODE</span>
@@ -552,7 +754,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- STORY BUILDER -->
-  <div class="pg" id="pg-story" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-story" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">📖 STORY BUILDER</span>
@@ -638,7 +840,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- TALENT SHOW -->
-  <div class="pg" id="pg-talent" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-talent" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎪 TALENT SHOW</span>
@@ -952,7 +1154,7 @@ function renderMoodHist(){
 }
 
 // BRIEFING
-var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Mehnat kabhi bekar nahi jaati.','Himmat rakho, sab theek hoga.'];
+  var QUOTES=['Jo hota hai, acche ke liye hota hai.','Har mushkil ek naya mauka hai.','Tum jo sochte ho, woh ban jaate ho.','Mehnat kabhi bekar nahi jaati.','Himmat rakho, sab theek hoga.'];
 function initBrief(){
   var n=new Date(),h=n.getHours();
   document.getElementById('bGreet').textContent=h<12?'GOOD MORNING, NAZIB':h<17?'GOOD AFTERNOON, NAZIB':'GOOD EVENING, NAZIB';
@@ -1013,7 +1215,7 @@ function addMsg(role,text){
 }
 
 // SPINNING LOGO
-  function setSpinning(on){
+function setSpinning(on){
   var svg=document.getElementById('logoSvg');
   if(on)svg.classList.add('spin');else svg.classList.remove('spin');
 }
@@ -1702,7 +1904,440 @@ showPg=function(id){
   _origShowPg2(id);
   if(id==='mirror'&&document.getElementById('mirrorMsgs').children.length===0)setTimeout(startMirror,300);
   if(id==='capture')renderCaptures();
+  if(id==='history')loadHistoryPage();
 };
+
+// POWER BUTTON
+var pepperOn=true;
+function showPowerScreen(){
+  var ov=document.getElementById('powerOverlay');
+  ov.classList.add('show');
+  var btn=document.getElementById('powerBtnBig');
+  if(pepperOn){btn.classList.add('on');document.getElementById('powerText').textContent='PEPPER ACTIVE — TAP TO SLEEP';}
+  else{btn.classList.remove('on');document.getElementById('powerText').textContent='PRESS TO ACTIVATE';}
+}
+function togglePower(){
+  pepperOn=!pepperOn;
+  var btn=document.getElementById('powerBtnBig');
+  var txt=document.getElementById('powerText');
+  if(pepperOn){
+    btn.classList.add('on');
+    txt.textContent='BOOTING UP...';
+    setTimeout(function(){
+      document.getElementById('powerOverlay').classList.remove('show');
+      addMsg('b','PEPPER back online! Kya hukum hai, Nazib?');
+      speak('PEPPER back online');
+    },1500);
+  } else {
+    btn.classList.remove('on');
+    txt.textContent='PEPPER SLEEPING — TAP TO WAKE';
+    document.getElementById('statusTxt').textContent='Sleeping';
+  }
+}
+// Tap outside to close power screen
+document.getElementById('powerOverlay').addEventListener('click',function(e){
+  if(e.target===this&&pepperOn)this.classList.remove('show');
+});
+
+// Welcome heading static
+(function(){
+  var el=document.getElementById('welcomeGreet');
+  if(el)el.textContent='What can I help with?';
+})();
+
+// IMAGE GENERATION
+var uploadedImageBase64=null;
+var uploadedImageType=null;
+
+function addToPrompt(txt){
+  var inp=document.getElementById('imgPrompt');
+  inp.value=(inp.value+' '+txt).trim();
+}
+
+var HF_KEY='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';
+
+function generateImage(){
+  var prompt=document.getElementById('imgPrompt').value.trim();
+  if(!prompt){alert('Prompt likho!');return;}
+  var res=document.getElementById('imgResult');
+  res.style.display='block';
+  document.getElementById('imgLoading').style.display='block';
+  document.getElementById('imgLoading').textContent='Generating with AI... (30-60 sec)';
+  document.getElementById('genImg').style.display='none';
+  document.getElementById('imgError').style.display='none';
+
+  fetch('https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell',{
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer '+HF_KEY,
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({inputs:prompt})
+  })
+  .then(function(r){
+    if(!r.ok){
+      if(r.status===503){
+        document.getElementById('imgLoading').textContent='Model loading... wait 30 sec then try again!';
+        throw new Error('loading');
+      }
+      throw new Error('failed');
+    }
+    return r.blob();
+  })
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);
+    document.getElementById('imgLoading').style.display='none';
+    var img=document.getElementById('genImg');
+    img.src=url;
+    img.style.display='block';
+    addMsg('b','Image ready hai Nazib! 🎨');
+  })
+  .catch(function(e){
+    if(e.message==='loading'){return;}
+    document.getElementById('imgLoading').style.display='none';
+    document.getElementById('imgError').style.display='block';
+    document.getElementById('imgError').textContent='Error. Model busy hai — 1 min baad try karo!';
+  });
+}
+
+// IMAGE UPLOAD + ANALYZE
+function handleImageUpload(e){
+  var file=e.target.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    uploadedImageBase64=ev.target.result.split(',')[1];
+    uploadedImageType=file.type;
+    // Show preview in chat
+    startChat();
+    var msgs=document.getElementById('msgs');
+    var row=document.createElement('div');
+    row.className='msg-row u';
+    row.innerHTML='<img src="'+ev.target.result+'" class="img-preview"><div class="msg-av u">N</div>';
+    msgs.appendChild(row);
+    msgs.scrollTop=msgs.scrollHeight;
+    // Auto analyze
+    analyzeImage(ev.target.result);
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+
+function analyzeImage(dataUrl){
+  var btn=document.getElementById('sbtn');btn.disabled=true;
+  document.getElementById('statusTxt').textContent='Analyzing image...';
+  document.getElementById('typing').classList.add('show');
+  setSpinning(true);
+
+  fetch(BASE+'/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      message:'Please analyze this image and describe what you see in detail. Then ask if Nazib needs any help with it.',
+      image_base64:uploadedImageBase64,
+      image_type:uploadedImageType,
+      memory:memCtx()
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    document.getElementById('typing').classList.remove('show');
+    btn.disabled=false;setSpinning(false);
+    document.getElementById('statusTxt').textContent='Online';
+    var reply=d.reply||'Image dekh li! Kya help chahiye?';
+    addMsg('b',reply);speak(reply);
+    uploadedImageBase64=null;
+  })
+  .catch(function(){
+    document.getElementById('typing').classList.remove('show');
+    btn.disabled=false;setSpinning(false);
+    document.getElementById('statusTxt').textContent='Online';
+    addMsg('b','Image analyze nahi ho payi. Try again.');
+    uploadedImageBase64=null;
+  });
+}
+
+// HISTORY PAGE - continue old chats
+function loadHistoryPage(){
+  var el=document.getElementById('historyList');
+  el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">Loading...</div>';
+  fetch(BASE+'/history')
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(!d.history||!d.history.length){
+      el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">No chat history yet</div>';
+      return;
+    }
+    el.innerHTML=d.history.map(function(h,i){
+      var u=(h.user||'').substring(0,60).replace(/['"]/g,'');
+      var a=(h.assistant||'').substring(0,100).replace(/['"]/g,'');
+      var div=document.createElement('div');
+      div.className='hist-item';
+      div.innerHTML='<div class="hist-user">You: '+(h.user||'').substring(0,60)+'</div><div class="hist-pepper">PEPPER: '+(h.assistant||'').substring(0,80)+'</div><div class="hist-time">'+(h.timestamp||'')+'</div>';
+      div.onclick=(function(u2,a2){return function(){continueChat(u2,a2);};})(u,a);
+      return div.outerHTML;
+    }).join('');
+  }).catch(function(){
+    el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">Could not load history</div>';
+  });
+}
+
+function continueChat(userMsg,pepperReply){
+  showPg('chat');
+  startChat();
+  setTimeout(function(){
+    if(userMsg)addMsg('u',userMsg);
+    if(pepperReply)addMsg('b',pepperReply);
+    var msgs=document.getElementById('msgs');
+    msgs.scrollTop=msgs.scrollHeight;
+    addMsg('b','Haan Nazib, yaad hai! Aage kya karna hai?');
+  },300);
+}
+
+function clearHistory(){
+  if(!confirm('Sab history delete karo?'))return;
+  fetch(BASE+'/clear',{method:'POST'})
+  .then(function(){loadHistoryPage();})
+  .catch(function(){});
+}
+
+// ADD HISTORY + IMGGEN to sidebar
+setTimeout(function(){
+  try{
+    var sbBody=document.querySelector('.sb-body');
+    if(sbBody){
+      var ni=document.createElement('div');
+      ni.className='sb-item';
+      ni.innerHTML='<span class="sb-item-ic">🎨</span> Image Generator';
+      ni.onclick=function(){showPg('imggen');closeSidebar();};
+      sbBody.appendChild(ni);
+    }
+  }catch(e){console.log('sidebar err',e);}
+},200);
+
+// SHOW POWER SCREEN ON FIRST LOAD
+setTimeout(function(){
+  showPowerScreen();
+},500);
+
+// ══ VOICE-TO-VOICE CONVERSATION ══
+var voiceSettings={voice:true,wake:false,lang:'hi-IN',speed:1.0};
+try{var vs=localStorage.getItem('pepper_voice');if(vs)voiceSettings=JSON.parse(vs);}catch(e){}
+function saveVoiceSettings(){
+  voiceSettings.lang=document.getElementById('voiceLang').value;
+  voiceSettings.speed=parseFloat(document.getElementById('voiceSpeed').value);
+  try{localStorage.setItem('pepper_voice',JSON.stringify(voiceSettings));}catch(e){}
+}
+
+var voiceConvoActive=false;
+var voiceConvoRecog=null;
+
+function startVoiceConvo(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){addMsg('b','Voice nahi chal raha — Chrome use karo!');return;}
+  voiceConvoActive=true;
+  document.getElementById('voiceListening').classList.add('show');
+  listenForVoice();
+}
+
+function listenForVoice(){
+  if(!voiceConvoActive)return;
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  voiceConvoRecog=new SR();
+  voiceConvoRecog.lang=voiceSettings.lang||'hi-IN';
+  voiceConvoRecog.continuous=false;
+  voiceConvoRecog.interimResults=true;
+  document.getElementById('voiceStatus').textContent='LISTENING...';
+  document.getElementById('voiceTranscript').textContent='Bol do...';
+  voiceConvoRecog.onresult=function(e){
+    var interim='',final='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    document.getElementById('voiceTranscript').textContent=final||interim;
+    if(final){
+      document.getElementById('voiceStatus').textContent='PROCESSING...';
+      processVoiceInput(final.trim());
+    }
+  };
+  voiceConvoRecog.onerror=function(){
+    if(voiceConvoActive){
+      document.getElementById('voiceStatus').textContent='ERROR — RETRYING...';
+      setTimeout(listenForVoice,1000);
+    }
+  };
+  voiceConvoRecog.onend=function(){};
+  try{voiceConvoRecog.start();}catch(e){}
+}
+
+function processVoiceInput(txt){
+  if(!txt||!voiceConvoActive)return;
+  if(voiceConvoRecog){try{voiceConvoRecog.stop();}catch(e){}}
+  // Add to chat
+  startChat();
+  addMsg('u',txt);
+  autoDetect(txt);
+  if(detectApp(txt)){stopVoiceConvo();return;}
+  // Get PEPPER response
+  var btn=document.getElementById('sbtn');btn.disabled=true;
+  setSpinning(true);
+  fetch(BASE+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,memory:memCtx()})})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    btn.disabled=false;setSpinning(false);
+    var reply=d.reply||'Samajh nahi aaya, phir bolo!';
+    addMsg('b',reply);
+    document.getElementById('voiceStatus').textContent='PEPPER SPEAKING...';
+    document.getElementById('voiceTranscript').textContent=reply.substring(0,80)+'...';
+    // Speak and then listen again
+    speakAndThenListen(reply);
+  })
+  .catch(function(){
+    btn.disabled=false;setSpinning(false);
+    if(voiceConvoActive)listenForVoice();
+  });
+}
+
+function speakAndThenListen(text){
+  var clean=cleanForSpeech(text);
+  // Try ElevenLabs first
+  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+EL_VOICE+'/stream',{
+    method:'POST',
+    headers:{'xi-api-key':EL_KEY,'Content-Type':'application/json','Accept':'audio/mpeg'},
+    body:JSON.stringify({text:clean,model_id:'eleven_multilingual_v2',voice_settings:{stability:0.5,similarity_boost:0.75}})
+  })
+  .then(function(r){if(!r.ok)throw new Error();return r.blob();})
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);var audio=new Audio(url);
+    audio.playbackRate=voiceSettings.speed||1;
+    audio.onended=function(){
+      URL.revokeObjectURL(url);speaking=false;
+      if(voiceConvoActive){
+        setTimeout(listenForVoice,500);
+      }
+    };
+    audio.play().catch(function(){fallbackSpeakThenListen(clean);});
+  }).catch(function(){fallbackSpeakThenListen(clean);});
+}
+
+function fallbackSpeakThenListen(text){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  u.rate=voiceSettings.speed||0.93;u.pitch=1.05;
+  u.lang=voiceSettings.lang||'hi-IN';
+  u.onend=function(){if(voiceConvoActive)setTimeout(listenForVoice,500);};
+  window.speechSynthesis.speak(u);
+}
+
+function stopVoiceConvo(){
+  voiceConvoActive=false;
+  if(voiceConvoRecog){try{voiceConvoRecog.stop();}catch(e){}voiceConvoRecog=null;}
+  window.speechSynthesis&&window.speechSynthesis.cancel();
+  document.getElementById('voiceListening').classList.remove('show');
+  document.getElementById('pg-chat').classList.add('on');
+}
+
+// WAKE WORD DETECTION
+var wakeRecog=null;
+function startWakeWord(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  wakeRecog=new SR();
+  wakeRecog.continuous=true;
+  wakeRecog.lang='en-IN';
+  wakeRecog.onresult=function(e){
+    var txt=e.results[e.results.length-1][0].transcript.toLowerCase();
+    if(txt.includes('hey pepper')||txt.includes('hai pepper')||txt.includes('hello pepper')){
+      if(!voiceConvoActive){
+        startVoiceConvo();
+      }
+    }
+  };
+  wakeRecog.onend=function(){if(voiceSettings.wake)setTimeout(startWakeWord,1000);};
+  try{wakeRecog.start();}catch(e){}
+}
+
+// SETTINGS TOGGLES
+function toggleSetting(key,el){
+  el.classList.toggle('on');
+  var isOn=el.classList.contains('on');
+  voiceSettings[key]=isOn;
+  try{localStorage.setItem('pepper_voice',JSON.stringify(voiceSettings));}catch(e){}
+  if(key==='wake'){
+    if(isOn)startWakeWord();
+    else{if(wakeRecog){try{wakeRecog.stop();}catch(e){}wakeRecog=null;}}
+  }
+}
+
+// THEMES
+function setTheme(theme){
+  document.body.className=theme;
+  try{localStorage.setItem('pepper_theme',theme);}catch(e){}
+  document.querySelectorAll('[id^="th-"]').forEach(function(b){b.style.borderWidth='2px';b.style.borderColor='var(--border)';});
+  var active=document.getElementById('th-'+(theme||'dark').replace('theme-',''));
+  if(active)active.style.borderColor='var(--cyan)';
+}
+// Load saved theme
+try{var st=localStorage.getItem('pepper_theme');if(st!==null)setTheme(st);}catch(e){}
+
+// WEB SEARCH
+function doWebSearch(){
+  var q=document.getElementById('searchQ').value.trim();
+  if(!q)return;
+  quickSearch(q);
+}
+function quickSearch(q){
+  document.getElementById('searchResults').style.display='block';
+  document.getElementById('searchList').innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">Searching...</div>';
+  // Use PEPPER AI to summarize search topic
+  aiCall('Search karo aur batao: "'+q+'" ke baare mein latest information kya hai? Short aur clear Hinglish mein, bullet points mein.',function(r){
+    var html='<div style="font-size:0.85rem;line-height:1.8;color:var(--text)">'+r.split('\n').join('<br>')+'</div>';
+    html+='<div style="margin-top:10px"><a href="https://google.com/search?q='+encodeURIComponent(q)+'" target="_blank" style="color:var(--cyan);font-size:0.7rem;text-decoration:none">Google pe open karo</a></div>';
+    document.getElementById('searchList').innerHTML=html;
+  });
+  // Also open in new tab
+  document.getElementById('searchQ').value='';
+}
+
+// SMART FEATURES
+function doSmartFeature(type){
+  var el=document.getElementById('smartResult');el.style.display='block';
+  document.getElementById('smartText').textContent='Loading...';
+  var prompts={
+    joke:'Ek funny Hindi/Hinglish joke sunao. Short aur clean.',
+    quote:'Ek powerful motivational quote do aur uska meaning batao Hinglish mein.',
+    word:'Aaj ka Word of the Day batao — English word, meaning, example sentence.',
+    horoscope:'Aaj ka general horoscope batao in Hinglish — positive aur motivating.',
+    funfact:'Ek amazing fun fact batao jo mind blow kar de!',
+    recipe:'Ek easy Indian recipe batao jo 20 minutes mein ban jaye — ingredients aur steps.',
+    movie:'3 must-watch movies recommend karo with reason Hinglish mein.',
+    news:'Aaj India ki 5 important news headlines batao Hinglish mein.',
+    affirmation:'5 powerful daily affirmations do Hinglish mein.'
+  };
+  aiCall(prompts[type]||'Kuch interesting batao!',function(r){
+    document.getElementById('smartText').innerHTML=r.split('\n').join('<br>');
+    speak(r.substring(0,200));
+  });
+}
+
+// Add settings to sidebar
+setTimeout(function(){
+  try{
+    var sbBody=document.querySelector('.sb-body');
+    if(sbBody){
+      ['⚙️ Settings|settings','🔍 Web Search|search','⚡ Smart Features|smart'].forEach(function(item){
+        var parts=item.split('|');
+        var ni=document.createElement('div');
+        ni.className='sb-item';
+        ni.innerHTML='<span class="sb-item-ic">'+parts[0].split(' ')[0]+'</span> '+parts[0].split(' ').slice(1).join(' ');
+        ni.onclick=(function(pg){return function(){showPg(pg);closeSidebar();};})(parts[1]);
+        sbBody.appendChild(ni);
+      });
+    }
+  }catch(e){}
+},300);
 
 // ══ JARVIS CAPABILITIES ══
 
@@ -1828,8 +2463,11 @@ setTimeout(function(){
     predDiv.id='predBar';
     predDiv.style.cssText='display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--bg)';
     predDiv.style.cssText+=';scrollbar-width:none;-webkit-overflow-scrolling:touch';
-    // Insert before msgs
-    msgsEl.parentNode.insertBefore(predDiv,msgsEl);
+    // Insert before msgs safely
+    try{
+      if(msgsEl.parentNode)msgsEl.parentNode.insertBefore(predDiv,msgsEl);
+      else msgsEl.parentNode&&msgsEl.parentNode.appendChild(predDiv);
+    }catch(e){document.getElementById('pg-chat').appendChild(predDiv);}
     showPredictions();
     // Refresh predictions every 30 min
     setInterval(showPredictions,1800000);
@@ -1840,7 +2478,9 @@ setTimeout(function(){
     var dot=document.createElement('span');
     dot.id='emotDot';
     dot.style.cssText='display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-left:5px;vertical-align:middle;transition:background 0.5s';
-    statusEl.parentNode.insertBefore(dot,statusEl.nextSibling);
+    try{
+      if(statusEl.parentNode)statusEl.parentNode.insertBefore(dot,statusEl.nextSibling);
+    }catch(e){if(statusEl.parentNode)statusEl.parentNode.appendChild(dot);}
   }
 },800);
 
