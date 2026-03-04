@@ -42,7 +42,7 @@ def get_history(limit=20):
     return messages
 
 def clean(text):
-    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s]', '', text).strip()
+    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s.,!?;:\-\(\)\[\]\'\"]+', '', text).strip()
 
 def get_time_info():
     now = datetime.datetime.now()
@@ -138,7 +138,7 @@ def history():
     conn = get_db()
     rows = conn.execute('SELECT user, assistant, timestamp FROM chats ORDER BY timestamp DESC LIMIT 50').fetchall()
     conn.close()
-    return jsonify({"history": [{"user": r[0], "assistant": r[1], "time": r[2]} for r in rows]})
+    return jsonify({"history": [{"user": r[0], "assistant": r[1], "timestamp": r[2]} for r in rows]})
 
 @app.route("/weather", methods=["GET"])
 def weather():
@@ -198,6 +198,57 @@ def clear():
     conn.commit()
     conn.close()
     return jsonify({"status": "cleared"})
+
+@app.route("/search", methods=["POST"])
+def search():
+    data = request.get_json()
+    query = data.get("query", "").strip()
+    if not query:
+        return jsonify({"error": "No query"}), 400
+    try:
+        # Use DuckDuckGo instant answer API (no key needed)
+        url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1&skip_disambig=1"
+        res = requests.get(url, timeout=8, headers={"User-Agent": "PEPPER-AI/1.0"}).json()
+        
+        results = []
+        # Abstract text
+        if res.get("AbstractText"):
+            results.append({
+                "title": res.get("Heading", query),
+                "snippet": res["AbstractText"][:300],
+                "url": res.get("AbstractURL", "")
+            })
+        # Related topics
+        for topic in res.get("RelatedTopics", [])[:4]:
+            if isinstance(topic, dict) and topic.get("Text"):
+                results.append({
+                    "title": topic.get("Text", "")[:60],
+                    "snippet": topic.get("Text", "")[:200],
+                    "url": topic.get("FirstURL", "")
+                })
+        
+        if not results:
+            # Fallback: ask PEPPER AI
+            system = PEPPER_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": f"'{query}' ke baare mein brief aur accurate information do. 3-4 sentences mein."}
+                ],
+                max_tokens=300,
+                temperature=0.5
+            )
+            ai_reply = response.choices[0].message.content
+            results.append({
+                "title": query,
+                "snippet": ai_reply,
+                "url": f"https://google.com/search?q={requests.utils.quote(query)}"
+            })
+        
+        return jsonify({"results": results, "query": query})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/health", methods=["GET"])
 def health():
