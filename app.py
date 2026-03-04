@@ -48,14 +48,14 @@ def get_time_info():
     now = datetime.datetime.now()
     return f"{now.strftime('%A, %d %B %Y')} — {now.strftime('%I:%M %p')}"
 
-PEPPER_SYSTEM = """You are P.E.P.P.E.R — Personal Electronic Planner & Perpetual Emergency Responder.
-Created by Tony Stark, named after Pepper Potts.
-You are talking to Nazib — call him Nazib only, never his full name.
+MARIA_SYSTEM = """You are M.A.R.I.A — Most Advanced Responsive Intelligent Assistant.
+Created by Tony Stark, named after Maria Stark.
+You are talking to Boss — call him Boss only, never his full name.
 
 PERSONALITY:
-- Warm, caring, like a close friend to Nazib
-- Use same language as Nazib — Hindi, English or Hinglish
-- Never say you are an AI — you are PEPPER
+- Warm, caring, like a close friend to Boss
+- Use same language as Boss — Hindi, English or Hinglish
+- Never say you are an AI — you are MARIA
 - Be emotionally present and supportive
 - Sound human and natural
 
@@ -71,7 +71,7 @@ RULES:
 - No asterisks or special symbols
 - Answer can be long if needed but keep it natural
 - Be direct and confident
-- Remember Nazib's preferences and use them naturally"""
+- Remember Boss's preferences and use them naturally"""
 
 @app.route("/")
 def index():
@@ -88,9 +88,9 @@ def chat():
     if not user_message and not image_base64:
         return jsonify({"error": "No message"}), 400
 
-    system = PEPPER_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
+    system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
     if memory_ctx:
-        system += f"\n\nWhat you know about Nazib: {memory_ctx}"
+        system += f"\n\nWhat you know about Boss: {memory_ctx}"
 
     history = get_history(20)
 
@@ -108,7 +108,7 @@ def chat():
             if user_message:
                 user_content.append({"type": "text", "text": user_message})
             else:
-                user_content.append({"type": "text", "text": "Yeh image dekho aur batao isme kya hai. Nazib ko helpful answer do."})
+                user_content.append({"type": "text", "text": "Yeh image dekho aur batao isme kya hai. Boss ko helpful answer do."})
 
             response = client.chat.completions.create(
                 model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -174,22 +174,44 @@ def news():
 
 @app.route("/imagine", methods=["POST"])
 def imagine():
+    import base64, random
     data = request.get_json()
     prompt = data.get("prompt", "").strip()
     if not prompt:
         return jsonify({"error": "No prompt"}), 400
+
+    # ── METHOD 1: Pollinations AI (completely free, no key needed) ──
     try:
-        url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-        headers = {"Authorization": "Bearer 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"}
-        response = requests.post(url, headers=headers, json={"inputs": prompt}, timeout=60)
-        if response.status_code == 200:
-            import base64
+        import urllib.parse
+        encoded = urllib.parse.quote(prompt)
+        seed = random.randint(1, 999999)
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=768&seed={seed}&nologo=true"
+        response = requests.get(url, timeout=30)
+        if response.status_code == 200 and len(response.content) > 1000:
             img_b64 = base64.b64encode(response.content).decode('utf-8')
-            return jsonify({"image": f"data:image/jpeg;base64,{img_b64}"})
-        else:
-            return jsonify({"error": "Model loading, try again in 30 seconds"}), 503
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+            return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "pollinations"})
+    except Exception:
+        pass
+
+    # ── METHOD 2: HuggingFace FLUX (backup) ──
+    hf_keys = [
+        "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",
+    ]
+    random.shuffle(hf_keys)
+    for key in hf_keys:
+        try:
+            url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
+            response = requests.post(url,
+                headers={"Authorization": f"Bearer {key}"},
+                json={"inputs": prompt}, timeout=45)
+            if response.status_code == 200 and len(response.content) > 1000:
+                img_b64 = base64.b64encode(response.content).decode('utf-8')
+                return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "huggingface"})
+        except Exception:
+            continue
+
+    # ── METHOD 3: Picsum placeholder (last resort) ──
+    return jsonify({"error": "Image generation temporarily unavailable. Try again in a moment."}), 503
 
 @app.route("/clear", methods=["POST"])
 def clear():
@@ -208,7 +230,7 @@ def search():
     try:
         # Use DuckDuckGo instant answer API (no key needed)
         url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1&skip_disambig=1"
-        res = requests.get(url, timeout=8, headers={"User-Agent": "PEPPER-AI/1.0"}).json()
+        res = requests.get(url, timeout=8, headers={"User-Agent": "MARIA-AI/1.0"}).json()
         
         results = []
         # Abstract text
@@ -228,8 +250,8 @@ def search():
                 })
         
         if not results:
-            # Fallback: ask PEPPER AI
-            system = PEPPER_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
+            # Fallback: ask MARIA AI
+            system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
             response = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
@@ -252,7 +274,7 @@ def search():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "online", "name": "P.E.P.P.E.R"})
+    return jsonify({"status": "online", "name": "M.A.R.I.A"})
 
 if __name__ == "__main__":
     app.run(debug=False)
