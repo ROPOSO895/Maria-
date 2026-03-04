@@ -82,7 +82,10 @@ def chat():
     data = request.get_json()
     user_message = data.get("message", "").strip()
     memory_ctx = data.get("memory", "")
-    if not user_message:
+    image_base64 = data.get("image_base64", None)
+    image_type = data.get("image_type", "image/jpeg")
+
+    if not user_message and not image_base64:
         return jsonify({"error": "No message"}), 400
 
     system = PEPPER_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
@@ -92,14 +95,40 @@ def chat():
     history = get_history(20)
 
     try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": system}] + history + [{"role": "user", "content": user_message}],
-            max_tokens=500,
-            temperature=0.85
-        )
+        if image_base64:
+            # Use vision model for image
+            user_content = [
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:{image_type};base64,{image_base64}"
+                    }
+                }
+            ]
+            if user_message:
+                user_content.append({"type": "text", "text": user_message})
+            else:
+                user_content.append({"type": "text", "text": "Yeh image dekho aur batao isme kya hai. Nazib ko helpful answer do."})
+
+            response = client.chat.completions.create(
+                model="meta-llama/llama-4-scout-17b-16e-instruct",
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user_content}
+                ],
+                max_tokens=600,
+                temperature=0.85
+            )
+        else:
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "system", "content": system}] + history + [{"role": "user", "content": user_message}],
+                max_tokens=500,
+                temperature=0.85
+            )
+
         reply = clean(response.choices[0].message.content)
-        save_chat(user_message, reply)
+        save_chat(user_message or "[image]", reply)
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
