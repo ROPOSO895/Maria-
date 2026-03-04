@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,12 +9,14 @@
 <style>
 :root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--cyan:#00e5ff;--pink:#ff2d78;--border:rgba(255,255,255,0.08);--text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.35)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+body{background:#000;color:var(--text);font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background:url('data:image/webp;base64,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') center/cover no-repeat;z-index:0;opacity:0.75}
+body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.6) 75%,rgba(0,0,0,0.92) 100%);z-index:1}
 
 /* SIDEBAR OVERLAY */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(4px)}
 .overlay.on{display:block}
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;background:#111;z-index:201;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;background:rgba(5,5,15,0.92);backdrop-filter:blur(20px);z-index:201;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;border-right:1px solid rgba(0,229,255,0.15)}
 .sidebar.on{transform:translateX(0)}
 .sb-top{padding:16px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
 .sb-search{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:8px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none}
@@ -33,7 +35,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .sb-name{font-size:0.82rem;font-weight:500}
 
 /* TOP BAR */
-.top{background:rgba(10,10,10,0.95);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px);position:relative;z-index:10}
+.top{background:rgba(0,0,0,0.25);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px);position:relative;z-index:10}
 .menu-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
 /* SPINNING LOGO */
@@ -51,13 +53,13 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .new-chat-btn:active{background:rgba(255,255,255,0.05)}
 
 /* PAGES */
-.pg{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.pg{display:none;flex:1;overflow-y:auto;flex-direction:column;position:relative;z-index:2}
 .pg.on{display:flex}
 .pg::-webkit-scrollbar{width:2px}
 .pg::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 
 /* WELCOME */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;position:relative;z-index:2}
 .welcome-logo{width:60px;height:60px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:0.55rem;font-weight:700;color:#000;box-shadow:0 0 30px rgba(0,229,255,0.3)}
 .welcome h2{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .welcome p{font-size:0.8rem;color:var(--dim);margin-bottom:24px}
@@ -67,7 +69,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .chip-ic{font-size:0.9rem}
 
 /* MSGS */
-.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:160px;display:flex;flex-direction:column;gap:14px}
+.msgs{flex:1;overflow-y:auto;padding:14px;padding-bottom:160px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:2}
 .msgs::-webkit-scrollbar{width:2px}
 .msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 .msg{display:flex;flex-direction:column;max-width:85%}
@@ -94,7 +96,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 /* INPUT AREA */
-.inp-wrap{position:fixed;bottom:0;left:0;right:0;background:var(--bg);padding:10px 14px 16px;z-index:99}
+.inp-wrap{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:10px 14px 16px;z-index:99;border-top:1px solid rgba(0,229,255,0.12)}
 .inp-box{background:var(--bg2);border:1px solid var(--border);border-radius:26px;display:flex;align-items:flex-end;gap:6px;padding:6px 6px 6px 16px;transition:border-color 0.2s}
 .inp-box:focus-within{border-color:rgba(255,255,255,0.2)}
 #msg{flex:1;background:transparent;border:none;color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;resize:none;max-height:120px;padding:4px 0;line-height:1.5}
@@ -106,25 +108,13 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .send-btn{width:36px;height:36px;border-radius:50%;background:var(--dim);border:none;color:#000;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-weight:700}
 .send-btn.active{background:white;color:#000}
 .send-btn:disabled{opacity:0.3}
-/* AI GIRL */
-.ai-girl-wrap{position:fixed;bottom:70px;right:0;z-index:120;pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s ease;opacity:0}
-.ai-girl-wrap.show{transform:translateX(0);opacity:1;pointer-events:all}
-.ai-girl-wrap.hide{transform:translateX(110%);opacity:0}
-.ai-girl-img{width:130px;height:auto;filter:drop-shadow(0 0 18px rgba(0,229,255,0.35))}
-.ai-girl-bubble{background:rgba(10,10,10,0.92);border:1px solid rgba(0,229,255,0.3);border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:0.72rem;color:var(--text);max-width:170px;text-align:center;backdrop-filter:blur(12px);margin-bottom:6px;line-height:1.4;display:none}
-.ai-girl-bubble.show{display:block}
-@keyframes girlFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.ai-girl-img{animation:girlFloat 3s ease-in-out infinite}
-</style>
-.wake-pill{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);z-index:150;display:flex;align-items:center;gap:8px;padding:9px 18px 9px 12px;border-radius:50px;background:rgba(10,10,10,0.92);border:1px solid rgba(0,229,255,0.35);backdrop-filter:blur(16px);cursor:pointer;opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 0 20px rgba(0,229,255,0.15),0 4px 24px rgba(0,0,0,0.5);user-select:none;-webkit-user-select:none}
-.wake-pill.show{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
-.wake-pill.sleeping{border-color:rgba(255,45,120,0.35);box-shadow:0 0 20px rgba(255,45,120,0.15),0 4px 24px rgba(0,0,0,0.5)}
-.wake-pill-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);flex-shrink:0;animation:pillPulse 1.5s ease-in-out infinite}
-.wake-pill.sleeping .wake-pill-dot{background:var(--pink);animation:none}
-.wake-pill-label{font-family:'Orbitron',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;color:var(--cyan);white-space:nowrap}
-.wake-pill.sleeping .wake-pill-label{color:var(--pink)}
-.wake-pill-action{font-size:0.55rem;color:var(--dim);letter-spacing:0.08em;white-space:nowrap}
-@keyframes pillPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.5)}50%{box-shadow:0 0 0 5px rgba(0,229,255,0)}}
+
+@keyframes girlFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.feat-item{padding:12px 4px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);text-align:center;cursor:pointer;transition:all 0.2s}
+.feat-item:active{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3)}
+.feat-ic{font-size:1.2rem;margin-bottom:4px}
+.feat-lb{font-size:0.5rem;color:rgba(255,255,255,0.55);letter-spacing:0.05em}
 </style>
 </head>
 <body>
@@ -177,73 +167,49 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- TOP -->
-<div class="top">
+<div class="top" style="padding:8px 14px;gap:8px;justify-content:space-between;position:relative;z-index:2;background:rgba(0,0,0,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,229,255,0.15)">
   <button class="menu-btn" onclick="openSidebar()">☰</button>
-  <div class="logo-wrap">
-    <div class="logo-ring">
-      <svg id="logoSvg" viewBox="0 0 30 30" fill="none">
+  <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:center">
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.8rem;font-weight:700;color:var(--text);letter-spacing:0.1em">P.E.P.P.E.R</div>
+    <div style="width:22px;height:22px;position:relative;flex-shrink:0">
+      <svg id="logoSvg" viewBox="0 0 30 30" fill="none" style="width:100%;height:100%">
         <circle cx="15" cy="15" r="13" stroke="url(#g1)" stroke-width="1.5" stroke-dasharray="4 3"/>
         <defs><linearGradient id="g1" x1="0" y1="0" x2="30" y2="30"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#ff2d78"/></linearGradient></defs>
       </svg>
-      <div class="logo-inner">P.E.P</div>
+      <div style="position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,#00e5ff,#ff2d78);display:flex;align-items:center;justify-content:center;font-size:0.28rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#000">P</div>
     </div>
-    <div>
-      <div class="logo-name">P.E.P.P.E.R</div>
-      <div class="logo-sub" id="statusTxt">Online</div>
-    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--dim)" id="clk">--:--</div>
+    <div style="font-size:0.55rem;color:var(--dim)" id="statusTxt">Online</div>
   </div>
-  <div class="top-right">
-    <div class="clk" id="clk">--:--</div>
-    <button onclick="showPg('smart')" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Smart">⚡</button>
-    <button onclick="showPg('settings')" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Settings">⚙️</button>
-    <button onclick="showPowerScreen()" style="width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid rgba(0,229,255,0.3);color:var(--cyan);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Power">⏻</button>
+  <div style="display:flex;align-items:center;gap:5px">
+    <button onclick="showPg('smart')" style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center">⚡</button>
+    <button onclick="showPg('settings')" style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--dim);font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center">⚙️</button>
+    <button onclick="showPowerScreen()" style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid rgba(0,229,255,0.3);color:var(--cyan);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center">⏻</button>
   </div>
 </div>
 
-<!-- MODE BAR -->
-<div class="mode-bar" id="modeBar">
-  <button class="mode-chip on" onclick="setMode('normal',this)">💬 NORMAL</button>
-  <button class="mode-chip" onclick="setMode('study',this)">📚 STUDY</button>
-  <button class="mode-chip" onclick="setMode('focus',this)">🎯 FOCUS</button>
-  <button class="mode-chip emergency" onclick="setMode('emergency',this)">🚨 EMERGENCY</button>
 </div>
+
+
+<!-- PRED BAR -->
+
 
 <!-- CHAT PAGE -->
 <div class="pg on" id="pg-chat" style="flex-direction:column">
-  <div id="welcomeScreen" class="welcome">
-    <div class="welcome-logo">P.E.P</div>
-    <h2 id="welcomeGreet">What can I help with?</h2>
-    <p>Your personal AI assistant, powered by Nazib Siddique</p>
-    <div class="chips" style="margin-bottom:16px">
-      <div class="chip" onclick="quickSend('Create an image')"><span class="chip-ic">🎨</span> Create image</div>
-      <div class="chip" onclick="quickSend('Make a plan for today')"><span class="chip-ic">💡</span> Make a plan</div>
-      <div class="chip" onclick="quickSend('Give me advice')"><span class="chip-ic">🎓</span> Get advice</div>
-      <div class="chip" onclick="quickSend('Write code for me')"><span class="chip-ic">💻</span> Code</div>
-    </div>
-    <!-- FEATURES GRID -->
-    <div style="width:100%;max-width:340px">
-      <div style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:10px;text-align:left">// ALL FEATURES</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-        <div onclick="showPg('brief')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📡</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Briefing</div></div>
-        <div onclick="showPg('mem')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🧠</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Memory</div></div>
-        <div onclick="showPg('mood')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">💠</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Mood</div></div>
-        <div onclick="showPg('dash')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📊</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Dashboard</div></div>
-        <div onclick="showPg('roast')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎭</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Roast</div></div>
-        <div onclick="showPg('astro')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🔮</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Astro</div></div>
-        <div onclick="showPg('radio')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📻</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Radio</div></div>
-        <div onclick="showPg('focus')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⏱</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Focus</div></div>
-        <div onclick="showPg('tasks')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">✅</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Tasks</div></div>
-        <div onclick="showPg('rem')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⏰</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Reminders</div></div>
-        <div onclick="showPg('calc')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🧮</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Calculator</div></div>
-        <div onclick="showPg('decide')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🤔</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Decision</div></div>
-        <div onclick="showPg('interview')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎯</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Interview</div></div>
-        <div onclick="showPg('exam')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎓</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Exam</div></div>
-        <div onclick="showPg('translate')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🌐</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Translate</div></div>
-        <div onclick="showPg('imggen')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid rgba(0,229,255,0.3);text-align:center;cursor:pointer"><div style="font-size:1.1rem">🎨</div><div style="font-size:0.45rem;color:var(--cyan);margin-top:3px">Image AI</div></div>
-        <div onclick="showPg('conspiracy')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">👻</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Conspiracy</div></div>
-        <div onclick="showPg('story')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">📖</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Story</div></div>
-        <div onclick="showPg('letter')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">💌</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Letter</div></div>
-        <div onclick="showPg('capture')" style="padding:10px 4px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);text-align:center;cursor:pointer"><div style="font-size:1.1rem">⚡</div><div style="font-size:0.45rem;color:var(--dim);margin-top:3px">Capture</div></div>
+  <div id="welcomeScreen" class="welcome" style="justify-content:flex-end;padding-bottom:40px">
+    <h2 id="welcomeGreet" style="font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:24px;text-shadow:0 0 30px rgba(0,229,255,0.4)">What can I help with?</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px;margin-bottom:16px">
+      <div onclick="quickSend('Create an image for me')" style="padding:14px;border-radius:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);cursor:pointer;backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">🎨</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.85)">Create image</span>
+      </div>
+      <div onclick="quickSend('Analyze the image I upload')" style="padding:14px;border-radius:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);cursor:pointer;backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">🔍</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.85)">Analyze image</span>
+      </div>
+      <div onclick="quickSend('Make a plan for my day')" style="padding:14px;border-radius:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);cursor:pointer;backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">💡</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.85)">Make a plan</span>
+      </div>
+      <div onclick="openFeaturesDrawer()" style="padding:14px;border-radius:16px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);cursor:pointer;backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">📁</span><span style="font-size:0.8rem;color:rgba(0,229,255,0.9)">Features</span>
       </div>
     </div>
   </div>
@@ -267,7 +233,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
         <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
         <button class="img-upload-btn" onclick="document.getElementById('imgUpload').click()" title="Upload image">📎</button>
         <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Voice input">🎤</button>
-
+        
         <button class="send-btn" id="sbtn" onclick="send()">▶</button>
       </div>
     </div>
@@ -379,7 +345,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- REMINDERS PAGE -->
-    <div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-rem" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('dash')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">REMINDERS</span>
@@ -500,7 +466,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- POWER OVERLAY -->
-<div class="power-overlay" id="powerOverlay">
+<div class="power-overlay" id="powerOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;flex-direction:column;align-items:center;justify-content:center;gap:16px">
   <div style="font-family:'Orbitron',sans-serif;font-size:0.6rem;color:var(--dim);letter-spacing:0.3em">P.E.P.P.E.R</div>
   <button class="power-btn-big" id="powerBtnBig" onclick="togglePower()">
     <div class="power-ring"></div>
@@ -545,26 +511,38 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
   <div id="historyList"><div style="font-size:0.75rem;color:var(--dim);padding:8px">Loading...</div></div>
 </div>
 
-<!-- VOICE LISTENING OVERLAY -->
-<!-- AI GIRL -->
-<div class="ai-girl-wrap" id="aiGirl">
-  <div class="ai-girl-bubble" id="aiGirlBubble"></div>
-  <img class="ai-girl-img" src="https://raw.githubusercontent.com/ROPOSO895/Maria-/refs/heads/main/ai-girl.png" id="aiGirlImg"
-    onerror="this.src='https://img.icons8.com/nolan/200/artificial-intelligence.png'"
-    alt="PEPPER AI">
-</div>
 
-<!-- WAKE PILL -->
-<div class="wake-pill" id="wakePill" onclick="togglePowerFromPill()">
-  <div class="wake-pill-dot"></div>
-  <div>
-    <div class="wake-pill-label" id="wakePillLabel">PEPPER ACTIVE</div>
-    <div class="wake-pill-action" id="wakePillAction">TAP TO SLEEP</div>
+<!-- FEATURES DRAWER -->
+<div id="featuresOverlay" onclick="closeFeaturesDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;backdrop-filter:blur(4px)"></div>
+<div id="featuresDrawer" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,20,0.97);border-radius:24px 24px 0 0;z-index:301;padding:20px 16px 40px;border-top:1px solid rgba(0,229,255,0.2);max-height:75vh;overflow-y:auto;backdrop-filter:blur(20px)">
+  <div style="width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 16px"></div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--cyan);letter-spacing:0.2em;margin-bottom:16px;text-align:center">FEATURES</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+    <div onclick="closeFeaturesDrawer();showPg('brief')" class="feat-item"><div class="feat-ic">📡</div><div class="feat-lb">Briefing</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('mem')" class="feat-item"><div class="feat-ic">🧠</div><div class="feat-lb">Memory</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('mood')" class="feat-item"><div class="feat-ic">💠</div><div class="feat-lb">Mood</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('dash')" class="feat-item"><div class="feat-ic">📊</div><div class="feat-lb">Dashboard</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('roast')" class="feat-item"><div class="feat-ic">🎭</div><div class="feat-lb">Roast</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('astro')" class="feat-item"><div class="feat-ic">🔮</div><div class="feat-lb">Astro</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('radio')" class="feat-item"><div class="feat-ic">📻</div><div class="feat-lb">Radio</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('focus')" class="feat-item"><div class="feat-ic">⏱</div><div class="feat-lb">Focus</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('tasks')" class="feat-item"><div class="feat-ic">✅</div><div class="feat-lb">Tasks</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('rem')" class="feat-item"><div class="feat-ic">⏰</div><div class="feat-lb">Reminders</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('imggen')" class="feat-item" style="border-color:rgba(0,229,255,0.3)"><div class="feat-ic">🎨</div><div class="feat-lb" style="color:var(--cyan)">Image AI</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('translate')" class="feat-item"><div class="feat-ic">🌐</div><div class="feat-lb">Translate</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('interview')" class="feat-item"><div class="feat-ic">🎯</div><div class="feat-lb">Interview</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('exam')" class="feat-item"><div class="feat-ic">🎓</div><div class="feat-lb">Exam</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('letter')" class="feat-item"><div class="feat-ic">💌</div><div class="feat-lb">Letter</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('story')" class="feat-item"><div class="feat-ic">📖</div><div class="feat-lb">Story</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('capture')" class="feat-item"><div class="feat-ic">⚡</div><div class="feat-lb">Capture</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('conspiracy')" class="feat-item"><div class="feat-ic">👻</div><div class="feat-lb">Conspiracy</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('email')" class="feat-item"><div class="feat-ic">📧</div><div class="feat-lb">Cold Email</div></div>
+    <div onclick="closeFeaturesDrawer();showPg('negotiate')" class="feat-item"><div class="feat-ic">🤝</div><div class="feat-lb">Negotiate</div></div>
   </div>
-  <div style="margin-left:4px;font-size:0.85rem" id="wakePillIcon">⚡</div>
 </div>
 
-<div class="voice-listening" id="voiceListening">
+<!-- VOICE LISTENING OVERLAY -->
+<div class="voice-listening" id="voiceListening" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:400;flex-direction:column;align-items:center;justify-content:center;gap:12px">
   <div class="voice-pulse">🎤</div>
   <div class="voice-text" id="voiceStatus">LISTENING...</div>
   <div class="voice-transcript" id="voiceTranscript">Bol do Nazib...</div>
@@ -607,7 +585,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
         <option value="hi-IN">Hindi (हिंदी)</option>
         <option value="en-IN">Hinglish / English India ⭐</option>
         <option value="en-US">English (US)</option>
-        <option value="en-GB">English (UK)</option>
       </select>
     </div>
     <div style="margin-top:10px">
@@ -689,8 +666,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- ══ NEW FEATURE PAGES ══ -->
-
-<!-- ROAST MODE -->
+  <!-- ROAST MODE -->
 <div class="pg" id="pg-roast" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
@@ -878,7 +854,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 </div>
 
 <!-- TALENT SHOW -->
-    <div class="pg" id="pg-talent" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
+<div class="pg" id="pg-talent" style="flex-direction:column;overflow-y:auto;padding:14px;padding-bottom:20px;gap:10px">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
     <button onclick="showPg('chat')" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">←</button>
     <span style="font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--text);letter-spacing:0.1em">🎪 TALENT SHOW</span>
@@ -1118,12 +1094,17 @@ function loadSbHist(){
   .then(function(d){
     var el=document.getElementById('sbHist');
     if(!d.history||!d.history.length){el.innerHTML='<div style="padding:8px;font-size:0.72rem;color:var(--dim)">No history yet</div>';return;}
-    el.innerHTML=d.history.slice(0,10).map(function(h){return '<div class="sb-item"><span class="sb-item-ic">💬</span>'+h.user.substring(0,35)+'</div>';}).join('');
+    var items=d.history.slice(0,10);
+    el.innerHTML=items.map(function(h,i){
+      var u=(h.user||'').substring(0,35).replace(/['"]/g,'');
+      var a=(h.assistant||'').substring(0,100).replace(/['"]/g,'');
+      return '<div class="sb-item" style="cursor:pointer" onclick="continueChat(\'' + u + '\',\'' + a + '\')"><span class="sb-item-ic">💬</span>'+h.user.substring(0,35)+'</div>';
+    }).join('');
   }).catch(function(){});
 }
 
 // PAGES
-    function showPg(id){
+function showPg(id){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
   var pg=document.getElementById('pg-'+id);
   if(pg)pg.classList.add('on');
@@ -1137,7 +1118,7 @@ function loadSbHist(){
 }
 
 // NEW CHAT
-function newChat(){
+  function newChat(){
   chatStarted=false;
   document.getElementById('welcomeScreen').style.display='flex';
   document.getElementById('msgs').style.display='none';
@@ -1245,8 +1226,7 @@ function addMsg(role,text){
   var safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
   if(role==='b'){
     row.innerHTML='<div class="msg-av b">P</div><div class="bub">'+safe+'</div>';
-    // Show AI girl with snippet
-    showAIGirl(text.substring(0,60)+(text.length>60?'...':''));
+    showAIGirlBubble(text.substring(0,70)+(text.length>70?'...':''));
   } else {
     row.innerHTML='<div class="bub">'+safe+'</div><div class="msg-av u">N</div>';
   }
@@ -1254,25 +1234,20 @@ function addMsg(role,text){
   return row;
 }
 
-var aiGirlTimer=null;
-function showAIGirl(snippet){
-  var wrap=document.getElementById('aiGirl');
+var aiGirlBubbleTimer=null;
+function showAIGirlBubble(snippet){
   var bubble=document.getElementById('aiGirlBubble');
-  if(!wrap)return;
-  clearTimeout(aiGirlTimer);
+  if(!bubble)return;
+  clearTimeout(aiGirlBubbleTimer);
   bubble.textContent=snippet;
-  bubble.classList.add('show');
-  wrap.classList.remove('hide');
-  wrap.classList.add('show');
-  aiGirlTimer=setTimeout(function(){
-    wrap.classList.add('hide');
-    wrap.classList.remove('show');
-    setTimeout(function(){bubble.classList.remove('show');},500);
+  bubble.style.display='block';
+  aiGirlBubbleTimer=setTimeout(function(){
+    bubble.style.display='none';
   },4000);
 }
 
 // SPINNING LOGO
-    function setSpinning(on){
+  function setSpinning(on){
   var svg=document.getElementById('logoSvg');
   if(on)svg.classList.add('spin');else svg.classList.remove('spin');
 }
@@ -1332,7 +1307,7 @@ function askPepper(txt,doSpeak){
 }
 
 // APP LINKS
-var APPS={
+  var APPS={
   'youtube':'https://youtube.com','yt':'https://youtube.com',
   'whatsapp':'https://web.whatsapp.com','wa':'https://web.whatsapp.com',
   'instagram':'https://instagram.com','insta':'https://instagram.com',
@@ -1405,37 +1380,10 @@ function toggleMic(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){addMsg('b','Use Chrome for voice');return;}
   if(window.speechSynthesis)window.speechSynthesis.cancel();
-  recog=new SR();
-  recog.lang=voiceSettings.lang||'hi-IN';
-  recog.continuous=false;
-  recog.interimResults=true;
-  recog.maxAlternatives=3;
-  var finalTxt='';
-  recog.onstart=function(){listening=true;finalTxt='';document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
-  recog.onresult=function(e){
-    var interim='';
-    for(var i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal){
-        // pick highest confidence alternative
-        var best=e.results[i][0].transcript;
-        var bestConf=e.results[i][0].confidence||0;
-        for(var j=1;j<e.results[i].length;j++){
-          if((e.results[i][j].confidence||0)>bestConf){best=e.results[i][j].transcript;bestConf=e.results[i][j].confidence;}
-        }
-        finalTxt+=best;
-      } else { interim+=e.results[i][0].transcript; }
-    }
-    document.getElementById('statusTxt').textContent=finalTxt||interim?'Heard: '+(finalTxt||interim):'Listening...';
-  };
-  recog.onerror=function(e){
-    if(e.error==='no-speech'){document.getElementById('statusTxt').textContent='No speech detected';}
-    else if(e.error==='not-allowed'){addMsg('b','Mic permission denied. Allow mic in browser settings.');}
-    stopMic();
-  };
-  recog.onend=function(){
-    if(finalTxt.trim()){addMsg('u',finalTxt.trim());autoDetect(finalTxt.trim());askPepper(finalTxt.trim(),true);}
-    stopMic();
-  };
+  recog=new SR();recog.lang='hi-IN';recog.continuous=false;recog.interimResults=false;
+  recog.onstart=function(){listening=true;document.getElementById('micBtn').classList.add('on');document.getElementById('statusTxt').textContent='Listening...';};
+  recog.onresult=function(e){var txt=e.results[0][0].transcript.trim();stopMic();if(txt){addMsg('u',txt);autoDetect(txt);askPepper(txt,true);}};
+  recog.onerror=function(){stopMic();};recog.onend=function(){stopMic();};
   try{recog.start();}catch(e){stopMic();}
 }
 function stopMic(){
@@ -1447,7 +1395,7 @@ function stopMic(){
 // GREET DISABLED
 
 // MODES
-    var currentMode='normal';
+var currentMode='normal';
 var modePrompts={
   normal:'You are PEPPER, warm friendly Hinglish AI for Nazib.',
   study:'You are PEPPER in STUDY MODE. Give detailed educational explanations, use examples, be like a teacher. Focus on learning.',
@@ -1582,7 +1530,7 @@ function calcEquals(){
 }
 
 // DECISION AI
-    function addDecOption(){
+function addDecOption(){
   var n=document.querySelectorAll('.dec-option').length+1;
   var div=document.createElement('div');div.className='dec-option';
   div.innerHTML='<span class="dec-num">'+n+'</span><input class="dec-inp-opt" placeholder="Option '+String.fromCharCode(64+n)+'...">';
@@ -1643,7 +1591,7 @@ function resetFocus(){
 }
 
 // OVERRIDE showPg to handle new pages
-    showPg=function(id){
+  showPg=function(id){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
   var pg=document.getElementById('pg-'+id);
   if(pg)pg.classList.add('on');
@@ -1836,7 +1784,7 @@ function renderCaptures(){
 }
 
 // BRAIN DUMP
-function doBrainDump(){
+  function doBrainDump(){
   var txt=document.getElementById('dumpInput').value.trim();
   if(!txt)return;
   var el=document.getElementById('dumpResult');el.style.display='block';
@@ -1845,7 +1793,7 @@ function doBrainDump(){
 }
 
 // MOOD BOARD
-    function toggleMbChip(el){
+function toggleMbChip(el){
   if(el.style.borderColor==='var(--cyan)'||el.dataset.sel==='1'){
     el.style.borderColor='var(--border)';el.style.color='var(--dim)';el.dataset.sel='0';
   } else {
@@ -1992,10 +1940,10 @@ showPg=function(id){
 };
 
 // POWER BUTTON
-    var pepperOn=true;
+var pepperOn=true;
 function showPowerScreen(){
   var ov=document.getElementById('powerOverlay');
-  ov.classList.add('show');
+  ov.style.display='flex';
   var btn=document.getElementById('powerBtnBig');
   if(pepperOn){btn.classList.add('on');document.getElementById('powerText').textContent='PEPPER ACTIVE — TAP TO SLEEP';}
   else{btn.classList.remove('on');document.getElementById('powerText').textContent='PRESS TO ACTIVATE';}
@@ -2008,56 +1956,19 @@ function togglePower(){
     btn.classList.add('on');
     txt.textContent='BOOTING UP...';
     setTimeout(function(){
-      document.getElementById('powerOverlay').classList.remove('show');
+      document.getElementById('powerOverlay').style.display='none';
       addMsg('b','PEPPER back online! Kya hukum hai, Nazib?');
       speak('PEPPER back online');
-      updateWakePill();
     },1500);
   } else {
     btn.classList.remove('on');
     txt.textContent='PEPPER SLEEPING — TAP TO WAKE';
     document.getElementById('statusTxt').textContent='Sleeping';
-    updateWakePill();
   }
-}
-
-function updateWakePill(){
-  var pill=document.getElementById('wakePill');
-  var label=document.getElementById('wakePillLabel');
-  var action=document.getElementById('wakePillAction');
-  var icon=document.getElementById('wakePillIcon');
-  pill.classList.add('show');
-  if(pepperOn){
-    pill.classList.remove('sleeping');
-    label.textContent='PEPPER ACTIVE';
-    action.textContent='TAP TO SLEEP';
-    icon.textContent='⚡';
-  } else {
-    pill.classList.add('sleeping');
-    label.textContent='PEPPER SLEEPING';
-    action.textContent='TAP TO WAKE';
-    icon.textContent='🌙';
-  }
-}
-
-function togglePowerFromPill(){
-  pepperOn=!pepperOn;
-  var btn=document.getElementById('powerBtnBig');
-  var txt=document.getElementById('powerText');
-  if(pepperOn){
-    btn.classList.add('on');
-    document.getElementById('statusTxt').textContent='Online';
-    addMsg('b','PEPPER back online! Kya hukum hai, Nazib?');
-    speak('PEPPER back online');
-  } else {
-    btn.classList.remove('on');
-    document.getElementById('statusTxt').textContent='Sleeping';
-  }
-  updateWakePill();
 }
 // Tap outside to close power screen
 document.getElementById('powerOverlay').addEventListener('click',function(e){
-  if(e.target===this&&pepperOn)this.classList.remove('show');
+  if(e.target===this&&pepperOn)this.style.display='none';
 });
 
 // Welcome heading static
@@ -2134,7 +2045,7 @@ function handleImageUpload(e){
     var msgs=document.getElementById('msgs');
     var row=document.createElement('div');
     row.className='msg-row u';
-    row.innerHTML='<div class="msg-av u">N</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:6px;display:flex;align-items:center;gap:8px;max-width:200px"><img src="'+ev.target.result+'" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0"><div style="font-size:0.72rem;color:var(--dim)">📎 Image</div></div>';
+    row.innerHTML='<div class="msg-av u">N</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:6px;display:flex;align-items:center;gap:8px"><img src="'+ev.target.result+'" style="width:44px;height:44px;border-radius:8px;object-fit:cover"><span style="font-size:0.72rem;color:var(--dim)">📎 Image</span></div>';
     msgs.appendChild(row);
     msgs.scrollTop=msgs.scrollHeight;
     // Auto analyze
@@ -2179,7 +2090,7 @@ function analyzeImage(dataUrl){
 }
 
 // HISTORY PAGE - continue old chats
-    function loadHistoryPage(){
+function loadHistoryPage(){
   var el=document.getElementById('historyList');
   el.innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">Loading...</div>';
   fetch(BASE+'/history')
@@ -2195,6 +2106,7 @@ function analyzeImage(dataUrl){
       var div=document.createElement('div');
       div.className='hist-item';
       div.innerHTML='<div class="hist-user">You: '+(h.user||'').substring(0,60)+'</div><div class="hist-pepper">PEPPER: '+(h.assistant||'').substring(0,80)+'</div><div class="hist-time">'+(h.timestamp||'')+'</div>';
+      div.style.cursor='pointer';
       div.onclick=(function(u2,a2){return function(){continueChat(u2,a2);};})(u,a);
       return div.outerHTML;
     }).join('');
@@ -2204,14 +2116,18 @@ function analyzeImage(dataUrl){
 }
 
 function continueChat(userMsg,pepperReply){
+  closeSidebar();
   showPg('chat');
   startChat();
   setTimeout(function(){
-    if(userMsg)addMsg('u',userMsg);
-    if(pepperReply)addMsg('b',pepperReply);
     var msgs=document.getElementById('msgs');
+    msgs.innerHTML='';
+    if(userMsg){addMsg('u',userMsg);}
+    if(pepperReply){addMsg('b',pepperReply);}
     msgs.scrollTop=msgs.scrollHeight;
-    addMsg('b','Haan Nazib, yaad hai! Aage kya karna hai?');
+    // Let user continue from here
+    document.getElementById('msg').placeholder='Continue this chat...';
+    setTimeout(function(){document.getElementById('msg').placeholder='Ask PEPPER anything...';},3000);
   },300);
 }
 
@@ -2238,8 +2154,7 @@ setTimeout(function(){
 
 // SHOW POWER SCREEN ON FIRST LOAD
 setTimeout(function(){
-  showPowerScreen();
-  setTimeout(updateWakePill, 600);
+  
 },500);
 
 // ══ VOICE-TO-VOICE CONVERSATION ══
@@ -2258,7 +2173,7 @@ function startVoiceConvo(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){addMsg('b','Voice nahi chal raha — Chrome use karo!');return;}
   voiceConvoActive=true;
-  document.getElementById('voiceListening').classList.add('show');
+  document.getElementById('voiceListening').style.display='flex';
   listenForVoice();
 }
 
@@ -2271,19 +2186,17 @@ function listenForVoice(){
   voiceConvoRecog.interimResults=true;
   document.getElementById('voiceStatus').textContent='LISTENING...';
   document.getElementById('voiceTranscript').textContent='Bol do...';
-  voiceConvoRecog.maxAlternatives=3;
   voiceConvoRecog.onresult=function(e){
     var interim='',final='';
     for(var i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal){
-        var best=e.results[i][0].transcript;
-        var bestConf=e.results[i][0].confidence||0;
-        for(var j=1;j<e.results[i].length;j++){if((e.results[i][j].confidence||0)>bestConf){best=e.results[i][j].transcript;bestConf=e.results[i][j].confidence;}}
-        final+=best;
-      } else { interim+=e.results[i][0].transcript; }
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
     }
     document.getElementById('voiceTranscript').textContent=final||interim;
-    if(final){document.getElementById('voiceStatus').textContent='PROCESSING...';processVoiceInput(final.trim());}
+    if(final){
+      document.getElementById('voiceStatus').textContent='PROCESSING...';
+      processVoiceInput(final.trim());
+    }
   };
   voiceConvoRecog.onerror=function(){
     if(voiceConvoActive){
@@ -2356,10 +2269,10 @@ function fallbackSpeakThenListen(text){
 }
 
 function stopVoiceConvo(){
-    voiceConvoActive=false;
+  voiceConvoActive=false;
   if(voiceConvoRecog){try{voiceConvoRecog.stop();}catch(e){}voiceConvoRecog=null;}
   window.speechSynthesis&&window.speechSynthesis.cancel();
-  document.getElementById('voiceListening').classList.remove('show');
+  document.getElementById('voiceListening').style.display='none';
   document.getElementById('pg-chat').classList.add('on');
 }
 
@@ -2415,13 +2328,26 @@ function doWebSearch(){
 function quickSearch(q){
   document.getElementById('searchResults').style.display='block';
   document.getElementById('searchList').innerHTML='<div style="font-size:0.75rem;color:var(--dim);padding:8px">Searching...</div>';
-  // Use PEPPER AI to summarize search topic
-  aiCall('Search karo aur batao: "'+q+'" ke baare mein latest information kya hai? Short aur clear Hinglish mein, bullet points mein.',function(r){
-    var html='<div style="font-size:0.85rem;line-height:1.8;color:var(--text)">'+r.split('\n').join('<br>')+'</div>';
-    html+='<div style="margin-top:10px"><a href="https://google.com/search?q='+encodeURIComponent(q)+'" target="_blank" style="color:var(--cyan);font-size:0.7rem;text-decoration:none">Google pe open karo</a></div>';
+  fetch(BASE+'/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d.error||!d.results||!d.results.length){
+      document.getElementById('searchList').innerHTML='<div style="font-size:0.8rem;color:var(--dim);padding:8px">Kuch nahi mila. <a href="https://google.com/search?q='+encodeURIComponent(q)+'" target="_blank" style="color:var(--cyan)">Google pe dekho</a></div>';
+      return;
+    }
+    var html=d.results.map(function(r){
+      return '<div style="margin-bottom:12px;padding:10px;background:rgba(255,255,255,0.05);border-radius:10px;border:1px solid rgba(255,255,255,0.08)">'
+        +'<div style="font-size:0.8rem;font-weight:600;color:var(--text);margin-bottom:4px">'+r.title+'</div>'
+        +'<div style="font-size:0.75rem;color:var(--dim);line-height:1.5">'+r.snippet+'</div>'
+        +(r.url?'<a href="'+r.url+'" target="_blank" style="font-size:0.65rem;color:var(--cyan);text-decoration:none;margin-top:4px;display:block">Open ↗</a>':'')
+        +'</div>';
+    }).join('');
+    html+='<div style="margin-top:8px"><a href="https://google.com/search?q='+encodeURIComponent(q)+'" target="_blank" style="color:var(--cyan);font-size:0.7rem;text-decoration:none">🔍 Google pe open karo</a></div>';
     document.getElementById('searchList').innerHTML=html;
+  })
+  .catch(function(){
+    document.getElementById('searchList').innerHTML='<div style="font-size:0.8rem;color:var(--dim);padding:8px">Error. <a href="https://google.com/search?q='+encodeURIComponent(q)+'" target="_blank" style="color:var(--cyan)">Google pe dekho</a></div>';
   });
-  // Also open in new tab
   document.getElementById('searchQ').value='';
 }
 
@@ -2447,7 +2373,7 @@ function doSmartFeature(type){
 }
 
 // Add settings to sidebar
-setTimeout(function(){
+  setTimeout(function(){
   try{
     var sbBody=document.querySelector('.sb-body');
     if(sbBody){
@@ -2468,7 +2394,7 @@ setTimeout(function(){
 // 1. PREDICTIVE INTELLIGENCE
 // Track patterns and predict what user needs
 var activityLog=[];
-    function logActivity(type){
+function logActivity(type){
   var h=new Date().getHours();
   activityLog.push({type:type,hour:h,day:new Date().getDay()});
   if(activityLog.length>100)activityLog=activityLog.slice(-100);
@@ -2494,7 +2420,7 @@ function showPredictions(){
   if(!bar)return;
   bar.innerHTML=preds.map(function(p){
     var escaped=p.replace(/'/g,"&apos;");
-    return '<button onclick="document.getElementById(\'msg\').value=\''+escaped+'\';send()" style="padding:5px 12px;border-radius:14px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.12);color:var(--dim);font-size:0.65rem;cursor:pointer;white-space:nowrap;flex-shrink:0">'+p+'</button>';
+    return '<button onclick="document.getElementById(\'msg\').value=\''+escaped+'\';send()" style="padding:5px 12px;border-radius:14px;background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.25);color:rgba(255,255,255,0.75);font-size:0.65rem;cursor:pointer;white-space:nowrap;flex-shrink:0;backdrop-filter:blur(8px)">'+p+'</button>';
   }).join('');
 }
 
@@ -2585,7 +2511,7 @@ setTimeout(function(){
   if(msgsEl){
     var predDiv=document.createElement('div');
     predDiv.id='predBar';
-    predDiv.style.cssText='display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--bg)';
+    predDiv.style.cssText='display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:transparent;position:relative;z-index:2';
     predDiv.style.cssText+=';scrollbar-width:none;-webkit-overflow-scrolling:touch';
     // Insert before msgs safely
     try{
@@ -2615,6 +2541,26 @@ addMsg=function(role,text){
   if(role==='u')logActivity('message');
   return el;
 };
+
+function openFeaturesDrawer(){
+  document.getElementById('featuresOverlay').style.display='block';
+  var d=document.getElementById('featuresDrawer');
+  d.style.display='block';
+  d.style.transform='translateY(100%)';
+  d.style.transition='none';
+  setTimeout(function(){
+    d.style.transition='transform 0.35s cubic-bezier(0.34,1.56,0.64,1)';
+    d.style.transform='translateY(0)';
+  },10);
+}
+function closeFeaturesDrawer(){
+  var d=document.getElementById('featuresDrawer');
+  d.style.transform='translateY(100%)';
+  setTimeout(function(){
+    d.style.display='none';
+    document.getElementById('featuresOverlay').style.display='none';
+  },350);
+}
 </script>
 </body>
 </html>
