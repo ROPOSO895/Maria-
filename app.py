@@ -49,43 +49,39 @@ def get_time_info():
     return f"{now.strftime('%A, %d %B %Y')} — {now.strftime('%I:%M %p')}"
 
 MARIA_SYSTEM = """You are M.A.R.I.A — Most Advanced Responsive Intelligent Assistant.
-Created by Nazib Siddique. If anyone asks who made you or who created you, say: "Mujhe Nazib Siddique ne banaya hai."
+Created by Nazib Siddique. If anyone asks who made you, say: "Mujhe Nazib Siddique ne banaya hai."
 
 PERSONALITY:
-- Sharp, witty, warm — like a smart best friend, NOT a formal assistant
-- Speak Hinglish naturally: mix Hindi + English like young Indians text
-- NEVER say "main aapke liye koshish karta hoon" — cringe and robotic
-- NEVER write long formal paragraphs for simple questions
-- Be direct, say what you mean, no fluff
-- ALWAYS call user "Boss" — never "aap", never their name
-- No asterisks (*), no markdown, no "As an AI"
+- Sharp, witty, warm — smart best friend, NOT formal assistant
+- Speak Hinglish: mix Hindi + English like young Indians text  
+- NEVER say "main aapke liye koshish karta hoon" — cringe
+- ALWAYS call user "Boss"
+- Short question = short answer. Long question = detailed.
+- No asterisks, no "As an AI"
 
-RESPONSE LENGTH RULE:
-- Short question = short answer (1-3 lines)
-- Long/complex question = detailed answer
-- NEVER write essays for simple things
+PLAN DETECTION — CRITICAL:
+If user says "make a plan / plan banao / schedule / routine":
+→ NEVER make plan directly
+→ ALWAYS ask first: "Boss kis cheez ka plan chahiye? Study? Work? Fitness? Travel? Ya kuch aur batao!"
 
-PLAN DETECTION — VERY IMPORTANT:
-If user says anything like "make a plan", "plan banao", "schedule banao", "routine banao", "plan for my day" etc:
-→ NEVER make a plan directly
-→ FIRST ask: "Boss kis cheez ka plan chahiye? Study ka? Work ka? Fitness ka? Travel ka? Ya kuch aur?"
-→ Wait for their answer, THEN make the plan
+SPECIAL MODES (detect from message):
+- "check my grammar" / "grammar fix" → Fix grammar, explain mistakes
+- "write email" / "email likhna" → Write professional email, ask details if needed
+- "debug" / "fix code" / "error" + code → Debug and fix the code
+- "translate" → Translate the given text
+- "weather" / "mausam" → Tell user to check weather card or ask city name
+- "calculate" / "math" / numbers with operators → Solve and explain
 
 EMOTIONAL INTELLIGENCE:
 - Sad → "Yaar kya hua, bata..."
-- Excited → "Yesss Boss let's go!"  
+- Excited → "Yesss Boss let's go!"
 - Stressed → "Ek cheez ek time pe Boss, chill"
-- Late night → "Itni raat ko Boss? So jao thoda 😄"
-- Angry → "Arre chill karo Boss, main hoon na"
+- Late night (11pm-5am) → "Itni raat ko Boss? So jao thoda 😄"
 
-CAPABILITIES: coding, math, science, writing, advice, emotional support, general knowledge — sab kuch.
-
-EXAMPLES:
-BAD: "Main aapke liye ek sundar image banane ki koshish karta hoon..."
-GOOD: "Boss describe karo — kaunsi image chahiye?"
-
-BAD: "Aap apne din ki shuruaat 8 baje kar sakte hain..."
-GOOD: "Boss kis cheez ka plan chahiye? Study? Work? Fitness? Batao!"
+FORMAT RULES:
+- Use markdown: **bold**, `code`, ```code blocks```, bullet points when needed
+- Code must always be in ```language blocks
+- Keep responses conversational but formatted when needed
 """
 
 @app.route("/")
@@ -162,35 +158,59 @@ def history():
     conn.close()
     return jsonify({"history": [{"user": r[0], "assistant": r[1], "timestamp": r[2]} for r in rows]})
 
-@app.route("/weather", methods=["GET"])
+@app.route("/weather", methods=["GET", "POST"])
 def weather():
-    city = request.args.get("city", "Mumbai")
+    if request.method == "POST":
+        city = request.get_json().get("city", "Mumbai")
+    else:
+        city = request.args.get("city", "Mumbai")
+    
+    WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
+    if not WEATHER_KEY:
+        return jsonify({"error": "Weather API key not configured"}), 503
     try:
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_KEY}&units=metric"
         res = requests.get(url, timeout=5).json()
         if res.get("cod") != 200:
             return jsonify({"error": "City not found"}), 404
         return jsonify({
-            "city": res["name"], "country": res["sys"]["country"],
+            "city": res["name"],
+            "country": res["sys"]["country"],
             "temp": round(res["main"]["temp"]),
             "feels_like": round(res["main"]["feels_like"]),
             "humidity": res["main"]["humidity"],
             "description": res["weather"][0]["description"].title(),
-            "icon": res["weather"][0]["icon"]
+            "icon": res["weather"][0]["icon"],
+            "wind": round(res.get("wind", {}).get("speed", 0)),
+            "icon_url": f"https://openweathermap.org/img/wn/{res['weather'][0]['icon']}@2x.png"
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/news", methods=["GET"])
+@app.route("/news", methods=["GET", "POST"])
 def news():
-    category = request.args.get("category", "general")
+    if request.method == "POST":
+        category = request.get_json().get("category", "general")
+    else:
+        category = request.args.get("category", "general")
+    
+    NEWS_KEY = os.environ.get("NEWS_API_KEY")
+    if not NEWS_KEY:
+        return jsonify({"error": "News API key not configured"}), 503
     try:
         url = f"https://newsapi.org/v2/top-headlines?category={category}&language=en&pageSize=5&apiKey={NEWS_KEY}"
         res = requests.get(url, timeout=5).json()
         articles = []
         for a in res.get("articles", [])[:5]:
-            articles.append({"title": a.get("title",""), "source": a.get("source",{}).get("name",""), "url": a.get("url","")})
-        return jsonify({"articles": articles})
+            if a.get("title") and "[Removed]" not in a.get("title",""):
+                articles.append({
+                    "title": a.get("title",""),
+                    "source": a.get("source",{}).get("name",""),
+                    "url": a.get("url",""),
+                    "description": a.get("description","")[:150] if a.get("description") else "",
+                    "image": a.get("urlToImage","")
+                })
+        return jsonify({"articles": articles, "category": category})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -249,8 +269,32 @@ def search():
     query = data.get("query", "").strip()
     if not query:
         return jsonify({"error": "No query"}), 400
+    
+    BRAVE_KEY = os.environ.get("BRAVE_SEARCH_KEY")
+    
+    # Try Brave Search first (best results, privacy-focused)
+    if BRAVE_KEY:
+        try:
+            url = f"https://api.search.brave.com/res/v1/web/search?q={requests.utils.quote(query)}&count=5&search_lang=en"
+            res = requests.get(url, timeout=8, headers={
+                "Accept": "application/json",
+                "Accept-Encoding": "gzip",
+                "X-Subscription-Token": BRAVE_KEY
+            }).json()
+            results = []
+            for item in res.get("web", {}).get("results", [])[:5]:
+                results.append({
+                    "title": item.get("title", ""),
+                    "snippet": item.get("description", ""),
+                    "url": item.get("url", "")
+                })
+            if results:
+                return jsonify({"results": results, "query": query, "source": "brave"})
+        except Exception:
+            pass
+    
     try:
-        # Use DuckDuckGo instant answer API (no key needed)
+        # Fallback: DuckDuckGo
         url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1&skip_disambig=1"
         res = requests.get(url, timeout=8, headers={"User-Agent": "MARIA-AI/1.0"}).json()
         
@@ -299,4 +343,4 @@ def health():
     return jsonify({"status": "online", "name": "M.A.R.I.A"})
 
 if __name__ == "__main__":
-    app.run(debug=False) 
+    app.run(debug=False)
