@@ -1,346 +1,112 @@
-from flask import Flask, request, jsonify, render_template
-from groq import Groq
-import os
-import re
-import sqlite3
-import datetime
-import requests
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>M.A.R.I.A</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--c:#00e5ff;--p:#ff2d78;--bg:#000;--bg2:rgba(255,255,255,0.05);--brd:rgba(255,255,255,0.09);--txt:#f0f0f0;--dim:rgba(255,255,255,0.38)}
+html,body{height:100%;overflow:hidden;background:#000;font-family:"Inter",sans-serif;color:var(--txt)}
 
-app = Flask(__name__)
+#bg{position:fixed;inset:0;z-index:0;background:url("data:image/webp;base64,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") center top/cover no-repeat;opacity:0.6}
+#bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.75) 80%,rgba(0,0,0,0.95) 100%)}
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
-NEWS_KEY = os.environ.get("NEWS_API_KEY")
+#app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
 
-# ── DATABASE ──
-def get_db():
-    conn = sqlite3.connect('pepper.db')
-    conn.execute('''CREATE TABLE IF NOT EXISTS chats (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user TEXT NOT NULL,
-        assistant TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )''')
-    conn.commit()
-    return conn
+/* TOP */
+.top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(0,0,0,0.25);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;height:52px}
+.top-brand{display:flex;align-items:center;gap:10px}
+.logo{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--c),var(--p));display:flex;align-items:center;justify-content:center;font-family:"Orbitron",sans-serif;font-size:0.6rem;font-weight:900;color:#000;flex-shrink:0;box-shadow:0 0 12px rgba(0,229,255,0.35)}
+.brand-name{font-family:"Orbitron",sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.15em}
+.online-row{display:flex;align-items:center;gap:5px;margin-top:2px}
+.dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+#stxt{font-size:0.58rem;color:var(--dim)}
+.top-right{display:flex;align-items:center;gap:8px}
+#clk{font-family:"Orbitron",sans-serif;font-size:0.65rem;color:var(--dim)}
+.ib{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid var(--brd);color:var(--dim);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.ib:active{background:rgba(0,229,255,0.15);color:var(--c)}
 
-def save_chat(user_msg, assistant_msg):
-    conn = get_db()
-    conn.execute('INSERT INTO chats (user, assistant) VALUES (?, ?)', (user_msg, assistant_msg))
-    conn.commit()
-    conn.close()
+/* PAGES */
+.pg{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
+.pg.on{display:flex}
 
-def get_history(limit=20):
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant FROM chats ORDER BY timestamp DESC LIMIT ?', (limit,)).fetchall()
-    conn.close()
-    messages = []
-    for user_msg, assistant_msg in reversed(rows):
-        messages.append({"role": "user", "content": user_msg})
-        if assistant_msg:
-            messages.append({"role": "assistant", "content": assistant_msg})
-    return messages
+/* WELCOME */
+#welcome{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 120px;text-align:center;pointer-events:none;z-index:2}
+#welcome.gone{display:none}
+.wt{font-size:1.9rem;font-weight:700;background:linear-gradient(90deg,var(--c),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:6px}
+.ws{font-size:0.65rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;margin-bottom:24px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;pointer-events:all}
+.card{padding:16px 12px;border-radius:18px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);cursor:pointer;backdrop-filter:blur(20px);display:flex;align-items:center;gap:10px;transition:all 0.2s}
+.card:active{transform:scale(0.95);border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.08)}
+.c-ic{font-size:1.4rem;flex-shrink:0}
+.c-tx{font-size:0.78rem;color:rgba(255,255,255,0.8);font-weight:500;text-align:left;line-height:1.3}
 
-def clean(text):
-    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s.,!?;:\-\(\)\[\]\'\"]+', '', text).strip()
+/* MESSAGES */
+.msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;min-height:0}
+.msgs::-webkit-scrollbar{width:2px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.15);border-radius:2px}
 
-def get_time_info():
-    now = datetime.datetime.now()
-    return f"{now.strftime('%A, %d %B %Y')} — {now.strftime('%I:%M %p')}"
+.mrow{display:flex;align-items:flex-end;gap:8px;animation:mIn 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes mIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mrow.u{flex-direction:row-reverse}
 
-MARIA_SYSTEM = """You are M.A.R.I.A — Most Advanced Responsive Intelligent Assistant.
-Created by Nazib Siddique. If anyone asks who made you, say: "Mujhe Nazib Siddique ne banaya hai."
+.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;font-family:"Orbitron",sans-serif}
+.av.m{background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(255,45,120,0.15));border:1.5px solid rgba(0,229,255,0.5);color:var(--c);animation:avGlow 3s ease-in-out infinite}
+@keyframes avGlow{0%,100%{box-shadow:0 0 6px rgba(0,229,255,0.3)}50%{box-shadow:0 0 16px rgba(0,229,255,0.7)}}
+.av.u{background:rgba(255,45,120,0.12);border:1.5px solid rgba(255,45,120,0.35);color:var(--p)}
 
-PERSONALITY:
-- Sharp, witty, warm — smart best friend, NOT formal assistant
-- Speak Hinglish: mix Hindi + English like young Indians text  
-- NEVER say "main aapke liye koshish karta hoon" — cringe
-- ALWAYS call user "Boss"
-- Short question = short answer. Long question = detailed.
-- No asterisks, no "As an AI"
+.bwrap{display:flex;flex-direction:column;gap:5px;max-width:78%}
+.bub{padding:11px 14px;border-radius:18px;font-size:0.875rem;line-height:1.6;word-wrap:break-word;position:relative}
+.mrow.m .bub{background:rgba(10,20,30,0.75);border:1px solid rgba(0,229,255,0.14);border-bottom-left-radius:4px;backdrop-filter:blur(12px)}
+.mrow.u .bub{background:rgba(255,45,120,0.18);border:1px solid rgba(255,45,120,0.25);border-bottom-right-radius:4px}
 
-PLAN DETECTION — CRITICAL:
-If user says "make a plan / plan banao / schedule / routine":
-→ NEVER make plan directly
-→ ALWAYS ask first: "Boss kis cheez ka plan chahiye? Study? Work? Fitness? Travel? Ya kuch aur batao!"
+/* Markdown styles inside bubble */
+.bub h1,.bub h2,.bub h3{font-family:"Orbitron",sans-serif;color:var(--c);margin:8px 0 4px;font-size:0.9rem}
+.bub p{margin-bottom:6px}
+.bub p:last-child{margin-bottom:0}
+.bub ul,.bub ol{padding-left:16px;margin:4px 0}
+.bub li{margin-bottom:3px}
+.bub strong{color:var(--c);font-weight:600}
+.bub em{color:rgba(255,255,255,0.7);font-style:italic}
+.bub code{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);border-radius:4px;padding:1px 5px;font-family:monospace;font-size:0.8rem;color:var(--c)}
+.bub pre{margin:8px 0;border-radius:10px;overflow:hidden;position:relative}
+.bub pre code{background:transparent;border:none;padding:0;font-size:0.78rem;color:inherit;display:block}
+.bub a{color:var(--c);text-decoration:underline}
+.bub blockquote{border-left:2px solid var(--c);padding-left:10px;color:var(--dim);margin:6px 0}
 
-SPECIAL MODES (detect from message):
-- "check my grammar" / "grammar fix" → Fix grammar, explain mistakes
-- "write email" / "email likhna" → Write professional email, ask details if needed
-- "debug" / "fix code" / "error" + code → Debug and fix the code
-- "translate" → Translate the given text
-- "weather" / "mausam" → Tell user to check weather card or ask city name
-- "calculate" / "math" / numbers with operators → Solve and explain
+/* Copy code button */
+.copy-code-btn{position:absolute;top:6px;right:6px;padding:3px 8px;border-radius:6px;background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);color:var(--c);font-size:0.6rem;cursor:pointer;transition:all 0.2s}
+.copy-code-btn:active{background:rgba(0,229,255,0.3)}
 
-EMOTIONAL INTELLIGENCE:
-- Sad → "Yaar kya hua, bata..."
-- Excited → "Yesss Boss let's go!"
-- Stressed → "Ek cheez ek time pe Boss, chill"
-- Late night (11pm-5am) → "Itni raat ko Boss? So jao thoda 😄"
+/* Timestamp */
+.ts{font-size:0.55rem;color:rgba(255,255,255,0.2);margin-top:2px;padding:0 2px}
+.mrow.u .ts{text-align:right}
 
-FORMAT RULES:
-- Use markdown: **bold**, `code`, ```code blocks```, bullet points when needed
-- Code must always be in ```language blocks
-- Keep responses conversational but formatted when needed
-"""
+/* Message actions */
+.mactions{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap}
+.mrow.u .mactions{justify-content:flex-end}
+.mact{padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--dim);font-size:0.6rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:4px}
+.mact:active{background:rgba(0,229,255,0.1);color:var(--c);border-color:rgba(0,229,255,0.2)}
+.mact.speaking{background:rgba(0,229,255,0.1);color:var(--c);border-color:rgba(0,229,255,0.2)}
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+/* Reactions */
+.reactions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.react-btn{font-size:1rem;cursor:pointer;padding:2px 6px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid transparent;transition:all 0.2s;user-select:none}
+.react-btn:active,.react-btn.on{background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.2);transform:scale(1.2)}
+.react-picker{display:none;gap:4px;padding:6px 8px;background:rgba(10,20,30,0.95);border:1px solid var(--brd);border-radius:20px;backdrop-filter:blur(12px);position:absolute;z-index:10;bottom:100%;left:0}
+.react-picker.on{display:flex}
+.react-picker span{font-size:1.2rem;cursor:pointer;padding:2px;transition:transform 0.15s;user-select:none}
+.react-picker span:active{transform:scale(1.4)}
 
-@app.route("/chat", methods=["POST"])
-def chat():
-    data = request.get_json()
-    user_message = data.get("message", "").strip()
-    memory_ctx = data.get("memory", "")
-    image_base64 = data.get("image_base64", None)
-    image_type = data.get("image_type", "image/jpeg")
+/* Swipe reply indicator */
+.reply-ind{font-size:0.65rem;color:var(--dim);background:rgba(255,255,255,0.05);border-left:2px solid var(--c);padding:4px 8px;border-radius:0 8px 8px 0;margin-bottom:4px;display:none}
+.reply-ind.on{display:block}
 
-    if not user_message and not image_base64:
-        return jsonify({"error": "No message"}), 400
-
-    system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
-    if memory_ctx:
-        system += f"\n\nContext about Boss: {memory_ctx}"
-    # Time-based personality hint
-    import datetime as dt2
-    hour = dt2.datetime.now().hour
-    if hour >= 23 or hour < 5:
-        system += "\n\n[Late night mode: Be extra gentle, acknowledge the time, suggest rest if relevant]"
-    elif hour >= 5 and hour < 9:
-        system += "\n\n[Morning mode: Be energetic, fresh, encouraging]"
-
-    history = get_history(20)
-
-    try:
-        if image_base64:
-            # Use vision model for image
-            user_content = [
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:{image_type};base64,{image_base64}"
-                    }
-                }
-            ]
-            if user_message:
-                user_content.append({"type": "text", "text": user_message})
-            else:
-                user_content.append({"type": "text", "text": "Yeh image dekho aur batao isme kya hai. Boss ko helpful answer do."})
-
-            response = client.chat.completions.create(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user_content}
-                ],
-                max_tokens=600,
-                temperature=0.85
-            )
-        else:
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[{"role": "system", "content": system}] + history + [{"role": "user", "content": user_message}],
-                max_tokens=500,
-                temperature=0.85
-            )
-
-        reply = clean(response.choices[0].message.content)
-        save_chat(user_message or "[image]", reply)
-        return jsonify({"reply": reply})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/history", methods=["GET"])
-def history():
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant, timestamp FROM chats ORDER BY timestamp DESC LIMIT 50').fetchall()
-    conn.close()
-    return jsonify({"history": [{"user": r[0], "assistant": r[1], "timestamp": r[2]} for r in rows]})
-
-@app.route("/weather", methods=["GET", "POST"])
-def weather():
-    if request.method == "POST":
-        city = request.get_json().get("city", "Mumbai")
-    else:
-        city = request.args.get("city", "Mumbai")
-    
-    WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
-    if not WEATHER_KEY:
-        return jsonify({"error": "Weather API key not configured"}), 503
-    try:
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_KEY}&units=metric"
-        res = requests.get(url, timeout=5).json()
-        if res.get("cod") != 200:
-            return jsonify({"error": "City not found"}), 404
-        return jsonify({
-            "city": res["name"],
-            "country": res["sys"]["country"],
-            "temp": round(res["main"]["temp"]),
-            "feels_like": round(res["main"]["feels_like"]),
-            "humidity": res["main"]["humidity"],
-            "description": res["weather"][0]["description"].title(),
-            "icon": res["weather"][0]["icon"],
-            "wind": round(res.get("wind", {}).get("speed", 0)),
-            "icon_url": f"https://openweathermap.org/img/wn/{res['weather'][0]['icon']}@2x.png"
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/news", methods=["GET", "POST"])
-def news():
-    if request.method == "POST":
-        category = request.get_json().get("category", "general")
-    else:
-        category = request.args.get("category", "general")
-    
-    NEWS_KEY = os.environ.get("NEWS_API_KEY")
-    if not NEWS_KEY:
-        return jsonify({"error": "News API key not configured"}), 503
-    try:
-        url = f"https://newsapi.org/v2/top-headlines?category={category}&language=en&pageSize=5&apiKey={NEWS_KEY}"
-        res = requests.get(url, timeout=5).json()
-        articles = []
-        for a in res.get("articles", [])[:5]:
-            if a.get("title") and "[Removed]" not in a.get("title",""):
-                articles.append({
-                    "title": a.get("title",""),
-                    "source": a.get("source",{}).get("name",""),
-                    "url": a.get("url",""),
-                    "description": a.get("description","")[:150] if a.get("description") else "",
-                    "image": a.get("urlToImage","")
-                })
-        return jsonify({"articles": articles, "category": category})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/imagine", methods=["POST"])
-def imagine():
-    import base64, random
-    data = request.get_json()
-    prompt = data.get("prompt", "").strip()
-    if not prompt:
-        return jsonify({"error": "No prompt"}), 400
-
-    # ── METHOD 1: Pollinations AI (completely free, no key needed) ──
-    try:
-        import urllib.parse
-        encoded = urllib.parse.quote(prompt)
-        seed = random.randint(1, 999999)
-        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=768&seed={seed}&nologo=true"
-        response = requests.get(url, timeout=30)
-        if response.status_code == 200 and len(response.content) > 1000:
-            img_b64 = base64.b64encode(response.content).decode('utf-8')
-            return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "pollinations"})
-    except Exception:
-        pass
-
-    # ── METHOD 2: HuggingFace FLUX (backup) ──
-    hf_keys = [
-        "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",
-    ]
-    random.shuffle(hf_keys)
-    for key in hf_keys:
-        try:
-            url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-            response = requests.post(url,
-                headers={"Authorization": f"Bearer {key}"},
-                json={"inputs": prompt}, timeout=45)
-            if response.status_code == 200 and len(response.content) > 1000:
-                img_b64 = base64.b64encode(response.content).decode('utf-8')
-                return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "huggingface"})
-        except Exception:
-            continue
-
-    # ── METHOD 3: Picsum placeholder (last resort) ──
-    return jsonify({"error": "Image generation temporarily unavailable. Try again in a moment."}), 503
-
-@app.route("/clear", methods=["POST"])
-def clear():
-    conn = get_db()
-    conn.execute('DELETE FROM chats')
-    conn.commit()
-    conn.close()
-    return jsonify({"status": "cleared"})
-
-@app.route("/search", methods=["POST"])
-def search():
-    data = request.get_json()
-    query = data.get("query", "").strip()
-    if not query:
-        return jsonify({"error": "No query"}), 400
-    
-    BRAVE_KEY = os.environ.get("BRAVE_SEARCH_KEY")
-    
-    # Try Brave Search first (best results, privacy-focused)
-    if BRAVE_KEY:
-        try:
-            url = f"https://api.search.brave.com/res/v1/web/search?q={requests.utils.quote(query)}&count=5&search_lang=en"
-            res = requests.get(url, timeout=8, headers={
-                "Accept": "application/json",
-                "Accept-Encoding": "gzip",
-                "X-Subscription-Token": BRAVE_KEY
-            }).json()
-            results = []
-            for item in res.get("web", {}).get("results", [])[:5]:
-                results.append({
-                    "title": item.get("title", ""),
-                    "snippet": item.get("description", ""),
-                    "url": item.get("url", "")
-                })
-            if results:
-                return jsonify({"results": results, "query": query, "source": "brave"})
-        except Exception:
-            pass
-    
-    try:
-        # Fallback: DuckDuckGo
-        url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1&skip_disambig=1"
-        res = requests.get(url, timeout=8, headers={"User-Agent": "MARIA-AI/1.0"}).json()
-        
-        results = []
-        # Abstract text
-        if res.get("AbstractText"):
-            results.append({
-                "title": res.get("Heading", query),
-                "snippet": res["AbstractText"][:300],
-                "url": res.get("AbstractURL", "")
-            })
-        # Related topics
-        for topic in res.get("RelatedTopics", [])[:4]:
-            if isinstance(topic, dict) and topic.get("Text"):
-                results.append({
-                    "title": topic.get("Text", "")[:60],
-                    "snippet": topic.get("Text", "")[:200],
-                    "url": topic.get("FirstURL", "")
-                })
-        
-        if not results:
-            # Fallback: ask MARIA AI
-            system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": f"'{query}' ke baare mein brief aur accurate information do. 3-4 sentences mein."}
-                ],
-                max_tokens=300,
-                temperature=0.5
-            )
-            ai_reply = response.choices[0].message.content
-            results.append({
-                "title": query,
-                "snippet": ai_reply,
-                "url": f"https://google.com/search?q={requests.utils.quote(query)}"
-            })
-        
-        return jsonify({"results": results, "query": query})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "online", "name": "M.A.R.I.A"})
-
-if __name__ == "__main__":
-    app.run(debug=False)
+/* Quick replies */
+#quickReplies{display:none;padding:8px 14px;gap:8px;overflow-x:auto;flex-shrink:0
