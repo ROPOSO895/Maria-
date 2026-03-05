@@ -90,7 +90,14 @@ def chat():
 
     system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
     if memory_ctx:
-        system += f"\n\nWhat you know about Boss: {memory_ctx}"
+        system += f"\n\nContext about Boss: {memory_ctx}"
+    # Time-based personality hint
+    import datetime as dt2
+    hour = dt2.datetime.now().hour
+    if hour >= 23 or hour < 5:
+        system += "\n\n[Late night mode: Be extra gentle, acknowledge the time, suggest rest if relevant]"
+    elif hour >= 5 and hour < 9:
+        system += "\n\n[Morning mode: Be energetic, fresh, encouraging]"
 
     history = get_history(20)
 
