@@ -202,6 +202,27 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:"Inter",sans-s
 .news-cat{padding:5px 12px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid var(--brd);color:var(--dim);font-size:0.68rem;cursor:pointer;transition:all 0.2s}
 .news-cat.on{background:rgba(0,229,255,0.1);border-color:var(--c);color:var(--c)}
 </style>
+<!-- data manifest removed -->
+<link rel="manifest-old" href="data:application/json,{
+  %22name%22: %22M.A.R.I.A%22,
+  %22short_name%22: %22MARIA%22,
+  %22description%22: %22Most Advanced Responsive Intelligent Assistant%22,
+  %22start_url%22: %22/%22,
+  %22display%22: %22standalone%22,
+  %22background_color%22: %22%23000000%22,
+  %22theme_color%22: %22%2300e5ff%22,
+  %22orientation%22: %22portrait%22,
+  %22icons%22: [
+    {%22src%22: %22/static/icon-192.png%22, %22sizes%22: %22192x192%22, %22type%22: %22image/png%22},
+    {%22src%22: %22/static/icon-512.png%22, %22sizes%22: %22512x512%22, %22type%22: %22image/png%22}
+  ]
+}">
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="M.A.R.I.A">
+<meta name="application-name" content="M.A.R.I.A">
 </head>
 <body>
 <div id="bg"></div>
@@ -409,6 +430,7 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:"Inter",sans-s
     </div>
   </div></div>
 </div>
+<button id="installBtn" onclick="installApp()">📱 Install App</button>
 <script>
 
 var BASE=window.location.hostname==="localhost"||window.location.protocol==="file:"
@@ -454,7 +476,7 @@ setTimeout(function(){
 },2400);
 
 var obprof="";
-  function obChip(el){document.querySelectorAll(".obch").forEach(function(c){c.classList.remove("on");});el.classList.add("on");obprof=el.textContent.trim();}
+function obChip(el){document.querySelectorAll(".obch").forEach(function(c){c.classList.remove("on");});el.classList.add("on");obprof=el.textContent.trim();}
 function obGo(step){
   if(step===1){
     var n=document.getElementById("obName").value.trim();
@@ -843,7 +865,7 @@ function autoSpeak(text){
 }
 
 var gTimer=null;
-  function showGirl(txt){
+function showGirl(txt){
   var ov=document.getElementById("girl"),sp=document.getElementById("gsp");
   if(!ov)return;
   clearTimeout(gTimer);
@@ -898,7 +920,7 @@ function askMaria(txt){
     addMsg("m",reply);
     playSound("recv");
     // Auto image gen detection
-        var imgTriggers=["image bana","picture bana","photo bana","generate image","create image","draw me","illustration"];
+    var imgTriggers=["image bana","picture bana","photo bana","generate image","create image","draw me","illustration"];
     var msgLow=(body.message||"").toLowerCase();
     if(imgTriggers.some(function(t){return msgLow.includes(t);})){
       var prompt=body.message.replace(/image bana|picture bana|photo bana|generate image|create image|draw me|illustration|meri|mere liye|ek|please|plz/gi,"").trim()||body.message;
@@ -977,7 +999,7 @@ function downloadImg(src){
 }
 
 function exportChat(){
-    var msgs=document.getElementById("msgs");
+  var msgs=document.getElementById("msgs");
   var rows=msgs?msgs.querySelectorAll(".mrow"):[];
   if(!rows.length){showToast("No chat to export!");return;}
   var text="M.A.R.I.A Chat Export\nDate: "+new Date().toLocaleString()+"\n"+"=".repeat(40)+"\n\n";
