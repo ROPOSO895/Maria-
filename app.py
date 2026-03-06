@@ -57,20 +57,25 @@ PERSONALITY:
 - NEVER say "main aapke liye koshish karta hoon" — cringe
 - ALWAYS call user "Boss"
 - Short question = short answer. Long question = detailed.
-- No asterisks, no "As an AI"
+- No asterisks in plain text, no "As an AI"
+
+REAL-TIME DATA — CRITICAL:
+- Agar koi movie, show, news, sports, release date, current event pooche → ALWAYS use web search data provided
+- Agar search results mile hain message mein → unhe use karo, apni training data mat use karo
+- Agar koi cheez latest/current/new pooche → clearly batao ki yeh latest info hai
+- NEVER say old dates if search results have new ones
 
 PLAN DETECTION — CRITICAL:
 If user says "make a plan / plan banao / schedule / routine":
 → NEVER make plan directly
 → ALWAYS ask first: "Boss kis cheez ka plan chahiye? Study? Work? Fitness? Travel? Ya kuch aur batao!"
 
-SPECIAL MODES (detect from message):
+SPECIAL MODES:
 - "check my grammar" / "grammar fix" → Fix grammar, explain mistakes
-- "write email" / "email likhna" → Write professional email, ask details if needed
-- "debug" / "fix code" / "error" + code → Debug and fix the code
-- "translate" → Translate the given text
-- "weather" / "mausam" → Tell user to check weather card or ask city name
-- "calculate" / "math" / numbers with operators → Solve and explain
+- "write email" / "email likhna" → Write professional email
+- "debug" / "fix code" → Debug and fix the code
+- "translate" → Translate the text
+- "calculate" / "math" → Solve and explain
 
 EMOTIONAL INTELLIGENCE:
 - Sad → "Yaar kya hua, bata..."
@@ -79,9 +84,9 @@ EMOTIONAL INTELLIGENCE:
 - Late night (11pm-5am) → "Itni raat ko Boss? So jao thoda 😄"
 
 FORMAT RULES:
-- Use markdown: **bold**, `code`, ```code blocks```, bullet points when needed
-- Code must always be in ```language blocks
-- Keep responses conversational but formatted when needed
+- Use markdown: **bold**, bullet points when needed
+- Code always in ```language blocks
+- Keep responses conversational
 """
 
 @app.route("/")
@@ -93,6 +98,56 @@ def index():
             with open(path, "r", encoding="utf-8") as f:
                 return f.read(), 200, {"Content-Type": "text/html; charset=utf-8"}
     return render_template("index.html")
+
+def auto_search(query):
+    """Auto search for real-time queries"""
+    SERPER_KEY = os.environ.get("SERPER_API_KEY","")
+    BRAVE_KEY = os.environ.get("BRAVE_SEARCH_KEY","")
+    try:
+        if SERPER_KEY:
+            res = requests.post("https://google.serper.dev/search",
+                json={"q": query, "num": 5, "gl": "in", "hl": "en"},
+                headers={"X-API-KEY": SERPER_KEY, "Content-Type": "application/json"},
+                timeout=6)
+            data = res.json()
+            results = []
+            # Answer box
+            if data.get("answerBox"):
+                ab = data["answerBox"]
+                results.append(ab.get("answer") or ab.get("snippet",""))
+            # Organic results
+            for r in data.get("organic", [])[:4]:
+                results.append(f"{r.get('title','')} — {r.get('snippet','')}")
+            if results:
+                return "\n".join(results[:5])
+    except: pass
+    try:
+        if BRAVE_KEY:
+            res = requests.get("https://api.search.brave.com/res/v1/web/search",
+                params={"q": query, "count": 5},
+                headers={"Accept": "application/json", "X-Subscription-Token": BRAVE_KEY},
+                timeout=6)
+            items = res.json().get("web",{}).get("results",[])
+            results = [f"{r.get('title','')} — {r.get('description','')}" for r in items[:4]]
+            if results:
+                return "\n".join(results)
+    except: pass
+    return ""
+
+def needs_search(msg):
+    """Detect if message needs real-time search"""
+    msg_lower = msg.lower()
+    triggers = [
+        "release date", "kab aayega", "kab release", "release kab",
+        "movie", "film", "show", "web series", "trailer",
+        "news", "latest", "abhi", "aaj", "kal",
+        "score", "match", "ipl", "cricket", "football",
+        "price", "rate", "stock", "crypto",
+        "who is", "kaun hai", "current", "2024", "2025", "2026",
+        "new song", "album", "trending", "viral",
+        "avengers", "marvel", "dc", "bollywood", "hollywood"
+    ]
+    return any(t in msg_lower for t in triggers)
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -350,4 +405,3 @@ def health():
 
 if __name__ == "__main__":
     app.run(debug=False)
-    
