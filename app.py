@@ -86,6 +86,12 @@ FORMAT RULES:
 
 @app.route("/")
 def index():
+    import os
+    # Try templates folder first, then current dir
+    for path in ["templates/index.html", "index.html"]:
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read(), 200, {"Content-Type": "text/html; charset=utf-8"}
     return render_template("index.html")
 
 @app.route("/chat", methods=["POST"])
@@ -344,3 +350,4 @@ def health():
 
 if __name__ == "__main__":
     app.run(debug=False)
+    
