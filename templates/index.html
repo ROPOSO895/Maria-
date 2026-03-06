@@ -304,6 +304,7 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:"Inter",sans-s
     <div class="si2" onclick="closeSB();showPg('weather')">🌤️ Weather</div>
     <div class="si2" onclick="closeSB();showPg('news')">📰 News</div>
     <div class="si2" onclick="closeSB();toggleCalc()">🧮 Calculator</div>
+    <div class="si2" onclick="closeSB();toggleAutoPanel()">⚡ Automation</div>
     <div class="si2" onclick="closeSB();exportChat()">📄 Export Chat</div>
     <div class="si2" onclick="closeSB();openMsgSearch()">🔎 Search Chat</div>
     <div class="si2" onclick="closeSB();showPg('settings')">⚙️ Settings</div>
@@ -430,6 +431,41 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:"Inter",sans-s
     </div>
   </div></div>
 </div>
+
+<div id="autoPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(4,8,16,0.98);backdrop-filter:blur(24px);border-top:1px solid rgba(255,255,255,0.09);padding:16px;max-height:85vh;overflow-y:auto;transition:transform 0.3s ease;">
+  <div class="auto-close">
+    <span class="auto-title">⚡ AUTOMATION</span>
+    <button onclick="toggleAutoPanel()" style="background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer">✕</button>
+  </div>
+  
+  <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px;letter-spacing:0.1em">QUICK PRESETS</div>
+  <div class="presets">
+    <div class="preset-btn" onclick="addPreset(0)">🌅 Morning</div>
+    <div class="preset-btn" onclick="addPreset(1)">💧 Water</div>
+    <div class="preset-btn" onclick="addPreset(2)">🍱 Lunch</div>
+    <div class="preset-btn" onclick="addPreset(3)">📚 Study</div>
+    <div class="preset-btn" onclick="addPreset(4)">🌙 Night</div>
+  </div>
+
+  <div class="auto-form">
+    <div style="font-size:0.65rem;color:var(--dim);margin-bottom:10px;letter-spacing:0.1em">NEW AUTOMATION</div>
+    <div class="auto-row">
+      <input class="auto-inp" id="autoName" placeholder="Name (e.g. Study Time)">
+      <input class="auto-inp" type="time" id="autoTime" style="color-scheme:dark">
+    </div>
+    <select class="auto-inp" id="autoType" style="margin-bottom:8px">
+      <option value="reminder">⏰ Reminder (notification)</option>
+      <option value="message">💬 Auto Message</option>
+      <option value="ask">🤖 Auto Ask MARIA</option>
+    </select>
+    <input class="auto-inp" id="autoMsg" placeholder="Message ya question..." style="margin-bottom:10px">
+    <button class="btn" onclick="addAutomation()">+ Add Automation</button>
+  </div>
+  
+  <div style="font-size:0.65rem;color:var(--dim);margin-bottom:8px;letter-spacing:0.1em">MY AUTOMATIONS</div>
+  <div id="autoList"></div>
+</div>
+
 <button id="installBtn" onclick="installApp()">📱 Install App</button>
 <script>
 
@@ -798,70 +834,121 @@ function showQR(text){
 }
 
 var curSpeak=null;
-function ttsAvailable(){return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance);}
-var _ttsBtn=null;
-function speakIt(btn,bubId){
-  if(!ttsAvailable()){return;}
-  try{
-    // If already speaking - stop
-    if(_ttsBtn){
-      window.speechSynthesis.cancel();
-      _ttsBtn.innerHTML="▶ Sunao";
-      _ttsBtn.classList.remove("speaking");
-      if(_ttsBtn===btn){_ttsBtn=null;return;}
-      _ttsBtn=null;
+function ttsAvailable(){
+  return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+}
+
+var _ttsBtn = null;
+var _ttsActive = false;
+
+function speakIt(btn, bubId){
+  try {
+    var el = document.getElementById(bubId);
+    if(!el) return;
+    var raw = el.innerText || el.textContent || "";
+    var text = raw.replace(/▶ Sunao|📋 Copy|😊|■ Rok do|↩ Reply|[▶■]/g,"").trim();
+    if(!text) return;
+
+    // If already speaking this button - stop
+    if(_ttsActive && _ttsBtn === btn){
+      try{ window.speechSynthesis.cancel(); }catch(e){}
+      btn.innerHTML="▶ Sunao";
+      btn.classList.remove("speaking");
+      _ttsActive = false;
+      _ttsBtn = null;
+      return;
     }
-    var el=document.getElementById(bubId);
-    var raw=el?(el.innerText||el.textContent||el.textContent):"";
-    var text=raw.replace(/▶ Sunao|📋 Copy|😊|■ Rok do|↩ Reply/g,"").trim();
-    if(!text){showToast("Kuch text nahi hai");return;}
-    
+
+    // Stop any previous
+    if(_ttsActive){
+      try{ window.speechSynthesis.cancel(); }catch(e){}
+      if(_ttsBtn){
+        _ttsBtn.innerHTML="▶ Sunao";
+        _ttsBtn.classList.remove("speaking");
+      }
+    }
+
     btn.innerHTML="■ Rok do";
     btn.classList.add("speaking");
-    _ttsBtn=btn;
-    
-    // Mobile Chrome needs small delay
-    setTimeout(function(){
-      try{
-        var u=new SpeechSynthesisUtterance(text);
-        u.lang=lget("vlang")||"hi-IN";
-        u.rate=0.9;u.pitch=1.0;u.volume=1.0;
-        // Try to get Indian/Hindi voice
-        var voices=window.speechSynthesis.getVoices();
-        var ind=voices.find(function(v){return v.lang==="hi-IN";})
-                ||voices.find(function(v){return v.lang==="en-IN";})
-                ||voices.find(function(v){return v.lang.startsWith("hi");});
-        if(ind)u.voice=ind;
+    _ttsBtn = btn;
+    _ttsActive = true;
+
+    function doSpeak(){
+      try {
+        var synth = window.speechSynthesis;
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = lget("vlang") || "hi-IN";
+        u.rate = 0.88;
+        u.pitch = 1.0;
+        u.volume = 1.0;
+
+        // Get voices - needed for Android WebView
+        var voices = synth.getVoices();
+        if(voices && voices.length > 0){
+          var pick = voices.find(function(v){ return v.lang === "hi-IN"; })
+                  || voices.find(function(v){ return v.lang === "en-IN"; })
+                  || voices.find(function(v){ return v.lang.indexOf("en") === 0; });
+          if(pick) u.voice = pick;
+        }
+
         function done(){
-          if(_ttsBtn===btn){
+          if(_ttsBtn === btn){
             btn.innerHTML="▶ Sunao";
             btn.classList.remove("speaking");
-            _ttsBtn=null;
+            _ttsActive = false;
+            _ttsBtn = null;
           }
         }
-        u.onend=done;u.onerror=done;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(u);
-      }catch(e){
-        btn.innerHTML="▶ Sunao";btn.classList.remove("speaking");_ttsBtn=null;
+        u.onend = done;
+        u.onerror = done;
+        synth.speak(u);
+
+        // Android WebView fix - resume if paused
+        setTimeout(function(){
+          if(synth.paused) synth.resume();
+        }, 200);
+
+      } catch(e){
+        btn.innerHTML="▶ Sunao";
+        btn.classList.remove("speaking");
+        _ttsActive = false;
+        _ttsBtn = null;
       }
-    },100);
-  }catch(e){
-    if(btn){btn.innerHTML="▶ Sunao";btn.classList.remove("speaking");}
-    _ttsBtn=null;
+    }
+
+    // Wait for voices to load on first call
+    var voices = window.speechSynthesis.getVoices();
+    if(voices && voices.length > 0){
+      doSpeak();
+    } else {
+      window.speechSynthesis.onvoiceschanged = function(){
+        window.speechSynthesis.onvoiceschanged = null;
+        doSpeak();
+      };
+      // Fallback if onvoiceschanged never fires (some Android versions)
+      setTimeout(doSpeak, 500);
+    }
+
+  } catch(e){
+    if(btn){ btn.innerHTML="▶ Sunao"; btn.classList.remove("speaking"); }
+    _ttsActive = false; _ttsBtn = null;
   }
 }
+
 function autoSpeak(text){
-  if(!ttsAvailable())return;
-  try{
+  try {
+    if(!ttsAvailable()) return;
     window.speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,""));
-    u.lang=lget("vlang")||"hi-IN";u.rate=0.95;u.pitch=1.05;
-    var voices=window.speechSynthesis.getVoices();
-    var ind=voices.find(function(v){return v.lang==="hi-IN"||v.lang==="en-IN";});
-    if(ind)u.voice=ind;
+    var u = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,""));
+    u.lang = lget("vlang") || "hi-IN";
+    u.rate = 0.88; u.pitch = 1.0; u.volume = 1.0;
+    var voices = window.speechSynthesis.getVoices();
+    var pick = voices.find(function(v){ return v.lang==="hi-IN"; })
+            || voices.find(function(v){ return v.lang==="en-IN"; });
+    if(pick) u.voice = pick;
     window.speechSynthesis.speak(u);
-  }catch(e){}
+    setTimeout(function(){ if(window.speechSynthesis.paused) window.speechSynthesis.resume(); }, 200);
+  } catch(e){}
 }
 
 var gTimer=null;
