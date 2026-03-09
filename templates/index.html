@@ -416,10 +416,15 @@ var _ttsBtn = null;
 
 // Memory of context for session
 function memCtx(){
-  var msgs = document.querySelectorAll('.bub.m');
-  var last = [];
-  msgs.forEach(function(m){last.push(m.innerText.substring(0,80));});
-  return last.slice(-5).join(' | ');
+  try {
+    var msgs = document.querySelectorAll('.bub.m');
+    var last = [];
+    msgs.forEach(function(m){
+      var t = (m.innerText||m.textContent||'').substring(0,80);
+      if(t) last.push(t);
+    });
+    return last.slice(-5).join(' | ');
+  } catch(e){ return ''; }
 }
 
 // ── CLOCK ──
@@ -450,7 +455,7 @@ function toggleSB(){document.getElementById('sb').classList.toggle('on');documen
 function closeSB(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOvl').classList.remove('on');}
 
 function loadSBHist(){
-  fetch('/history').then(function(r){return r.json();}).then(function(d){
+  fetch(API_BASE+'/history').then(function(r){return r.json();}).then(function(d){
     var el=document.getElementById('sbHist');
     el.innerHTML='';
     (d.history||[]).slice(0,6).forEach(function(item){
@@ -472,14 +477,22 @@ function toggleSett(k){
 }
 function setMode(m,el){
   _mode=m;lset('mode',m);
-  document.querySelectorAll('.modeBtn').forEach(function(b){b.classList.toggle('on',b===el);});
+  (Array.from(document.querySelectorAll('.modeBtn')||[])).forEach(function(b){b.classList.toggle('on',b===el);});
   showToast('Mode: '+m.toUpperCase()+' ✅');
 }
-// Init settings UI
-document.getElementById('togAutoSpeak').classList.toggle('on',_autoSpeak);
-document.getElementById('langSel').value=lget('vlang')||'hi-IN';
-var _modeEl=document.querySelector('.modeBtn[data-mode="'+_mode+'"]');
-if(_modeEl){document.querySelectorAll('.modeBtn').forEach(function(b){b.classList.toggle('on',b===_modeEl);});}
+// Init settings UI - deferred to avoid forEach on null
+function initSettings(){
+  var togAs=document.getElementById('togAutoSpeak');
+  if(togAs)togAs.classList.toggle('on',_autoSpeak);
+  var langEl=document.getElementById('langSel');
+  if(langEl)langEl.value=lget('vlang')||'hi-IN';
+  var modeEl=document.querySelector('.modeBtn[data-mode="'+_mode+'"]');
+  if(modeEl){
+    Array.from(document.querySelectorAll('.modeBtn')||[]).forEach(function(b){b.classList.toggle('on',b===modeEl);});
+  }
+}
+// Run after DOM ready
+setTimeout(initSettings, 100);
 
 // ── QUICK REPLIES ──
 var QR_SETS = {
@@ -491,8 +504,9 @@ var QR_SETS = {
 };
 function showQRs(type){
   var bar=document.getElementById('qrBar');
+  if(!bar)return;
   bar.innerHTML='';
-  var set=QR_SETS[type]||QR_SETS.default;
+  var set=QR_SETS[type]||QR_SETS.default||[];
   set.forEach(function(q){
     var b=document.createElement('div');
     b.className='qr';b.textContent=q;
@@ -646,6 +660,8 @@ function autoResize(el){
 }
 
 // ── ASK MARIA ──
+var API_BASE = 'https://maria-assistant-fthu.onrender.com';
+
 function askMaria(txt,b64,ftype){
   if(_isTyping)return;
   _isTyping=true;
@@ -655,20 +671,24 @@ function askMaria(txt,b64,ftype){
   var body={message:txt,memory:memCtx()};
   if(b64){body.image_base64=b64;body.image_type=ftype||'image/jpeg';}
 
-  fetch('/chat',{
+  fetch(API_BASE+'/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(body)
-  }).then(function(r){return r.json();}).then(function(d){
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(d){
     hideTyping();_isTyping=false;
     document.getElementById('statusTxt').textContent='Online';
-    if(d.error){addMsg('m','Boss kuch error aa gaya: '+d.error);}
-    else{addMsg('m',d.reply);}
+    if(d.error){addMsg('m','Boss error aa gaya: '+d.error);}
+    else if(d.reply){addMsg('m',d.reply);}
+    else{addMsg('m','Boss kuch toh hua... dobara try karo!');}
     vibrate(15);
   }).catch(function(e){
     hideTyping();_isTyping=false;
     document.getElementById('statusTxt').textContent='Online';
-    addMsg('m','Boss network issue lag raha hai. Check karo!');
+    addMsg('m','Boss server se connect nahi hua. Thoda wait karo ya refresh karo! ('+e.message+')');
   });
 }
 
@@ -701,7 +721,7 @@ function analyzeFile(inp){
   res.style.display='block';res.innerHTML='<div style="color:var(--dim);font-size:0.75rem">Analyzing... ⏳</div>';
   var fd=new FormData();
   fd.append('file',file);fd.append('question',q);
-  fetch('/readfile',{method:'POST',body:fd})
+  fetch(API_BASE+'/readfile',{method:'POST',body:fd})
     .then(function(r){return r.json();})
     .then(function(d){
       if(d.error){res.innerHTML='<div style="color:var(--p)">Error: '+d.error+'</div>';}
@@ -721,7 +741,7 @@ fdz.ondrop=function(e){
 
 // ── MEMORY ──
 function loadMem(){
-  fetch('/memory').then(function(r){return r.json();}).then(function(d){
+  fetch(API_BASE+'/memory').then(function(r){return r.json();}).then(function(d){
     var el=document.getElementById('memList');el.innerHTML='';
     var keys=Object.keys(d);
     if(!keys.length){
@@ -744,12 +764,12 @@ function loadMem(){
 
 function clearMemory(){
   if(!confirm('Sab memory delete karo?'))return;
-  fetch('/memory',{method:'DELETE'}).then(function(){loadMem();showToast('Memory cleared 🧠');});
+  fetch(API_BASE+'/memory',{method:'DELETE'}).then(function(){loadMem();showToast('Memory cleared 🧠');});
 }
 
 // ── TASKS ──
 function loadTasks(){
-  fetch('/tasks').then(function(r){return r.json();}).then(function(d){
+  fetch(API_BASE+'/tasks').then(function(r){return r.json();}).then(function(d){
     var el=document.getElementById('taskList');el.innerHTML='';
     (d.tasks||[]).forEach(function(t){
       var card=document.createElement('div');
@@ -759,7 +779,7 @@ function loadTasks(){
       chk.innerHTML=t.status==='done'?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':'';
       chk.onclick=(function(tid,btn,crd){return function(){
         var done=crd.classList.contains('done');
-        fetch('/tasks',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:tid,status:done?'pending':'done'})}).then(function(){loadTasks();});
+        fetch(API_BASE+'/tasks',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:tid,status:done?'pending':'done'})}).then(function(){loadTasks();});
       };})(t.id,chk,card);
       var title=document.createElement('div');title.className='taskTitle';title.textContent=t.title;
       var del=document.createElement('div');del.className='taskDel';del.textContent='🗑️';
@@ -775,7 +795,7 @@ function loadTasks(){
 function addTask(){
   var inp=document.getElementById('taskInp');
   var v=inp.value.trim();if(!v)return;
-  fetch('/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:v})})
+  fetch(API_BASE+'/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:v})})
     .then(function(){inp.value='';loadTasks();vibrate(20);});
 }
 
@@ -792,7 +812,7 @@ function scrollBot(){
 // ── CHAT UTILS ──
 function clearChats(){
   if(!confirm('Sab chats delete karo?'))return;
-  fetch('/clear',{method:'POST'}).then(function(){
+  fetch(API_BASE+'/clear',{method:'POST'}).then(function(){
     document.getElementById('msgs').innerHTML='';
     showToast('Chats cleared 🗑️');
   });
@@ -964,7 +984,7 @@ window.addEventListener('online',function(){showToast('Back online ✅');documen
 window.addEventListener('offline',function(){showToast('Offline 📡');document.getElementById('statusTxt').textContent='Offline';});
 
 // ── INIT ──
-showQRs('default');
+setTimeout(function(){showQRs('default');},50);
 </script>
 </body>
 </html>
