@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template_string, send_from_directory
+from flask import Flask, request, jsonify
 from groq import Groq
 import os, re, sqlite3, datetime, requests, json, base64, threading, urllib.request, time
 
@@ -435,10 +435,6 @@ def clear():
     conn.commit(); conn.close()
     return jsonify({"ok": True})
 
-@app.route("/ping", methods=["GET"])
-def ping():
-    return jsonify({"status": "alive", "time": get_time_info()})
-
 @app.route("/manifest.json")
 def manifest():
     return jsonify({
@@ -469,6 +465,14 @@ self.addEventListener('fetch',e=>{
 });
 """
     return Response(code, mimetype='application/javascript')
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok", "name": "M.A.R.I.A"})
+
+@app.route("/ping")
+def ping():
+    return jsonify({"status": "alive"})
 
 # Keep alive
 def keep_alive():
