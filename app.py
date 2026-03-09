@@ -210,7 +210,7 @@ def chat():
             content.append({"type": "text", "text": user_message})
         content.append({"type": "image_url", "image_url": {"url": f"data:{image_type};base64,{image_base64}"}})
         messages = messages + [{"role": "user", "content": content}]
-        model = "meta-llama/llama-4-scout-17b-16e-instruct"
+        model = "llama-3.2-11b-vision-preview"
     else:
         messages = messages + [{"role": "user", "content": user_message}]
         model = "llama-3.3-70b-versatile"
@@ -224,13 +224,24 @@ def chat():
         )
         reply = response.choices[0].message.content
         save_chat(user_message or "[image]", reply)
-        # Auto extract memory
         if user_message:
             try: extract_and_save_memory(user_message, reply)
             except: pass
         return jsonify({"reply": reply})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        # Fallback to smaller model
+        try:
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "system", "content": system}] + [{"role": "user", "content": user_message or "Hello"}],
+                max_tokens=1000,
+                temperature=0.75
+            )
+            reply = response.choices[0].message.content
+            save_chat(user_message or "[image]", reply)
+            return jsonify({"reply": reply})
+        except Exception as e2:
+            return jsonify({"error": str(e) + " | Fallback: " + str(e2)}), 500
 
 @app.route("/history", methods=["GET"])
 def history():
@@ -401,7 +412,7 @@ def readfile():
             ext = fname.split('.')[-1]
             mime = f"image/{'jpeg' if ext in ['jpg','jpeg'] else ext}"
             response = client.chat.completions.create(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+                model="llama-3.2-11b-vision-preview",
                 messages=[{"role": "user", "content": [
                     {"type": "text", "text": f"Boss ne yeh image share ki hai. {question} Detailed Hinglish mein batao."},
                     {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{img_data}"}}
