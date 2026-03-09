@@ -3,6 +3,24 @@ from groq import Groq
 import os, re, sqlite3, datetime, requests, json, base64, threading, urllib.request, time
 
 app = Flask(__name__)
+
+@app.after_request
+def add_cors(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
+
+@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
+@app.route('/<path:path>', methods=['OPTIONS'])
+def options_handler(path):
+    from flask import Response
+    return Response('', 200, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    })
+
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 WEATHER_KEY = os.environ.get("WEATHER_API_KEY", "")
