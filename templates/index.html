@@ -842,113 +842,109 @@ var _ttsBtn = null;
 var _ttsActive = false;
 
 function speakIt(btn, bubId){
-  try {
-    var el = document.getElementById(bubId);
-    if(!el) return;
-    var raw = el.innerText || el.textContent || "";
-    var text = raw.replace(/▶ Sunao|📋 Copy|😊|■ Rok do|↩ Reply|[▶■]/g,"").trim();
-    if(!text) return;
+  var el = document.getElementById(bubId);
+  if(!el) return;
+  var text = (el.innerText || el.textContent || '')
+    .replace(/▶ Sunao|📋 Copy|■ Rok do|↩ Reply/g, '').trim();
+  if(!text) return;
 
-    // If already speaking this button - stop
-    if(_ttsActive && _ttsBtn === btn){
-      try{ window.speechSynthesis.cancel(); }catch(e){}
-      btn.innerHTML="▶ Sunao";
-      btn.classList.remove("speaking");
-      _ttsActive = false;
-      _ttsBtn = null;
-      return;
-    }
+  // Stop if already speaking same button
+  if(window._ttsBtn === btn && window.speechSynthesis && window.speechSynthesis.speaking){
+    window.speechSynthesis.cancel();
+    btn.textContent = '▶ Sunao';
+    btn.classList.remove('speaking');
+    window._ttsBtn = null;
+    return;
+  }
 
-    // Stop any previous
-    if(_ttsActive){
-      try{ window.speechSynthesis.cancel(); }catch(e){}
-      if(_ttsBtn){
-        _ttsBtn.innerHTML="▶ Sunao";
-        _ttsBtn.classList.remove("speaking");
-      }
-    }
+  // Stop any current speech
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(window._ttsBtn){
+    window._ttsBtn.textContent = '▶ Sunao';
+    window._ttsBtn.classList.remove('speaking');
+  }
 
-    btn.innerHTML="■ Rok do";
-    btn.classList.add("speaking");
-    _ttsBtn = btn;
-    _ttsActive = true;
+  btn.textContent = '■ Rok do';
+  btn.classList.add('speaking');
+  window._ttsBtn = btn;
 
-    function doSpeak(){
-      try {
-        var synth = window.speechSynthesis;
-        var u = new SpeechSynthesisUtterance(text);
-        u.lang = lget("vlang") || "hi-IN";
-        u.rate = 0.88;
-        u.pitch = 1.0;
-        u.volume = 1.0;
+  function doSpeak(){
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = lget('vlang') || 'hi-IN';
+      u.rate = 0.88; u.pitch = 1.0; u.volume = 1.0;
 
-        // Get voices - needed for Android WebView
-        var voices = synth.getVoices();
-        if(voices && voices.length > 0){
-          var pick = voices.find(function(v){ return v.lang === "hi-IN"; })
-                  || voices.find(function(v){ return v.lang === "en-IN"; })
-                  || voices.find(function(v){ return v.lang.indexOf("en") === 0; });
-          if(pick) u.voice = pick;
-        }
+      // Pick best voice
+      var voices = window.speechSynthesis.getVoices() || [];
+      var voice = voices.find(function(v){ return v.lang === 'hi-IN'; })
+               || voices.find(function(v){ return v.lang === 'en-IN'; })
+               || voices.find(function(v){ return v.lang.startsWith('en'); });
+      if(voice) u.voice = voice;
 
-        function done(){
-          if(_ttsBtn === btn){
-            btn.innerHTML="▶ Sunao";
-            btn.classList.remove("speaking");
-            _ttsActive = false;
-            _ttsBtn = null;
-          }
-        }
-        u.onend = done;
-        u.onerror = done;
-        synth.speak(u);
-
-        // Android WebView fix - resume if paused
-        setTimeout(function(){
-          if(synth.paused) synth.resume();
-        }, 200);
-
-      } catch(e){
-        btn.innerHTML="▶ Sunao";
-        btn.classList.remove("speaking");
-        _ttsActive = false;
-        _ttsBtn = null;
-      }
-    }
-
-    // Wait for voices to load on first call
-    var voices = window.speechSynthesis.getVoices();
-    if(voices && voices.length > 0){
-      doSpeak();
-    } else {
-      window.speechSynthesis.onvoiceschanged = function(){
-        window.speechSynthesis.onvoiceschanged = null;
-        doSpeak();
+      u.onend = function(){
+        btn.textContent = '▶ Sunao';
+        btn.classList.remove('speaking');
+        window._ttsBtn = null;
       };
-      // Fallback if onvoiceschanged never fires (some Android versions)
-      setTimeout(doSpeak, 500);
-    }
+      u.onerror = function(){
+        btn.textContent = '▶ Sunao';
+        btn.classList.remove('speaking');
+        window._ttsBtn = null;
+      };
 
-  } catch(e){
-    if(btn){ btn.innerHTML="▶ Sunao"; btn.classList.remove("speaking"); }
-    _ttsActive = false; _ttsBtn = null;
+      window.speechSynthesis.speak(u);
+
+      // Android WebView fix
+      setTimeout(function(){
+        if(window.speechSynthesis.paused) window.speechSynthesis.resume();
+      }, 200);
+
+    } catch(e){
+      btn.textContent = '▶ Sunao';
+      btn.classList.remove('speaking');
+      window._ttsBtn = null;
+    }
+  }
+
+  // Load voices first
+  var voices = window.speechSynthesis.getVoices() || [];
+  if(voices.length > 0){
+    doSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = function(){
+      window.speechSynthesis.onvoiceschanged = null;
+      doSpeak();
+    };
+    setTimeout(doSpeak, 600);
   }
 }
 
 function autoSpeak(text){
   try {
-    if(!ttsAvailable()) return;
+    if(!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,""));
-    u.lang = lget("vlang") || "hi-IN";
+    var clean = text.replace(/<[^>]*>/g,'').replace(/[#*`_~]/g,'').trim();
+    if(!clean) return;
+    var u = new SpeechSynthesisUtterance(clean);
+    u.lang = lget('vlang') || 'hi-IN';
     u.rate = 0.88; u.pitch = 1.0; u.volume = 1.0;
-    var voices = window.speechSynthesis.getVoices();
-    var pick = voices.find(function(v){ return v.lang==="hi-IN"; })
-            || voices.find(function(v){ return v.lang==="en-IN"; });
-    if(pick) u.voice = pick;
+    var voices = window.speechSynthesis.getVoices() || [];
+    var voice = voices.find(function(v){ return v.lang==='hi-IN'; })
+             || voices.find(function(v){ return v.lang==='en-IN'; });
+    if(voice) u.voice = voice;
     window.speechSynthesis.speak(u);
-    setTimeout(function(){ if(window.speechSynthesis.paused) window.speechSynthesis.resume(); }, 200);
+    setTimeout(function(){
+      if(window.speechSynthesis.paused) window.speechSynthesis.resume();
+    }, 200);
   } catch(e){}
+}
+
+// Preload voices immediately
+if(window.speechSynthesis){
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = function(){
+    window.speechSynthesis.getVoices();
+  };
 }
 
 var gTimer=null;
