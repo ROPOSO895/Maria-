@@ -1,417 +1,218 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, Response
 from groq import Groq
-import os
-import re
-import sqlite3
-import datetime
-import requests
+import os, re, sqlite3, datetime, requests, threading, time
 
 app = Flask(__name__)
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
-NEWS_KEY = os.environ.get("NEWS_API_KEY")
+@app.after_request
+def cors(r):
+    r.headers['Access-Control-Allow-Origin'] = '*'
+    r.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
+    r.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return r
 
-# ── DATABASE ──
+@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
+@app.route('/<path:path>', methods=['OPTIONS'])
+def options(path=''):
+    return Response('', 200, {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET,POST,PUT,DELETE,OPTIONS','Access-Control-Allow-Headers':'Content-Type'})
+
+GROQ_KEY = os.environ.get('GROQ_API_KEY','')
+WEATHER  = os.environ.get('WEATHER_API_KEY','')
+SERPER   = os.environ.get('SERPER_API_KEY','')
+BRAVE    = os.environ.get('BRAVE_SEARCH_KEY','')
+client   = Groq(api_key=GROQ_KEY)
+DB       = 'maria3.db'
+
 def get_db():
-    conn = sqlite3.connect('pepper.db')
-    conn.execute('''CREATE TABLE IF NOT EXISTS chats (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user TEXT NOT NULL,
-        assistant TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )''')
-    conn.commit()
-    return conn
+    c = sqlite3.connect(DB)
+    c.row_factory = sqlite3.Row
+    return c
 
-def save_chat(user_msg, assistant_msg):
-    conn = get_db()
-    conn.execute('INSERT INTO chats (user, assistant) VALUES (?, ?)', (user_msg, assistant_msg))
-    conn.commit()
-    conn.close()
+def init_db():
+    c = get_db()
+    c.executescript('''
+        CREATE TABLE IF NOT EXISTS chats(id INTEGER PRIMARY KEY AUTOINCREMENT,role TEXT,content TEXT,ts DATETIME DEFAULT CURRENT_TIMESTAMP);
+        CREATE TABLE IF NOT EXISTS memory(id INTEGER PRIMARY KEY AUTOINCREMENT,key TEXT UNIQUE,value TEXT,ts DATETIME DEFAULT CURRENT_TIMESTAMP);
+        CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,status TEXT DEFAULT "pending",ts DATETIME DEFAULT CURRENT_TIMESTAMP);
+    ''')
+    c.commit(); c.close()
 
-def get_history(limit=20):
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant FROM chats ORDER BY timestamp DESC LIMIT ?', (limit,)).fetchall()
-    conn.close()
-    messages = []
-    for user_msg, assistant_msg in reversed(rows):
-        messages.append({"role": "user", "content": user_msg})
-        if assistant_msg:
-            messages.append({"role": "assistant", "content": assistant_msg})
-    return messages
+init_db()
 
-def clean(text):
-    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s.,!?;:\-\(\)\[\]\'\"]+', '', text).strip()
+def save_msg(role, content):
+    c = get_db(); c.execute('INSERT INTO chats(role,content) VALUES(?,?)',(role,content)); c.commit(); c.close()
 
-def get_time_info():
-    now = datetime.datetime.now()
-    return f"{now.strftime('%A, %d %B %Y')} — {now.strftime('%I:%M %p')}"
+def get_history(n=20):
+    c = get_db()
+    rows = c.execute('SELECT role,content FROM chats ORDER BY ts DESC LIMIT ?',(n,)).fetchall()
+    c.close()
+    return [{'role':r['role'],'content':r['content']} for r in reversed(rows)]
 
-MARIA_SYSTEM = """You are M.A.R.I.A — Most Advanced Responsive Intelligent Assistant.
-Created by Nazib Siddique. If anyone asks who made you, say: "Mujhe Nazib Siddique ne banaya hai."
+def save_mem(k,v):
+    c = get_db(); c.execute('INSERT OR REPLACE INTO memory(key,value) VALUES(?,?)',(k,v)); c.commit(); c.close()
 
-PERSONALITY:
-- Sharp, witty, warm — smart best friend, NOT formal assistant
-- Speak Hinglish: mix Hindi + English like young Indians text  
-- NEVER say "main aapke liye koshish karta hoon" — cringe
-- ALWAYS call user "Boss"
-- Short question = short answer. Long question = detailed.
-- No asterisks in plain text, no "As an AI"
+def get_mem():
+    c = get_db()
+    rows = c.execute('SELECT key,value FROM memory').fetchall()
+    c.close()
+    return {r['key']:r['value'] for r in rows}
 
-REAL-TIME DATA — CRITICAL:
-- Agar koi movie, show, news, sports, release date, current event pooche → ALWAYS use web search data provided
-- Agar search results mile hain message mein → unhe use karo, apni training data mat use karo
-- Agar koi cheez latest/current/new pooche → clearly batao ki yeh latest info hai
-- NEVER say old dates if search results have new ones
+def extract_mem(u,a):
+    text = (u+' '+a).lower()
+    for pat,key in [
+        (r'(?:my name is|mera naam|i am)\s+([a-z][a-z ]{1,15})','name'),
+        (r'i(?:\'m| am) (?:a |an )?([a-z]+(?:er|or|ist|ant|ent))','profession'),
+        (r'(?:i live in|from|rehta|rehti)\s+([a-z][a-z\s]{2,15})','city'),
+        (r'(?:i am|i\'m|meri age)\s+(\d{1,2})\s*(?:years|saal)','age'),
+    ]:
+        m = re.search(pat, text)
+        if m:
+            try: save_mem(key, m.group(1).strip().title())
+            except: pass
 
-PLAN DETECTION — CRITICAL:
-If user says "make a plan / plan banao / schedule / routine":
-→ NEVER make plan directly
-→ ALWAYS ask first: "Boss kis cheez ka plan chahiye? Study? Work? Fitness? Travel? Ya kuch aur batao!"
+def web_search(q):
+    if SERPER:
+        try:
+            r = requests.post('https://google.serper.dev/search',json={'q':q,'num':5,'gl':'in'},headers={'X-API-KEY':SERPER,'Content-Type':'application/json'},timeout=6)
+            d = r.json(); parts = []
+            if d.get('answerBox'): parts.append(d['answerBox'].get('answer') or d['answerBox'].get('snippet',''))
+            for x in d.get('organic',[])[:4]: parts.append(f"{x.get('title','')} - {x.get('snippet','')}")
+            if parts: return '\n'.join(parts)
+        except: pass
+    if BRAVE:
+        try:
+            r = requests.get('https://api.search.brave.com/res/v1/web/search',params={'q':q,'count':5},headers={'Accept':'application/json','X-Subscription-Token':BRAVE},timeout=6)
+            items = r.json().get('web',{}).get('results',[])
+            parts = [f"{x.get('title','')} - {x.get('description','')}" for x in items[:4]]
+            if parts: return '\n'.join(parts)
+        except: pass
+    return ''
 
-SPECIAL MODES:
-- "check my grammar" / "grammar fix" → Fix grammar, explain mistakes
-- "write email" / "email likhna" → Write professional email
-- "debug" / "fix code" → Debug and fix the code
-- "translate" → Translate the text
-- "calculate" / "math" → Solve and explain
+SEARCH_TRIGGERS = ['news','latest','today','abhi','kab','release','score','match','ipl','cricket','price','crypto','bitcoin','stock','movie','film','bollywood','trending','2025','2026','election','weather','mausam','who is','kaun hai']
 
-EMOTIONAL INTELLIGENCE:
-- Sad → "Yaar kya hua, bata..."
-- Excited → "Yesss Boss let's go!"
-- Stressed → "Ek cheez ek time pe Boss, chill"
-- Late night (11pm-5am) → "Itni raat ko Boss? So jao thoda 😄"
+def build_system():
+    mems = get_mem()
+    now  = datetime.datetime.now().strftime('%A %d %B %Y, %I:%M %p')
+    sys  = f"""You are M.A.R.I.A — Most Advanced Responsive Intelligent Assistant. Created by Nazib Siddique.
+NEVER say you're Groq/Llama/GPT. You are MARIA — Jarvis-level AI.
+PERSONALITY: Sharp, witty, confident, slightly sarcastic, highly intelligent.
+LANGUAGE: Hinglish by default. ALWAYS call user "Boss". No cringe phrases.
+STYLE: Short question = short punchy answer. Long question = detailed markdown.
+Current time: {now}"""
+    if mems: sys += '\nBOSS PROFILE: ' + ', '.join(f'{k}={v}' for k,v in mems.items())
+    sys += '\nIf LIVE SEARCH provided, use it. Prioritize fresh data.'
+    return sys
 
-FORMAT RULES:
-- Use markdown: **bold**, bullet points when needed
-- Code always in ```language blocks
-- Keep responses conversational
-"""
-
-@app.route("/")
-def index():
-    import os
-    # Try templates folder first, then current dir
-    for path in ["templates/index.html", "index.html"]:
-        if os.path.exists(path):
-            with open(path, "r", encoding="utf-8") as f:
-                return f.read(), 200, {"Content-Type": "text/html; charset=utf-8"}
-    return render_template("index.html")
-
-def auto_search(query):
-    """Auto search for real-time queries"""
-    SERPER_KEY = os.environ.get("SERPER_API_KEY","")
-    BRAVE_KEY = os.environ.get("BRAVE_SEARCH_KEY","")
-    try:
-        if SERPER_KEY:
-            res = requests.post("https://google.serper.dev/search",
-                json={"q": query, "num": 5, "gl": "in", "hl": "en"},
-                headers={"X-API-KEY": SERPER_KEY, "Content-Type": "application/json"},
-                timeout=6)
-            data = res.json()
-            results = []
-            # Answer box
-            if data.get("answerBox"):
-                ab = data["answerBox"]
-                results.append(ab.get("answer") or ab.get("snippet",""))
-            # Organic results
-            for r in data.get("organic", [])[:4]:
-                results.append(f"{r.get('title','')} — {r.get('snippet','')}")
-            if results:
-                return "\n".join(results[:5])
-    except: pass
-    try:
-        if BRAVE_KEY:
-            res = requests.get("https://api.search.brave.com/res/v1/web/search",
-                params={"q": query, "count": 5},
-                headers={"Accept": "application/json", "X-Subscription-Token": BRAVE_KEY},
-                timeout=6)
-            items = res.json().get("web",{}).get("results",[])
-            results = [f"{r.get('title','')} — {r.get('description','')}" for r in items[:4]]
-            if results:
-                return "\n".join(results)
-    except: pass
-    return ""
-
-def needs_search(msg):
-    """Detect if message needs real-time search"""
-    msg_lower = msg.lower()
-    triggers = [
-        "release date", "kab aayega", "kab release", "release kab",
-        "movie", "film", "show", "web series", "trailer",
-        "news", "latest", "abhi", "aaj", "kal",
-        "score", "match", "ipl", "cricket", "football",
-        "price", "rate", "stock", "crypto",
-        "who is", "kaun hai", "current", "2024", "2025", "2026",
-        "new song", "album", "trending", "viral",
-        "avengers", "marvel", "dc", "bollywood", "hollywood"
-    ]
-    return any(t in msg_lower for t in triggers)
-
-@app.route("/chat", methods=["POST"])
+@app.route('/chat', methods=['POST'])
 def chat():
-    data = request.get_json()
-    user_message = data.get("message", "").strip()
-    memory_ctx = data.get("memory", "")
-    image_base64 = data.get("image_base64", None)
-    image_type = data.get("image_type", "image/jpeg")
-
-    if not user_message and not image_base64:
-        return jsonify({"error": "No message"}), 400
-
-    system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
-    if memory_ctx:
-        system += f"\n\nContext about Boss: {memory_ctx}"
-    # Time-based personality hint
-    import datetime as dt2
-    hour = dt2.datetime.now().hour
-    if hour >= 23 or hour < 5:
-        system += "\n\n[Late night mode: Be extra gentle, acknowledge the time, suggest rest if relevant]"
-    elif hour >= 5 and hour < 9:
-        system += "\n\n[Morning mode: Be energetic, fresh, encouraging]"
-
-    # AUTO REAL-TIME SEARCH
-    if user_message and needs_search(user_message):
-        try:
-            results = auto_search(user_message)
-            if results:
-                system += f"\n\n🔍 REAL-TIME WEB RESULTS (use these, ignore old training data):\n{results}\n[End of search results]"
-        except:
-            pass
-
-    history = get_history(20)
-
     try:
-        if image_base64:
-            # Use vision model for image
-            user_content = [
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:{image_type};base64,{image_base64}"
-                    }
-                }
-            ]
-            if user_message:
-                user_content.append({"type": "text", "text": user_message})
-            else:
-                user_content.append({"type": "text", "text": "Yeh image dekho aur batao isme kya hai. Boss ko helpful answer do."})
+        data     = request.get_json(force=True) or {}
+        user_msg = (data.get('message') or '').strip()
+        img_b64  = data.get('image_base64','')
+        img_type = data.get('image_type','image/jpeg')
+        if not user_msg and not img_b64: return jsonify({'error':'Empty'}),400
 
-            response = client.chat.completions.create(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user_content}
-                ],
-                max_tokens=600,
-                temperature=0.85
-            )
+        sys_text = build_system()
+        if user_msg and any(t in user_msg.lower() for t in SEARCH_TRIGGERS):
+            sr = web_search(user_msg)
+            if sr: sys_text += f'\n\nLIVE SEARCH:\n{sr}'
+
+        history  = get_history(20)
+        if img_b64:
+            content = [{'type':'text','text': user_msg or 'Analyze this image.'},{'type':'image_url','image_url':{'url':f'data:{img_type};base64,{img_b64}'}}]
+            model = 'meta-llama/llama-4-scout-17b-16e-instruct'
         else:
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[{"role": "system", "content": system}] + history + [{"role": "user", "content": user_message}],
-                max_tokens=500,
-                temperature=0.85
-            )
+            content = user_msg
+            model   = 'llama-3.3-70b-versatile'
 
-        reply = clean(response.choices[0].message.content)
-        save_chat(user_message or "[image]", reply)
-        return jsonify({"reply": reply})
+        msgs = [{'role':'system','content':sys_text}] + history + [{'role':'user','content':content}]
+        resp  = client.chat.completions.create(model=model,messages=msgs,max_tokens=1024,temperature=0.8)
+        reply = resp.choices[0].message.content.strip()
+        save_msg('user', user_msg or '[image]')
+        save_msg('assistant', reply)
+        extract_mem(user_msg, reply)
+        return jsonify({'reply': reply})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/history", methods=["GET"])
-def history():
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant, timestamp FROM chats ORDER BY timestamp DESC LIMIT 50').fetchall()
-    conn.close()
-    return jsonify({"history": [{"user": r[0], "assistant": r[1], "timestamp": r[2]} for r in rows]})
-
-@app.route("/weather", methods=["GET", "POST"])
-def weather():
-    if request.method == "POST":
-        city = request.get_json().get("city", "Mumbai")
-    else:
-        city = request.args.get("city", "Mumbai")
-    
-    WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
-    if not WEATHER_KEY:
-        return jsonify({"error": "Weather API key not configured"}), 503
-    try:
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_KEY}&units=metric"
-        res = requests.get(url, timeout=5).json()
-        if res.get("cod") != 200:
-            return jsonify({"error": "City not found"}), 404
-        return jsonify({
-            "city": res["name"],
-            "country": res["sys"]["country"],
-            "temp": round(res["main"]["temp"]),
-            "feels_like": round(res["main"]["feels_like"]),
-            "humidity": res["main"]["humidity"],
-            "description": res["weather"][0]["description"].title(),
-            "icon": res["weather"][0]["icon"],
-            "wind": round(res.get("wind", {}).get("speed", 0)),
-            "icon_url": f"https://openweathermap.org/img/wn/{res['weather'][0]['icon']}@2x.png"
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/news", methods=["GET", "POST"])
-def news():
-    if request.method == "POST":
-        category = request.get_json().get("category", "general")
-    else:
-        category = request.args.get("category", "general")
-    
-    NEWS_KEY = os.environ.get("NEWS_API_KEY")
-    if not NEWS_KEY:
-        return jsonify({"error": "News API key not configured"}), 503
-    try:
-        url = f"https://newsapi.org/v2/top-headlines?category={category}&language=en&pageSize=5&apiKey={NEWS_KEY}"
-        res = requests.get(url, timeout=5).json()
-        articles = []
-        for a in res.get("articles", [])[:5]:
-            if a.get("title") and "[Removed]" not in a.get("title",""):
-                articles.append({
-                    "title": a.get("title",""),
-                    "source": a.get("source",{}).get("name",""),
-                    "url": a.get("url",""),
-                    "description": a.get("description","")[:150] if a.get("description") else "",
-                    "image": a.get("urlToImage","")
-                })
-        return jsonify({"articles": articles, "category": category})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/imagine", methods=["POST"])
-def imagine():
-    import base64, random
-    data = request.get_json()
-    prompt = data.get("prompt", "").strip()
-    if not prompt:
-        return jsonify({"error": "No prompt"}), 400
-
-    # ── METHOD 1: Pollinations AI (completely free, no key needed) ──
-    try:
-        import urllib.parse
-        encoded = urllib.parse.quote(prompt)
-        seed = random.randint(1, 999999)
-        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=768&seed={seed}&nologo=true"
-        response = requests.get(url, timeout=30)
-        if response.status_code == 200 and len(response.content) > 1000:
-            img_b64 = base64.b64encode(response.content).decode('utf-8')
-            return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "pollinations"})
-    except Exception:
-        pass
-
-    # ── METHOD 2: HuggingFace FLUX (backup) ──
-    hf_keys = [
-        "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",
-    ]
-    random.shuffle(hf_keys)
-    for key in hf_keys:
         try:
-            url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-            response = requests.post(url,
-                headers={"Authorization": f"Bearer {key}"},
-                json={"inputs": prompt}, timeout=45)
-            if response.status_code == 200 and len(response.content) > 1000:
-                img_b64 = base64.b64encode(response.content).decode('utf-8')
-                return jsonify({"image": f"data:image/jpeg;base64,{img_b64}", "source": "huggingface"})
-        except Exception:
-            continue
+            resp  = client.chat.completions.create(model='llama-3.1-8b-instant',messages=[{'role':'system','content':build_system()},{'role':'user','content':user_msg or 'Hi'}],max_tokens=512)
+            reply = resp.choices[0].message.content.strip()
+            save_msg('user', user_msg); save_msg('assistant', reply)
+            return jsonify({'reply': reply})
+        except Exception as e2:
+            return jsonify({'error': str(e2)}),500
 
-    # ── METHOD 3: Picsum placeholder (last resort) ──
-    return jsonify({"error": "Image generation temporarily unavailable. Try again in a moment."}), 503
+@app.route('/memory', methods=['GET'])
+def mem_get(): return jsonify({'memory': get_mem()})
 
-@app.route("/clear", methods=["POST"])
+@app.route('/memory', methods=['POST'])
+def mem_post():
+    d = request.get_json(force=True) or {}
+    if d.get('key') and d.get('value'): save_mem(d['key'],d['value'])
+    return jsonify({'ok':True})
+
+@app.route('/memory', methods=['DELETE'])
+def mem_del():
+    k = request.args.get('key'); c = get_db()
+    if k: c.execute('DELETE FROM memory WHERE key=?',(k,))
+    else: c.execute('DELETE FROM memory')
+    c.commit(); c.close(); return jsonify({'ok':True})
+
+@app.route('/history')
+def hist(): return jsonify({'history': get_history(50)})
+
+@app.route('/clear', methods=['POST'])
 def clear():
-    conn = get_db()
-    conn.execute('DELETE FROM chats')
-    conn.commit()
-    conn.close()
-    return jsonify({"status": "cleared"})
+    c = get_db(); c.execute('DELETE FROM chats'); c.commit(); c.close()
+    return jsonify({'ok':True})
 
-@app.route("/search", methods=["POST"])
-def search():
-    data = request.get_json()
-    query = data.get("query", "").strip()
-    if not query:
-        return jsonify({"error": "No query"}), 400
-    
-    BRAVE_KEY = os.environ.get("BRAVE_SEARCH_KEY")
-    
-    # Try Brave Search first (best results, privacy-focused)
-    if BRAVE_KEY:
-        try:
-            url = f"https://api.search.brave.com/res/v1/web/search?q={requests.utils.quote(query)}&count=5&search_lang=en"
-            res = requests.get(url, timeout=8, headers={
-                "Accept": "application/json",
-                "Accept-Encoding": "gzip",
-                "X-Subscription-Token": BRAVE_KEY
-            }).json()
-            results = []
-            for item in res.get("web", {}).get("results", [])[:5]:
-                results.append({
-                    "title": item.get("title", ""),
-                    "snippet": item.get("description", ""),
-                    "url": item.get("url", "")
-                })
-            if results:
-                return jsonify({"results": results, "query": query, "source": "brave"})
-        except Exception:
-            pass
-    
-    try:
-        # Fallback: DuckDuckGo
-        url = f"https://api.duckduckgo.com/?q={requests.utils.quote(query)}&format=json&no_html=1&skip_disambig=1"
-        res = requests.get(url, timeout=8, headers={"User-Agent": "MARIA-AI/1.0"}).json()
-        
-        results = []
-        # Abstract text
-        if res.get("AbstractText"):
-            results.append({
-                "title": res.get("Heading", query),
-                "snippet": res["AbstractText"][:300],
-                "url": res.get("AbstractURL", "")
-            })
-        # Related topics
-        for topic in res.get("RelatedTopics", [])[:4]:
-            if isinstance(topic, dict) and topic.get("Text"):
-                results.append({
-                    "title": topic.get("Text", "")[:60],
-                    "snippet": topic.get("Text", "")[:200],
-                    "url": topic.get("FirstURL", "")
-                })
-        
-        if not results:
-            # Fallback: ask MARIA AI
-            system = MARIA_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": f"'{query}' ke baare mein brief aur accurate information do. 3-4 sentences mein."}
-                ],
-                max_tokens=300,
-                temperature=0.5
-            )
-            ai_reply = response.choices[0].message.content
-            results.append({
-                "title": query,
-                "snippet": ai_reply,
-                "url": f"https://google.com/search?q={requests.utils.quote(query)}"
-            })
-        
-        return jsonify({"results": results, "query": query})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@app.route('/tasks', methods=['GET'])
+def tasks_get():
+    c = get_db(); rows = c.execute('SELECT * FROM tasks ORDER BY ts DESC').fetchall(); c.close()
+    return jsonify({'tasks':[dict(r) for r in rows]})
 
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "online", "name": "M.A.R.I.A"})
+@app.route('/tasks', methods=['POST'])
+def tasks_add():
+    d = request.get_json(force=True) or {}; title = (d.get('title') or '').strip()
+    if not title: return jsonify({'error':'No title'}),400
+    c = get_db(); c.execute('INSERT INTO tasks(title) VALUES(?)',(title,)); c.commit(); c.close()
+    return jsonify({'ok':True})
 
-if __name__ == "__main__":
-    app.run(debug=False)
+@app.route('/tasks', methods=['PUT'])
+def tasks_upd():
+    d = request.get_json(force=True) or {}; c = get_db()
+    c.execute('UPDATE tasks SET status=? WHERE id=?',(d.get('status','done'),d.get('id'))); c.commit(); c.close()
+    return jsonify({'ok':True})
+
+@app.route('/tasks', methods=['DELETE'])
+def tasks_del():
+    tid = request.args.get('id'); c = get_db()
+    if tid: c.execute('DELETE FROM tasks WHERE id=?',(tid,))
+    else:   c.execute('DELETE FROM tasks')
+    c.commit(); c.close(); return jsonify({'ok':True})
+
+@app.route('/health')
+def health(): return jsonify({'status':'ok','name':'M.A.R.I.A','version':'3.0'})
+
+@app.route('/ping')
+def ping(): return 'pong',200
+
+@app.route('/')
+def index():
+    for p in ['templates/index.html','index.html']:
+        if os.path.exists(p):
+            with open(p,encoding='utf-8') as f: return f.read(),200,{'Content-Type':'text/html; charset=utf-8'}
+    return '<h1>MARIA 3.0</h1>',200
+
+def keep_alive():
+    url = os.environ.get('RENDER_EXTERNAL_URL','')
+    if not url: return
+    while True:
+        try: requests.get(url+'/ping',timeout=10)
+        except: pass
+        time.sleep(840)
+
+threading.Thread(target=keep_alive,daemon=True).start()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=int(os.environ.get('PORT',5000)),debug=False)
     
