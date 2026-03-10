@@ -274,6 +274,10 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   <div id="vTranscript">MARIA sun rahi hai...</div>
   <div id="vReply"></div>
   <div id="vTapHint">TAP ORB = SPEAK / TAP AGAIN = STOP</div>
+  <div id="vTextRow" style="display:none;gap:8px;width:90%;max-width:300px">
+    <input id="vTextInp" placeholder="Ya yahan type karo Boss..." style="flex:1;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:10px 16px;color:#fff;font-size:0.8rem;font-family:var(--mono);outline:none">
+    <button onclick="sendVoiceText()" style="padding:10px 16px;background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);border-radius:20px;color:var(--c);font-size:0.8rem;cursor:pointer;font-family:var(--font)">SEND</button>
+  </div>
 </div>
 
 <!-- MAIN APP -->
@@ -822,7 +826,14 @@ function startVoiceListen(){
 
   _vRec.onerror = function(e){
     _vListening = false;
-    setVState('idle','ERROR - TAP AGAIN', e.error || 'mic error');
+    if(e.error === 'not-allowed'){
+      setVState('idle','MIC PERMISSION DENIED','Median app settings mein mic allow karo, ya neeche type karo');
+      document.getElementById('vTextRow').style.display = 'flex';
+    } else if(e.error === 'no-speech'){
+      setVState('idle','TAP ORB TO SPEAK','Koi awaaz nahi aayi, dobara try karo');
+    } else {
+      setVState('idle','ERROR - TAP AGAIN', e.error || 'mic error');
+    }
   };
 
   try{ _vRec.start(); }catch(e){
@@ -877,6 +888,17 @@ function voiceSpeak(text){
   var vv = window.speechSynthesis.getVoices() || [];
   if(vv.length){ doVSpeak(); }
   else{ setTimeout(doVSpeak, 700); }
+}
+
+function sendVoiceText(){
+  var inp = document.getElementById('vTextInp');
+  var txt = (inp.value || '').trim();
+  if(!txt) return;
+  inp.value = '';
+  document.getElementById('vTranscript').textContent = txt;
+  addMsg('u', txt);
+  setVState('idle','PROCESSING...','');
+  voiceAskMaria(txt);
 }
 
 // ── TASKS ──
