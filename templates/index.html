@@ -243,6 +243,26 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
 .empty{text-align:center;padding:40px 16px;font-size:.8rem;color:var(--dim);line-height:1.9}
 #fileInput{display:none}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+/* IMAGE MODAL */
+#imgModal{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.72);align-items:flex-end;justify-content:center}
+#imgModal.on{display:flex}
+.imb{background:var(--bg3);border:1px solid var(--brd);border-radius:22px 22px 0 0;padding:18px 16px 36px;width:100%;max-width:540px;animation:slideUp .25s ease;position:relative}
+.imb-handle{width:36px;height:3px;background:var(--brd);border-radius:2px;margin:0 auto 16px}
+.imb-title{font-size:1rem;font-weight:600;color:var(--txt);margin-bottom:2px}
+.imb-sub{font-size:.72rem;color:var(--dim);margin-bottom:14px}
+.imb-styles{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.imb-styles::-webkit-scrollbar{display:none}
+.imb-sty{padding:5px 12px;border:1px solid var(--brd);border-radius:20px;font-size:.68rem;color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .15s;background:transparent;flex-shrink:0}
+.imb-sty.on{border-color:var(--acc);color:var(--acc);background:rgba(212,165,116,.09)}
+.imb-row{display:flex;gap:8px;align-items:flex-end}
+#imgPromptInp{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:10px 13px;color:var(--txt);font-size:.85rem;font-family:var(--font);outline:none;resize:none;min-height:60px;max-height:110px;transition:border-color .2s;line-height:1.5}
+#imgPromptInp:focus{border-color:var(--acc)}
+#imgPromptInp::placeholder{color:var(--dim)}
+.imb-go{padding:10px 16px;background:var(--acc);border:none;border-radius:12px;color:#1a1a1a;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;flex-shrink:0}
+.imb-go:hover{background:var(--acc2)}
+.imb-go:disabled{background:var(--bg4);color:var(--dim);cursor:not-allowed}
+.imb-close{position:absolute;top:14px;right:14px;background:transparent;border:none;color:var(--dim);font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:6px}
+.imb-close:hover{background:var(--bg4);color:var(--txt)}
 </style>
 </head>
 <body>
@@ -251,16 +271,40 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
 <div id="attachOv" onclick="closeAttach()"></div>
 <div id="attachMenu">
   <div class="am-handle"></div>
-  <div class="am-grid">
+  <div class="am-grid" style="grid-template-columns:repeat(4,1fr)">
     <button class="am-btn" onclick="pickFile('image/*');closeAttach()"><div class="am-ico">🖼️</div><span class="am-lbl">Photos</span></button>
+    <button class="am-btn" onclick="takePhoto();closeAttach()"><div class="am-ico">📷</div><span class="am-lbl">Camera</span></button>
     <button class="am-btn" onclick="pickFile('.pdf,.txt,.js,.py,.html,.css,.json,.csv');closeAttach()"><div class="am-ico">📄</div><span class="am-lbl">Files</span></button>
-    <button class="am-btn" onclick="closeAttach();startImgGen()"><div class="am-ico">🎨</div><span class="am-lbl">Create Image</span></button>
+    <button class="am-btn" onclick="closeAttach();startImgGen()"><div class="am-ico">🎨</div><span class="am-lbl">AI Image</span></button>
   </div>
   <div class="am-tools">
     <div class="am-tool" onclick="closeAttach();useTool('resume')"><span class="amt-ico">📝</span><div><div class="amt-name">Resume Builder</div><div class="amt-desc">Professional resume</div></div></div>
     <div class="am-tool" onclick="closeAttach();useTool('email')"><span class="amt-ico">📧</span><div><div class="amt-name">Email Writer</div><div class="amt-desc">Draft any email</div></div></div>
     <div class="am-tool" onclick="closeAttach();useTool('code')"><span class="amt-ico">💻</span><div><div class="amt-name">Code Generator</div><div class="amt-desc">Any language</div></div></div>
     <div class="am-tool" onclick="closeAttach();useTool('math')"><span class="amt-ico">🔢</span><div><div class="amt-name">Math Solver</div><div class="amt-desc">Step by step</div></div></div>
+  </div>
+</div>
+<!-- IMAGE GEN MODAL -->
+<div id="imgModal" onclick="if(event.target===this)closeImgModal()" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.72);align-items:flex-end;justify-content:center">
+  <div class="imb">
+    <div class="imb-handle"></div>
+    <button class="imb-close" onclick="closeImgModal()">✕</button>
+    <div class="imb-title">🎨 Create Image</div>
+    <div class="imb-sub">Describe karo — Maria AI se generate karegi</div>
+    <div class="imb-styles" id="imbStyles">
+      <div class="imb-sty on" data-s="">Default</div>
+      <div class="imb-sty" data-s="photorealistic, 8k ultra detailed">Photorealistic</div>
+      <div class="imb-sty" data-s="anime style, vibrant colors">Anime</div>
+      <div class="imb-sty" data-s="oil painting, artistic masterpiece">Oil Painting</div>
+      <div class="imb-sty" data-s="watercolor art, dreamy soft">Watercolor</div>
+      <div class="imb-sty" data-s="cyberpunk, neon lights, futuristic">Cyberpunk</div>
+      <div class="imb-sty" data-s="minimalist, clean, simple design">Minimalist</div>
+      <div class="imb-sty" data-s="3D render, CGI, studio lighting">3D Render</div>
+    </div>
+    <div class="imb-row">
+      <textarea id="imgPromptInp" placeholder="Jaise: A lion wearing a golden crown at sunset..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();doImgGen();}"></textarea>
+      <button class="imb-go" id="imbGoBtn" onclick="doImgGen()">✨ Generate</button>
+    </div>
   </div>
 </div>
 <div id="lightbox" onclick="closeLB()"><button id="lbClose" onclick="closeLB()">✕</button><img id="lbImg" src=""><button id="lbDown" onclick="downloadImg();event.stopPropagation()">⬇ Download</button></div>
@@ -622,28 +666,60 @@ function askAPI(txt,b64,ftype,tool){
 // ATTACH
 function openAttach(){document.getElementById('attachMenu').classList.add('on');document.getElementById('attachOv').classList.add('on');}
 function closeAttach(){document.getElementById('attachMenu').classList.remove('on');document.getElementById('attachOv').classList.remove('on');}
-function pickFile(accept){var fi=document.getElementById('fileInput');fi.accept=accept;fi.click();}
+function pickFile(accept){var fi=document.getElementById('fileInput');fi.accept=accept;fi.removeAttribute('capture');fi.click();}
+function takePhoto(){var fi=document.getElementById('fileInput');fi.accept='image/*';fi.setAttribute('capture','environment');fi.click();setTimeout(function(){fi.removeAttribute('capture');},500);}
 function filePick(inp){var f=inp.files[0];if(!f)return;_fileType=f.type||'application/octet-stream';document.getElementById('fpName').textContent=f.name;document.getElementById('filePrev').style.display='flex';var r=new FileReader();r.onload=function(e){_fileB64=e.target.result.split(',')[1]||'';};r.readAsDataURL(f);inp.value='';}
 function clearFile(){_fileB64='';_fileType='';document.getElementById('filePrev').style.display='none';}
 
 // IMAGE GEN
+// IMAGE GENERATION MODAL
+var _imgStyle='';
+document.addEventListener('click',function(e){
+  if(e.target.classList.contains('imb-sty')){
+    document.querySelectorAll('.imb-sty').forEach(function(el){el.classList.remove('on');});
+    e.target.classList.add('on');
+    _imgStyle=e.target.dataset.s||'';
+  }
+});
 function startImgGen(){
-  var p=prompt('Kya banana hai? (describe your image):');
-  if(!p||!p.trim())return;
-  goPage('chat'); if(!_sid)_sid=makeSid();
-  renderMsg('user','🎨 Create image: '+p); saveLocal(_sid,'user','Create image: '+p); saveSidebar(_sid,'Image: '+p);
-  var w=document.getElementById('welcome'); if(w)w.remove();
+  goPage('chat');
+  var m=document.getElementById('imgModal');
+  m.style.display='flex';
+  setTimeout(function(){document.getElementById('imgPromptInp').focus();},100);
+}
+function closeImgModal(){
+  var m=document.getElementById('imgModal');
+  m.style.display='none';
+  document.getElementById('imgPromptInp').value='';
+  document.getElementById('imbGoBtn').disabled=false;
+  document.getElementById('imbGoBtn').textContent='✨ Generate';
+}
+function doImgGen(){
+  var p=(document.getElementById('imgPromptInp').value||'').trim();
+  if(!p){toast('Kuch describe karo Boss! 😄');return;}
+  var full=p+(_imgStyle?', '+_imgStyle:'');
+  document.getElementById('imbGoBtn').disabled=true;
+  document.getElementById('imbGoBtn').textContent='⏳ Generating...';
+  closeImgModal();
+  if(!_sid)_sid=makeSid();
+  renderMsg('user','🎨 Create image: '+p);
+  saveLocal(_sid,'user','Create image: '+p);
+  saveSidebar(_sid,'🎨 '+p);
   var msgs=document.getElementById('msgs');
-  var ld=document.createElement('div'); ld.id='imgLd'; ld.className='typing-wrap';
-  var a=document.createElement('div'); a.className='typing-ava'; a.textContent='M';
-  var b=document.createElement('div'); b.className='img-loading'; b.innerHTML='<div class="spin"></div><span>Generating image... please wait</span>';
-  ld.appendChild(a); ld.appendChild(b); msgs.appendChild(ld); scrollBot();
-  fetch(API+'/imagine',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p})})
+  var ld=document.createElement('div');ld.id='imgLd';ld.className='typing-wrap';
+  var a=document.createElement('div');a.className='typing-ava';a.textContent='M';
+  var b=document.createElement('div');b.className='img-loading';b.innerHTML='<div class="spin"></div><span>Generating image... 20-30 sec wait karo Boss</span>';
+  ld.appendChild(a);ld.appendChild(b);msgs.appendChild(ld);scrollBot();
+  fetch(API+'/imagine',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:full})})
   .then(function(r){return r.json();})
-  .then(function(d){var l=document.getElementById('imgLd');if(l)l.remove();if(d.url)addImgMsg(d.url,d.prompt||p);else renderMsg('maria','Image generation fail hua Boss. Try again!');})
+  .then(function(d){
+    var l=document.getElementById('imgLd');if(l)l.remove();
+    if(d.url){addImgMsg(d.url,d.prompt||p);if(navigator.vibrate)navigator.vibrate([12,40,12]);}
+    else renderMsg('maria','Image generate nahi hui Boss: '+(d.error||'unknown error')+'\n\nFir try karo ya different prompt use karo!');
+  })
   .catch(function(){
     var l=document.getElementById('imgLd');if(l)l.remove();
-    var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p)+'?width=512&height=512&nologo=true&seed='+Date.now();
+    var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(full)+'?width=512&height=512&nologo=true&seed='+Date.now();
     addImgMsg(url,p);
   });
 }
