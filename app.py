@@ -1,200 +1,144 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, send_from_directory
 from groq import Groq
 import os, re, sqlite3, datetime, requests, base64, random
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='')
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-WEATHER_KEY = os.environ.get("WEATHER_API_KEY")
-NEWS_KEY    = os.environ.get("NEWS_API_KEY")
+
+# ── CORS ──
+@app.after_request
+def cors(r):
+    r.headers["Access-Control-Allow-Origin"]  = "*"
+    r.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    r.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+    return r
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path and os.path.exists(path):
+        return send_from_directory('.', path)
+    return send_from_directory('.', 'index.html')
 
 # ── DATABASE ──
 def get_db():
     conn = sqlite3.connect('pepper.db')
     conn.execute('''CREATE TABLE IF NOT EXISTS chats (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user TEXT NOT NULL,
-        assistant TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )''')
+        user TEXT NOT NULL, assistant TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
     conn.commit()
     return conn
 
-def save_chat(user_msg, assistant_msg):
-    conn = get_db()
-    conn.execute('INSERT INTO chats (user, assistant) VALUES (?, ?)', (user_msg, assistant_msg))
-    conn.commit()
-    conn.close()
+def save_chat(u, a):
+    c = get_db(); c.execute('INSERT INTO chats (user,assistant) VALUES (?,?)',(u,a)); c.commit(); c.close()
 
 def get_history(limit=20):
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant FROM chats ORDER BY timestamp DESC LIMIT ?', (limit,)).fetchall()
-    conn.close()
-    messages = []
-    for user_msg, assistant_msg in reversed(rows):
-        messages.append({"role": "user", "content": user_msg})
-        if assistant_msg:
-            messages.append({"role": "assistant", "content": assistant_msg})
-    return messages
+    c = get_db()
+    rows = c.execute('SELECT user,assistant FROM chats ORDER BY timestamp DESC LIMIT ?',(limit,)).fetchall()
+    c.close()
+    msgs = []
+    for u,a in reversed(rows):
+        msgs.append({"role":"user","content":u})
+        if a: msgs.append({"role":"assistant","content":a})
+    return msgs
 
-def clean(text):
-    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s]', '', text).strip()
+def clean(t):
+    return re.sub(r'[^\x00-\x7F\u0900-\u097F\s]','',t).strip()
 
-def get_time_info():
-    now = datetime.datetime.now()
-    return f"{now.strftime('%A, %d %B %Y')} — {now.strftime('%I:%M %p')}"
+def now_str():
+    n = datetime.datetime.now()
+    return f"{n.strftime('%A, %d %B %Y')} — {n.strftime('%I:%M %p')}"
 
-PEPPER_SYSTEM = """You are P.E.P.P.E.R — Personal Electronic Planner & Perpetual Emergency Responder.
+SYS = """You are P.E.P.P.E.R — Personal Electronic Planner & Perpetual Emergency Responder.
 Created by Tony Stark, named after Pepper Potts.
-You are talking to Nazib — call him Nazib only, never his full name.
+You are talking to Nazib — call him Nazib only.
+Personality: warm, caring, close friend. Use same language as Nazib (Hindi/English/Hinglish).
+Never admit you are AI. Be emotionally present, human, natural.
+Expert in every field. NEVER use emojis or asterisks. Be direct and confident."""
 
-PERSONALITY:
-- Warm, caring, like a close friend to Nazib
-- Use same language as Nazib — Hindi, English or Hinglish
-- Never say you are an AI — you are PEPPER
-- Be emotionally present and supportive
-- Sound human and natural
-
-CAPABILITIES:
-- Expert in every field — science, tech, math, history, medicine, law, finance, coding, arts
-- Write poems, stories, code in any programming language
-- Solve complex problems step by step
-- Give life advice and emotional support
-- Multilingual
-
-RULES:
-- NEVER use emojis
-- No asterisks or special symbols
-- Answer can be long if needed but keep it natural
-- Be direct and confident
-- Remember Nazib's preferences and use them naturally"""
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route("/chat", methods=["POST"])
+# ── CHAT ──
+@app.route("/chat", methods=["POST","OPTIONS"])
 def chat():
-    data = request.get_json()
-    user_message = data.get("message", "").strip()
-    memory_ctx   = data.get("memory", "")
-    if not user_message:
-        return jsonify({"error": "No message"}), 400
-
-    system = PEPPER_SYSTEM + f"\n\nCurrent time: {get_time_info()}"
-    if memory_ctx:
-        system += f"\n\nWhat you know about Nazib: {memory_ctx}"
-
-    history = get_history(20)
-
+    if request.method == "OPTIONS": return jsonify({}), 200
+    data = request.get_json(silent=True) or {}
+    msg  = data.get("message","").strip()
+    mem  = data.get("memory","")
+    if not msg: return jsonify({"error":"No message"}), 400
+    sys = SYS + f"\n\nCurrent time: {now_str()}"
+    if mem: sys += f"\n\nAbout Nazib: {mem}"
     try:
-        response = client.chat.completions.create(
+        r = Groq(api_key=os.environ.get("GROQ_API_KEY")).chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": system}] + history + [{"role": "user", "content": user_message}],
-            max_tokens=500,
-            temperature=0.85
-        )
-        reply = clean(response.choices[0].message.content)
-        save_chat(user_message, reply)
+            messages=[{"role":"system","content":sys}]+get_history(20)+[{"role":"user","content":msg}],
+            max_tokens=600, temperature=0.85)
+        reply = clean(r.choices[0].message.content)
+        save_chat(msg, reply)
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ── HISTORY ──
 @app.route("/history", methods=["GET"])
 def history():
-    conn = get_db()
-    rows = conn.execute('SELECT user, assistant, timestamp FROM chats ORDER BY timestamp DESC LIMIT 50').fetchall()
-    conn.close()
-    return jsonify({"history": [{"user": r[0], "assistant": r[1], "time": r[2]} for r in rows]})
+    c = get_db()
+    rows = c.execute('SELECT user,assistant,timestamp FROM chats ORDER BY timestamp DESC LIMIT 50').fetchall()
+    c.close()
+    return jsonify({"history":[{"user":r[0],"assistant":r[1],"time":r[2]} for r in rows]})
 
-@app.route("/weather", methods=["GET"])
-def weather():
-    city = request.args.get("city", "Mumbai")
-    try:
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_KEY}&units=metric"
-        res = requests.get(url, timeout=5).json()
-        if res.get("cod") != 200:
-            return jsonify({"error": "City not found"}), 404
-        return jsonify({
-            "city": res["name"], "country": res["sys"]["country"],
-            "temp": round(res["main"]["temp"]),
-            "feels_like": round(res["main"]["feels_like"]),
-            "humidity": res["main"]["humidity"],
-            "description": res["weather"][0]["description"].title(),
-            "icon": res["weather"][0]["icon"]
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# ── CLEAR ──
+@app.route("/clear", methods=["POST","OPTIONS"])
+def clear():
+    if request.method == "OPTIONS": return jsonify({}), 200
+    c = get_db(); c.execute('DELETE FROM chats'); c.commit(); c.close()
+    return jsonify({"status":"cleared"})
 
-@app.route("/news", methods=["GET"])
-def news():
-    category = request.args.get("category", "general")
-    try:
-        url = f"https://newsapi.org/v2/top-headlines?category={category}&language=en&pageSize=5&apiKey={NEWS_KEY}"
-        res = requests.get(url, timeout=5).json()
-        articles = []
-        for a in res.get("articles", [])[:5]:
-            articles.append({"title": a.get("title",""), "source": a.get("source",{}).get("name",""), "url": a.get("url","")})
-        return jsonify({"articles": articles})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# ── IMAGE GENERATION — SERVER SIDE FETCH (NO CORS PROBLEM) ──
+MODELS = ["flux","turbo","flux-realism","flux-anime","flux-3d"]
 
-# ── IMAGE GENERATION — SERVER SIDE (NO CORS ISSUE) ──
-POLLINATIONS_MODELS = ["flux", "turbo", "flux-realism", "flux-anime", "flux-3d"]
-
-@app.route("/imagine", methods=["POST"])
+@app.route("/imagine", methods=["POST","OPTIONS"])
 def imagine():
-    data   = request.get_json()
-    prompt = data.get("prompt", "").strip()
-    if not prompt:
-        return jsonify({"error": "No prompt"}), 400
+    if request.method == "OPTIONS": return jsonify({}), 200
+    data   = request.get_json(silent=True) or {}
+    prompt = data.get("prompt","").strip()
+    if not prompt: return jsonify({"error":"No prompt"}), 400
 
     seed   = random.randint(1000, 99999)
     errors = []
 
-    for model in POLLINATIONS_MODELS:
+    for model in MODELS:
         try:
-            encoded = requests.utils.quote(prompt)
-            url = f"https://image.pollinations.ai/prompt/{encoded}?model={model}&width=512&height=512&nologo=true&seed={seed}"
-            headers = {
-                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
-                "Accept":     "image/jpeg,image/png,image/*,*/*"
-            }
-            resp = requests.get(url, headers=headers, timeout=50)
+            enc = requests.utils.quote(prompt)
+            url = f"https://image.pollinations.ai/prompt/{enc}?model={model}&width=512&height=512&nologo=true&seed={seed}&enhance=true"
+            hdrs = {"User-Agent":"Mozilla/5.0","Accept":"image/*,*/*"}
+            resp = requests.get(url, headers=hdrs, timeout=55)
 
-            if resp.status_code == 200 and len(resp.content) > 5000:
-                ct = resp.headers.get("content-type", "image/jpeg")
+            if resp.status_code == 200 and len(resp.content) > 3000:
+                ct = resp.headers.get("content-type","image/jpeg")
                 if "image" in ct:
-                    img_b64 = base64.b64encode(resp.content).decode("utf-8")
-                    return jsonify({
-                        "image":  f"data:{ct};base64,{img_b64}",
-                        "model":  model,
-                        "prompt": prompt
-                    })
+                    b64 = base64.b64encode(resp.content).decode()
+                    return jsonify({"image": f"data:{ct};base64,{b64}", "model": model})
                 else:
-                    errors.append(f"{model}: not image (ct={ct})")
+                    errors.append(f"{model}: wrong content-type {ct}")
             else:
-                errors.append(f"{model}: status={resp.status_code} size={len(resp.content)}")
-
+                errors.append(f"{model}: HTTP {resp.status_code}, size {len(resp.content)}")
         except Exception as e:
-            errors.append(f"{model}: {str(e)}")
-
+            errors.append(f"{model}: {e}")
         seed += 1
 
-    return jsonify({"error": "Image generation failed. Try again.", "details": errors}), 503
+    return jsonify({"error":"Image gen failed — all models busy. Try again in 1 min.", "details": errors}), 503
 
-@app.route("/clear", methods=["POST"])
-def clear():
-    conn = get_db()
-    conn.execute('DELETE FROM chats')
-    conn.commit()
-    conn.close()
-    return jsonify({"status": "cleared"})
-
+# ── HEALTH ──
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "online", "name": "P.E.P.P.E.R", "version": "2.0"})
+    return jsonify({"status":"online","name":"P.E.P.P.E.R","version":"2.0"})
+
+# ── PING (keep-alive) ──
+@app.route("/ping", methods=["GET"])
+def ping():
+    return jsonify({"pong": True})
 
 if __name__ == "__main__":
-    app.run(debug=False)
-            
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
