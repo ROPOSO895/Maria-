@@ -876,7 +876,7 @@ function doImgGen(){
   // Try backend first
   fetch(API+'/imagine',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:full})})
   .then(function(r){return r.json();})
-  .then(function(d){removeImgLoader();if(d.url)addImgMsg(d.url,p);else tryImgFallback(full,p,0);})
+  .then(function(d){removeImgLoader();if(d.image)addImgMsg(d.image,p);else tryImgFallback(full,p,0);})
   .catch(function(){tryImgFallback(full,p,0);});
 }
 var IMG_MODELS=['flux','turbo','flux-realism','flux-anime'];
