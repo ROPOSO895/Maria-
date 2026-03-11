@@ -597,16 +597,43 @@ function addImgMsg(url,prompt){
   var wrap=document.createElement('div'); wrap.className='msg-wrap';
   var hd=document.createElement('div'); hd.className='msg-hd';
   var av=document.createElement('div'); av.className='msg-ava m'; av.textContent='M';
+  var tm=document.createElement('div'); tm.className='msg-time'; var n=new Date(); tm.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
   var nm=document.createElement('div'); nm.className='msg-name'; nm.textContent='Maria';
-  hd.appendChild(av); hd.appendChild(nm);
+  hd.appendChild(av); hd.appendChild(nm); hd.appendChild(tm);
   var body=document.createElement('div'); body.className='msg-body';
   var img=document.createElement('img'); img.className='gen-img'; img.alt=prompt;
-  img.onload=function(){scrollBot();}; img.onerror=function(){body.innerHTML='<p style="color:var(--dim)">Image load failed Boss. Try again!</p>';};
+  var retries=0;
+  img.onload=function(){scrollBot();};
+  img.onerror=function(){
+    retries++;
+    if(retries===1){
+      // Retry with fresh seed after 2s
+      setTimeout(function(){
+        var sep=url.indexOf('?')>=0?'&':'?';
+        img.src=url.split('?')[0]+'?width=512&height=512&nologo=true&seed='+Date.now();
+      },2000);
+    } else {
+      body.innerHTML='<div style="padding:10px;background:var(--bg4);border-radius:10px;font-size:.8rem;color:var(--dim)">'
+        +'<div style="margin-bottom:8px">⚠️ Image load nahi hui Boss</div>'
+        +'<a href="'+url+'" target="_blank" style="color:var(--acc);font-size:.75rem">🔗 Direct link pe dekho</a><br><br>'
+        +'<button onclick="doRetryImg(\''+encodeURIComponent(prompt)+'\')" style="background:var(--acc);border:none;padding:7px 14px;border-radius:8px;color:#1a1a1a;font-size:.75rem;cursor:pointer">🔄 Retry</button>'
+        +'</div>';
+    }
+  };
   img.src=url; img.onclick=function(){openLB(url);};
-  var cap=document.createElement('div'); cap.style.cssText='font-size:.68rem;color:var(--dim);margin-top:4px'; cap.textContent='✨ '+prompt;
-  body.appendChild(img); body.appendChild(cap);
+  var cap=document.createElement('div'); cap.style.cssText='font-size:.68rem;color:var(--dim);margin-top:6px'; cap.textContent='✨ '+prompt;
+  var acts=document.createElement('div'); acts.style.cssText='display:flex;gap:6px;margin-top:6px';
+  acts.innerHTML='<button class="mact" onclick="openLB(\''+url+'\')">🔍 Full view</button>'
+    +'<button class="mact" onclick="doRetryImg(\''+encodeURIComponent(prompt)+'\')">🔄 Retry</button>';
+  body.appendChild(img); body.appendChild(cap); body.appendChild(acts);
   wrap.appendChild(hd); wrap.appendChild(body); msgs.appendChild(wrap); scrollBot();
   if(_sid)saveLocal(_sid,'assistant','[Image: '+prompt+']');
+}
+function doRetryImg(encPrompt){
+  var p=decodeURIComponent(encPrompt);
+  var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p)+'?width=512&height=512&nologo=true&seed='+Date.now();
+  addImgMsg(url,p);
+  toast('Retrying...');
 }
 
 function copyMsg(id){var el=document.getElementById(id);if(!el)return;var t=(el.innerText||'').replace(/▶ Play|■ Stop|Copy/g,'').trim();navigator.clipboard&&navigator.clipboard.writeText(t).then(function(){toast('Copied!');});}
@@ -701,6 +728,8 @@ function doImgGen(){
   document.getElementById('imbGoBtn').disabled=true;
   document.getElementById('imbGoBtn').textContent='⏳ Generating...';
   closeImgModal();
+  _activeTool=null; // RESET tool mode — image gen is NOT a tool
+  document.getElementById('inp').placeholder='Message Maria...';
   if(!_sid)_sid=makeSid();
   renderMsg('user','🎨 Create image: '+p);
   saveLocal(_sid,'user','Create image: '+p);
