@@ -22,6 +22,30 @@ def index():
     if os.path.exists(idx):
         return send_file(idx)
     return "<h1>JARVIS Backend Running</h1><p>index.html not found in: "+BASE_DIR+"</p>", 200
+from flask import Flask, request, jsonify, send_file
+from groq import Groq
+import os, re, sqlite3, datetime, requests, base64, random
+
+# index.html same directory mein hoga as app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__)
+
+# ── CORS ──
+@app.after_request
+def cors(r):
+    r.headers["Access-Control-Allow-Origin"]  = "*"
+    r.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    r.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+    return r
+
+# ── SERVE index.html ──
+@app.route("/")
+def index():
+    idx = os.path.join(BASE_DIR, 'templates', 'index.html')
+    if os.path.exists(idx):
+        return send_file(idx)
+    return "<h1>JARVIS Backend Running</h1><p>index.html not found in: "+BASE_DIR+"</p>", 200
 
 @app.route("/favicon.ico")
 def favicon():
@@ -145,4 +169,3 @@ def ping():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
-        
